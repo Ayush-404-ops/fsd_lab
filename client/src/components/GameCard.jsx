@@ -19,10 +19,10 @@ export default function GameCard({ game }) {
       </div>
       <div className="game-card__body">
         <h3 className="game-card__title">{game.title}</h3>
-        <p className="game-card__developer">by {game.developerUsername}</p>
+          <p className="game-card__developer">by {game.developerUsername || 'Independent developer'}</p>
         <div className="game-card__footer">
           <span className="game-card__price">
-            {game.price === 0 ? 'Free' : `₹${game.price.toFixed(2)}`}
+            {Number(game.price) === 0 ? 'Free' : `₹${Number(game.price).toFixed(2)}`}
           </span>
           {game.primaryGenre && (
             <span className="game-card__genre">{game.primaryGenre}</span>
