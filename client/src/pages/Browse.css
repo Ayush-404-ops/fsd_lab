@@ -1,0 +1,172 @@
+.browse-page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.browse-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.browse-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(135deg, #fff, #c4b5fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.browse-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.browse-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.search-bar-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  opacity: 0.5;
+}
+
+.search-input {
+  width: 100%;
+  padding-left: 2.75rem;
+  padding-right: 2.5rem;
+  font-size: 1rem;
+  height: 48px;
+  border-radius: 12px;
+}
+
+.search-clear {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.search-clear:hover {
+  color: #fff;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.select-input {
+  min-width: 150px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+}
+
+.select-input option {
+  background: #131325;
+  color: #fff;
+}
+
+.price-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.price-input {
+  width: 85px;
+  height: 40px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.price-dash {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.browse-loading {
+  text-align: center;
+  padding: 4rem 0;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(167, 139, 250, 0.2);
+  border-top-color: #a78bfa;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.browse-empty {
+  text-align: center;
+  padding: 4rem 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.browse-empty h3 {
+  color: #fff;
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.browse-results-count {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 1rem;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.pagination-info {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+}

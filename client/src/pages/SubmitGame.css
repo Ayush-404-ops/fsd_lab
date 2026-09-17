@@ -1,0 +1,106 @@
+.submit-game-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.submit-game-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.submit-game-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 0.5rem 0;
+}
+
+.submit-game-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.submit-game-access-denied {
+  max-width: 500px;
+  margin: 4rem auto;
+  text-align: center;
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.submit-game-access-denied h2 {
+  color: #fff;
+  margin: 0 0 0.75rem 0;
+}
+
+.submit-game-access-denied p {
+  margin-bottom: 1.5rem;
+}
+
+.submit-game-form {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.form-help {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin: -0.15rem 0 0.35rem 0;
+}
+
+.form-error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+}
+
+.form-success {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+}
+
+.btn--lg {
+  height: 48px;
+  font-size: 1rem;
+}

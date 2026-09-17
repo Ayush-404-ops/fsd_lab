@@ -1,0 +1,321 @@
+/* Admin Review Queue Styling */
+.admin-queue-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  color: var(--text-color, #e2e8f0);
+}
+
+.admin-queue-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+}
+
+.admin-queue-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #a78bfa 0%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.admin-queue-subtitle {
+  color: #94a3b8;
+  font-size: 1rem;
+}
+
+.admin-queue-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 900px) {
+  .admin-queue-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.submission-list-panel {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.25rem;
+  backdrop-filter: blur(10px);
+}
+
+.panel-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #f1f5f9;
+}
+
+.queue-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.queue-item {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.queue-item:hover {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(167, 139, 250, 0.4);
+}
+
+.queue-item--selected {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: #8b5cf6;
+}
+
+.queue-item__game {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #f8fafc;
+  margin-bottom: 0.25rem;
+}
+
+.queue-item__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.825rem;
+  color: #94a3b8;
+}
+
+.badge-status {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-status--pending {
+  background: rgba(234, 179, 8, 0.2);
+  color: #fde047;
+  border: 1px solid rgba(234, 179, 8, 0.4);
+}
+
+.badge-status--under_review {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.badge-status--approved {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.badge-status--needs_changes {
+  background: rgba(249, 115, 22, 0.2);
+  color: #fb923c;
+  border: 1px solid rgba(249, 115, 22, 0.4);
+}
+
+.badge-status--rejected {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+/* Detailed Submission View */
+.submission-detail-panel {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.75rem;
+  backdrop-filter: blur(10px);
+}
+
+.detail-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
+}
+
+.detail-sub {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+/* AI Triage Card */
+.ai-triage-card {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 27, 75, 0.6) 100%);
+  border: 1px solid rgba(167, 139, 250, 0.4);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1.75rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.ai-triage-card--fallback {
+  border-color: rgba(234, 179, 8, 0.5);
+  background: rgba(42, 35, 15, 0.8);
+}
+
+.ai-triage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.ai-label-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: rgba(167, 139, 250, 0.2);
+  color: #c084fc;
+  border: 1px solid rgba(167, 139, 250, 0.4);
+}
+
+.ai-label-badge--fallback {
+  background: rgba(234, 179, 8, 0.2);
+  color: #fde047;
+  border-color: rgba(234, 179, 8, 0.4);
+}
+
+.action-pill {
+  padding: 0.25rem 0.65rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.action-pill--proceed_normally {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.action-pill--needs_admin_attention {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.ai-triage-summary {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #e2e8f0;
+  margin-bottom: 1rem;
+}
+
+.triage-section-title {
+  font-size: 0.825rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 0.4rem;
+}
+
+.triage-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.8rem 0;
+}
+
+.triage-list li {
+  font-size: 0.875rem;
+  color: #fca5a5;
+  padding: 0.2rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.triage-list li::before {
+  content: "⚠️";
+  font-size: 0.8rem;
+}
+
+/* Submission Fields */
+.submission-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  background: rgba(15, 23, 42, 0.4);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.field-group label {
+  display: block;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.field-group div {
+  font-size: 0.95rem;
+  color: #f1f5f9;
+  font-weight: 500;
+}
+
+/* Admin Actions Form */
+.admin-action-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.admin-action-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn--approve {
+  background: #16a34a;
+  color: white;
+}
+.btn--approve:hover {
+  background: #15803d;
+}
+
+.btn--changes {
+  background: #ea580c;
+  color: white;
+}
+.btn--changes:hover {
+  background: #c2410c;
+}
+
+.btn--reject {
+  background: #dc2626;
+  color: white;
+}
+.btn--reject:hover {
+  background: #b91c1c;
+}
