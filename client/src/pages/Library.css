@@ -1,120 +1,165 @@
-.library-page {
+/* =========================================================
+   LIBRARY STYLES (from Stitch Design System)
+   ========================================================= */
+
+.library-container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
+  padding: 24px 20px 60px;
+  width: 100%;
 }
 
 .library-header {
-  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 28px;
+}
+
+.library-title-cluster {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .library-title {
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: #fff;
-  margin: 0 0 0.5rem 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.library-count-badge {
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  color: var(--accent);
 }
 
 .library-subtitle {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 1rem;
-  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted);
 }
 
-.library-error {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #f87171;
-  padding: 0.75rem 1rem;
-  border-radius: 10px;
-  margin-bottom: 1.5rem;
-}
-
-.library-loading {
-  text-align: center;
-  padding: 4rem 0;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.library-empty {
-  text-align: center;
-  padding: 4rem 1.5rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
+.download-alert {
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: #34d399;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 20px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 10px;
+  font-size: 13.5px;
 }
 
 .library-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  gap: 22px;
 }
 
-.library-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 14px;
+.library-item-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  transition: var(--transition);
 }
 
-.library-card__image-wrap {
+.library-item-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-light);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+}
+
+.library-thumb-wrap {
   position: relative;
+  width: 100%;
   aspect-ratio: 16 / 9;
-  background: #1a1a2e;
+  background: #0b0e14;
 }
 
-.library-card__image {
+.library-thumb-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-.library-card__badge {
+.owned-license-pill {
   position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  font-size: 0.7rem;
-  font-weight: 700;
+  top: 10px;
+  left: 10px;
+  background: rgba(11, 14, 20, 0.85);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border-light);
+  color: #34d399;
+  font-size: 10.5px;
+  font-weight: 600;
   padding: 3px 8px;
-  border-radius: 6px;
-  background: rgba(34, 197, 94, 0.9);
-  color: #fff;
-  text-transform: uppercase;
+  border-radius: var(--radius-full);
 }
 
-.library-card__body {
-  padding: 1rem;
+.library-card-content {
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  flex: 1;
+  gap: 10px;
+  flex-grow: 1;
 }
 
-.library-card__title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #fff;
-  margin: 0;
+.library-card-title {
+  font-size: 16px;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.library-card__dev {
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.5);
-  margin: 0;
+.library-card-dev {
+  font-size: 12.5px;
+  color: var(--text-muted);
 }
 
-.library-card__date {
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.4);
-  margin: 0 0 0.5rem 0;
+.library-meta-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
-.library-card__actions {
+.meta-pill {
+  font-size: 11px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: var(--text-muted);
+}
+
+.library-card-actions {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 8px;
   margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.library-empty-card {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-lg);
+}
+
+.library-empty-card .empty-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
 }

@@ -13,7 +13,7 @@ export default function Wishlist() {
   const fetchWishlist = async () => {
     try {
       const data = await api.get('/wishlist');
-      setWishlist(data.wishlist);
+      setWishlist(data.wishlist || []);
     } catch (err) {
       setError(err.message || 'Failed to load wishlist.');
     } finally {
@@ -31,19 +31,7 @@ export default function Wishlist() {
     try {
       await api.delete(`/wishlist/${gameId}`);
       setWishlist(prev => prev.filter(g => g.id !== gameId));
-      setActionMessage('Game removed from wishlist.');
-    } catch (err) {
-      setActionMessage(err.message);
-    }
-  };
-
-  const handleBuy = async (gameId, e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    try {
-      const res = await api.post(`/library/${gameId}`);
-      setWishlist(prev => prev.filter(g => g.id !== gameId));
-      setActionMessage(res.message || 'Game added to library!');
+      setActionMessage('Removed title from wishlist.');
     } catch (err) {
       setActionMessage(err.message);
     }
@@ -51,47 +39,56 @@ export default function Wishlist() {
 
   if (loading) {
     return (
-      <div className="wishlist-loading">
-        <div className="spinner"></div>
-        <p>Loading your wishlist...</p>
+      <div className="wishlist-container">
+        <div className="skeleton" style={{ height: '300px', borderRadius: '16px' }}></div>
       </div>
     );
   }
 
   return (
-    <div className="wishlist-page">
+    <div className="wishlist-container">
       <div className="wishlist-header">
-        <h1 className="wishlist-title">My Wishlist</h1>
-        <p className="wishlist-subtitle">Games you're keeping an eye on.</p>
+        <div className="wishlist-title-cluster">
+          <h1 className="wishlist-title">My Wishlist</h1>
+          <span className="wishlist-count-badge">{wishlist.length} Bookmarks</span>
+        </div>
+        <p className="wishlist-subtitle">
+          Track upcoming titles, price reductions, and community synthesis reports.
+        </p>
       </div>
 
-      {actionMessage && <div className="wishlist-banner">{actionMessage}</div>}
-      {error && <div className="wishlist-error">{error}</div>}
+      {actionMessage && (
+        <div className="wishlist-action-banner">
+          <span>✓</span> {actionMessage}
+        </div>
+      )}
+
+      {error && <div className="alert-box error">{error}</div>}
 
       {wishlist.length === 0 ? (
-        <div className="wishlist-empty">
-          <span className="empty-icon">♡</span>
-          <h3>Your wishlist is empty</h3>
-          <p>Explore the catalog and save games you want to play later!</p>
-          <Link to="/browse" className="btn btn--primary">Browse Games</Link>
+        <div className="wishlist-empty-card">
+          <div className="empty-icon">♡</div>
+          <h3>Your Wishlist is Empty</h3>
+          <p>Explore the store catalog and bookmark games you want to track or acquire later.</p>
+          <Link to="/browse" className="btn btn-primary" style={{ marginTop: '16px' }}>
+            Browse Indie Games
+          </Link>
         </div>
       ) : (
         <div className="wishlist-grid">
           {wishlist.map(game => (
-            <div key={game.id} className="wishlist-card-wrap">
+            <div key={game.id} className="wishlist-item-wrapper">
               <GameCard game={game} />
-              <div className="wishlist-card-actions">
+              <div className="wishlist-quick-actions">
+                <Link to={`/games/${game.id}`} className="btn btn-primary btn-sm" style={{ flex: 1 }}>
+                  Inspect &amp; Buy
+                </Link>
                 <button
-                  className="btn btn--primary btn--sm"
-                  onClick={(e) => handleBuy(game.id, e)}
-                >
-                  {game.price === 0 ? 'Claim Free' : `Buy ₹${game.price.toFixed(2)}`}
-                </button>
-                <button
-                  className="btn btn--ghost btn--sm btn--danger"
+                  className="btn btn-danger btn-sm"
                   onClick={(e) => handleRemove(game.id, e)}
+                  title="Remove from wishlist"
                 >
-                  Remove
+                  ✕
                 </button>
               </div>
             </div>

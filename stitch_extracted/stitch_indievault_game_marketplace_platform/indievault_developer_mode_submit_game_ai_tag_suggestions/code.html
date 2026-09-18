@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IndieVault — Indie Game Marketplace &amp; Developer Hub</title>
+<!-- Load React 18, Babel for in-browser compilation -->
+<script crossorigin="" src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin="" src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<style>
+    /* =========================================================
+       GLOBAL & RESET (Plain CSS, no Tailwind/Bootstrap)
+       Design: Dark/neutral itch.io/Steam indie aesthetic.
+       Two font weights (400, 600), vibrant purple/violet CTA accent (#6c5ce7).
+       ========================================================= */
+    :root {
+      --bg-dark: #0f1115;
+      --bg-surface: #181b21;
+      --bg-surface-elevated: #222630;
+      --bg-surface-hover: #2b303c;
+      --border-color: #2e3440;
+      --border-light: #3e4657;
+      
+      --text-main: #f0f2f5;
+      --text-muted: #9aa2b1;
+      --text-subtle: #6c7484;
+
+      --accent: #6c5ce7;
+      --accent-hover: #5846e0;
+      --accent-glow: rgba(108, 92, 231, 0.25);
+      
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #0ea5e9;
+      --ai-badge-bg: rgba(108, 92, 231, 0.15);
+      --ai-badge-border: #8b7af0;
+      --ai-badge-text: #c4b5fd;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* TYPOGRAPHY - Strict constraint: 2 weights max (400 and 600) */
+    h1, h2, h3, h4, h5, h6, strong, .font-bold {
+      font-weight: 600;
+      letter-spacing: -0.015em;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    /* COMMON BUTTONS & INTERACTION */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+      white-space: nowrap;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 2px 8px var(--accent-glow);
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+    .btn-secondary {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+    .btn-secondary:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-light);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+    }
+    .btn-outline:hover {
+      color: var(--text-main);
+      border-color: var(--text-muted);
+      background: rgba(255,255,255,0.03);
+    }
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+    .btn-danger:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 13px;
+      border-radius: 4px;
+    }
+
+    /* AI MARKER / BADGE */
+    .ai-indicator-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--ai-badge-bg);
+      border: 1px solid var(--ai-badge-border);
+      color: var(--ai-badge-text);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.02em;
+    }
+
+    /* SKELETON / LOADING */
+    .skeleton {
+      background: linear-gradient(90deg, #1e222b 25%, #2a303c 50%, #1e222b 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: var(--radius-sm);
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* TOAST NOTIFICATION */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .toast {
+      pointer-events: auto;
+      background: #1e222d;
+      border: 1px solid var(--border-light);
+      padding: 14px 20px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      animation: slideUp 0.25s ease-out;
+      max-width: 420px;
+    }
+    .toast.success { border-left: 4px solid var(--success); }
+    .toast.error { border-left: 4px solid var(--danger); }
+    .toast.info { border-left: 4px solid var(--accent); }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* =========================================================
+       COMPONENT: NAVBAR.CSS
+       ========================================================= */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(24, 27, 33, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      width: 100%;
+    }
+    .navbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+    .nav-brand svg {
+      color: var(--accent);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-item {
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-item:hover {
+      color: var(--text-main);
+      background: var(--bg-surface-elevated);
+    }
+    .nav-item.active {
+      color: #fff;
+      background: var(--accent);
+      box-shadow: 0 2px 8px var(--accent-glow);
+    }
+    .nav-role-switcher {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-dark);
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      font-size: 13px;
+    }
+    .nav-role-select {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+    }
+    .nav-hamburger {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    /* Mobile Nav Drawer */
+    .mobile-menu {
+      display: none;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 20px;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    /* =========================================================
+       PAGE WRAPPER
+       ========================================================= */
+    .page-container {
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+      flex-grow: 1;
+    }
+
+    /* =========================================================
+       PAGE: SUBMITGAME.CSS (FORM)
+       ========================================================= */
+    .form-card {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 36px 36px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .form-label {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .form-input, .form-textarea, .form-select {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      color: var(--text-main);
+      outline: none;
+      transition: var(--transition);
+      width: 100%;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    .file-dropzone {
+      border: 2px dashed #10b981;
+      border-radius: var(--radius-md);
+      padding: 24px 20px;
+      text-align: center;
+      background: rgba(16, 185, 129, 0.04);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .file-dropzone:hover {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: #34d399;
+    }
+
+    /* AI SUGGESTION BANNER & CHIPS */
+    .ai-suggested-chip-box {
+      background: linear-gradient(145deg, #171626, #1a1e28);
+      border: 1px solid #5b4db0;
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 6px 20px rgba(108, 92, 231, 0.12);
+    }
+    .suggested-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-light);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      transition: var(--transition);
+    }
+    .suggested-chip:hover {
+      border-color: var(--accent);
+    }
+    .suggested-chip.in-edit {
+      border-color: #f59e0b;
+      background: #1c1d24;
+    }
+    .chip-edit-input {
+      background: var(--bg-dark);
+      border: 1px solid #f59e0b;
+      color: #ffffff;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      outline: none;
+      width: 140px;
+    }
+    .tag-pill {
+      font-size: 12px;
+      background: var(--bg-surface-elevated);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+    .tag-pill.just-added {
+      background: rgba(16, 185, 129, 0.18);
+      border-color: #10b981;
+      color: #6ee7b7;
+      animation: pulseGreen 1s ease;
+    }
+    @keyframes pulseGreen {
+      0% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    /* Common Card Grid for other tabs */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 22px;
+      width: 100%;
+    }
+    .game-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .game-card-thumb-wrap {
+      width: 100%;
+      height: 156px;
+      background: #121418;
+      overflow: hidden;
+    }
+    .game-card-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .game-card-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 8px;
+    }
+
+    /* =========================================================
+       RESPONSIVENESS
+       ========================================================= */
+    @media (max-width: 860px) {
+      .form-card {
+        padding: 24px 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-role-switcher {
+        display: none;
+      }
+      .nav-hamburger {
+        display: block;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page-container {
+        padding: 16px 12px 50px;
+      }
+      .suggested-chip {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<!-- React Application Source Code -->
+<script type="text/babel">
+    const { useState } = React;
+
+    function App() {
+      // Default set to 'developer' mode and activePage 'submit-game' per prompt request
+      const [role, setRole] = useState('developer');
+      const [activePage, setActivePage] = useState('submit-game');
+      const [wishlistCount] = useState(1);
+      const [libraryCount] = useState(1);
+      const [mobileNavOpen, setMobileNavOpen] = useState(false);
+      
+      // Toast state initialized with the test scenario result
+      const [toast, setToast] = useState({
+        message: '✨ AI generated 5 contextual tags based on game description',
+        type: 'info'
+      });
+
+      const showToast = (message, type = 'info') => {
+        setToast({ message, type });
+        setTimeout(() => setToast(null), 4000);
+      };
+
+      const handleRoleChange = (newRole) => {
+        setRole(newRole);
+        showToast(`Role switched to ${newRole.toUpperCase()}`, 'info');
+      };
+
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+          {/* Toast Notification */}
+          {toast && (
+            <div className="toast-container">
+              <div className={`toast ${toast.type}`}>
+                <span style={{ fontSize: '16px' }}>{toast.type === 'success' ? '✓' : toast.type === 'error' ? '⚠' : '✨'}</span>
+                <div>{toast.message}</div>
+              </div>
+            </div>
+          )}
+
+          {/* NAVBAR COMPONENT */}
+          <header className="navbar">
+            <div className="navbar-inner">
+              <div className="nav-brand" onClick={() => setActivePage('browse')}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                  <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+                <span>IndieVault</span>
+              </div>
+
+              {/* Desktop Nav Items for Developer Role */}
+              <nav className="nav-links">
+                <div className={`nav-item ${activePage === 'browse' ? 'active' : ''}`} onClick={() => setActivePage('browse')}>
+                  Browse Store
+                </div>
+                
+                <div className={`nav-item ${activePage === 'dev-dashboard' ? 'active' : ''}`} onClick={() => setActivePage('dev-dashboard')}>
+                  Dev Dashboard
+                </div>
+
+                <div className={`nav-item ${activePage === 'submit-game' ? 'active' : ''}`} onClick={() => setActivePage('submit-game')}>
+                  + Submit Game
+                </div>
+
+                <div className={`nav-item ${activePage === 'wishlist' ? 'active' : ''}`} onClick={() => setActivePage('wishlist')}>
+                  Wishlist ({wishlistCount})
+                </div>
+
+                <div className={`nav-item ${activePage === 'library' ? 'active' : ''}`} onClick={() => setActivePage('library')}>
+                  Library ({libraryCount})
+                </div>
+              </nav>
+
+              {/* Right: Role Switcher & Account Badge */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div className="nav-role-switcher" title="Active Platform Role">
+                  <span style={{ color: 'var(--text-muted)' }}>Role:</span>
+                  <select 
+                    className="nav-role-select" 
+                    value={role} 
+                    onChange={(e) => handleRoleChange(e.target.value)}
+                  >
+                    <option value="player">Player</option>
+                    <option value="developer">Developer</option>
+                    <option value="curator">Curator</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+
+                <button 
+                  className="btn btn-secondary btn-sm" 
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', borderColor: 'var(--border-light)' }}
+                  onClick={() => showToast('Logged in as Developer Studio: NeonVoid Labs', 'info')}
+                >
+                  <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: '#10b981' }}></span>
+                  <span>Dev Studio (Pro)</span>
+                </button>
+
+                {/* Hamburger for mobile */}
+                <button className="nav-hamburger" onClick={() => setMobileNavOpen(!mobileNavOpen)} aria-label="Toggle menu">
+                  ☰
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile Menu Dropdown */}
+            {mobileNavOpen && (
+              <div className="mobile-menu open">
+                <div className={`nav-item ${activePage === 'browse' ? 'active' : ''}`} onClick={() => { setActivePage('browse'); setMobileNavOpen(false); }}>
+                  Browse Store
+                </div>
+                <div className={`nav-item ${activePage === 'dev-dashboard' ? 'active' : ''}`} onClick={() => { setActivePage('dev-dashboard'); setMobileNavOpen(false); }}>
+                  Dev Dashboard
+                </div>
+                <div className={`nav-item ${activePage === 'submit-game' ? 'active' : ''}`} onClick={() => { setActivePage('submit-game'); setMobileNavOpen(false); }}>
+                  + Submit Game
+                </div>
+                <div className={`nav-item ${activePage === 'wishlist' ? 'active' : ''}`} onClick={() => { setActivePage('wishlist'); setMobileNavOpen(false); }}>
+                  Wishlist ({wishlistCount})
+                </div>
+                <div className={`nav-item ${activePage === 'library' ? 'active' : ''}`} onClick={() => { setActivePage('library'); setMobileNavOpen(false); }}>
+                  Library ({libraryCount})
+                </div>
+              </div>
+            )}
+          </header>
+
+          {/* PAGE ROUTER CONTENT */}
+          <main className="page-container">
+            {activePage === 'submit-game' && (
+              <SubmitGamePage showToast={showToast} />
+            )}
+
+            {activePage === 'browse' && (
+              <div>
+                <h1 style={{ fontSize: '26px', marginBottom: '8px' }}>Storefront Catalog</h1>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '20px' }}>Viewing the marketplace catalog as a registered Developer.</p>
+                <button className="btn btn-primary" onClick={() => setActivePage('submit-game')}>
+                  Return to Submit Game Form
+                </button>
+              </div>
+            )}
+
+            {activePage === 'dev-dashboard' && (
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                  <h1 style={{ fontSize: '26px' }}>Developer Dashboard</h1>
+                  <button className="btn btn-primary btn-sm" onClick={() => setActivePage('submit-game')}>+ Submit New Game</button>
+                </div>
+                <div style={{ background: 'var(--bg-surface)', padding: '24px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
+                  <p style={{ color: 'var(--text-muted)' }}>You have 1 game currently pending submission triage.</p>
+                </div>
+              </div>
+            )}
+
+            {(activePage === 'wishlist' || activePage === 'library') && (
+              <div>
+                <h1 style={{ fontSize: '26px', marginBottom: '8px', textTransform: 'capitalize' }}>{activePage}</h1>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '20px' }}>Manage personal titles and bookmarks.</p>
+                <button className="btn btn-outline" onClick={() => setActivePage('submit-game')}>
+                  Back to Submit Game
+                </button>
+              </div>
+            )}
+          </main>
+
+          {/* FOOTER */}
+          <footer style={{ borderTop: '1px solid var(--border-color)', background: 'var(--bg-surface)', padding: '24px 20px', marginTop: 'auto' }}>
+            <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', fontSize: '13px', color: 'var(--text-muted)' }}>
+              <div>© 2025 IndieVault. Dedicated two-sided marketplace for independent developers & players.</div>
+              <div style={{ display: 'flex', gap: '16px' }}>
+                <span>Plain CSS (Grid/Flexbox)</span>
+                <span>•</span>
+                <span>AI-Assisted Triage & Tag Generation</span>
+                <span>•</span>
+                <span>Developer View</span>
+              </div>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    // =========================================================
+    // SUBMIT GAME SCREEN WITH ACTIVE AI TAG SUGGESTION TEST
+    // =========================================================
+    function SubmitGamePage({ showToast }) {
+      // Pre-filled sample submission data specified in edit request
+      const [title, setTitle] = useState('Neon Abyss: Zero Cycle');
+      const [genre, setGenre] = useState('Action Roguelike / Cyberpunk');
+      const [price, setPrice] = useState('14.99');
+      const [description, setDescription] = useState(
+        'A fast-paced cyberpunk twin-stick roguelike set in a procedurally generated neo-Tokyo megastructure. Hack cybernetics, customize modular weapon synergies, and face relentless rogue synth sentinels.'
+      );
+      const [version, setVersion] = useState('v0.9.4-beta');
+      const [changelog, setChangelog] = useState(
+        '- Added 14 new modular cyber-implant combinations\n- Implemented dynamic boss health scaling for sector 3\n- Controller re-binding and Steam Deck optimization'
+      );
+      const [fileName] = useState('neon_abyss_v0.9.4_build.zip (482 MB)');
+
+      // Micro-tags: pre-filled and dynamically updated by user actions
+      // "Fast-Paced" starts as accepted/active to reflect interactive state
+      const [appliedTags, setAppliedTags] = useState([
+        'Cyberpunk',
+        'Roguelike',
+        'Twin-Stick Shooter',
+        'Fast-Paced'
+      ]);
+
+      const [customTagInput, setCustomTagInput] = useState('');
+      const [isSuggestingTags, setIsSuggestingTags] = useState(false);
+
+      // AI Suggestions candidate pool
+      const [suggestedTags, setSuggestedTags] = useState([
+        { id: 't2', label: 'Procedural Generation', status: 'idle' },
+        { id: 't3', label: 'Synthesizer Soundtrack', status: 'editing', draftLabel: 'Synthwave OST' }, // chip in edit mode
+        { id: 't4', label: 'Difficult', status: 'idle' },
+        { id: 't5', label: 'Bullet Hell', status: 'idle' }
+      ]);
+
+      // Trigger AI Tag generation
+      const handleSuggestTagsWithAI = () => {
+        setIsSuggestingTags(true);
+        setTimeout(() => {
+          setIsSuggestingTags(false);
+          // Refresh list of suggestions
+          setSuggestedTags([
+            { id: 't2', label: 'Procedural Generation', status: 'idle' },
+            { id: 't3', label: 'Synthesizer Soundtrack', status: 'editing', draftLabel: 'Synthwave OST' },
+            { id: 't4', label: 'Difficult', status: 'idle' },
+            { id: 't5', label: 'Bullet Hell', status: 'idle' },
+            { id: 't6', label: 'Atmospheric Sci-Fi', status: 'idle' }
+          ]);
+          showToast('✨ AI generated 5 contextual tags based on game description', 'info');
+        }, 500);
+      };
+
+      // Accept Chip -> Transitions to appliedTags
+      const handleAccept = (chipId) => {
+        const item = suggestedTags.find(t => t.id === chipId);
+        if (!item) return;
+        const finalLabel = item.status === 'editing' ? (item.draftLabel.trim() || item.label) : item.label;
+        if (!appliedTags.includes(finalLabel)) {
+          setAppliedTags([...appliedTags, finalLabel]);
+        }
+        setSuggestedTags(suggestedTags.filter(t => t.id !== chipId));
+        showToast(`Added "${finalLabel}" to active micro-tags`, 'success');
+      };
+
+      // Ignore Chip -> Dismisses from list
+      const handleIgnore = (chipId) => {
+        const item = suggestedTags.find(t => t.id === chipId);
+        setSuggestedTags(suggestedTags.filter(t => t.id !== chipId));
+        if (item) {
+          showToast(`Ignored tag suggestion "${item.label}"`, 'info');
+        }
+      };
+
+      // Enter Edit Mode on Chip
+      const handleStartEdit = (chipId) => {
+        setSuggestedTags(suggestedTags.map(t => {
+          if (t.id === chipId) {
+            return { ...t, status: 'editing', draftLabel: t.label };
+          }
+          return t;
+        }));
+      };
+
+      // Save Edited Chip & apply immediately or keep edited
+      const handleSaveEdit = (chipId) => {
+        const item = suggestedTags.find(t => t.id === chipId);
+        if (!item) return;
+        const newLabel = item.draftLabel.trim() || item.label;
+        handleAccept(chipId);
+      };
+
+      // Cancel edit mode
+      const handleCancelEdit = (chipId) => {
+        setSuggestedTags(suggestedTags.map(t => {
+          if (t.id === chipId) {
+            return { ...t, status: 'idle' };
+          }
+          return t;
+        }));
+      };
+
+      // Remove applied tag
+      const handleRemoveAppliedTag = (tagToRemove) => {
+        setAppliedTags(appliedTags.filter(t => t !== tagToRemove));
+      };
+
+      // Add manual tag
+      const handleAddManualTag = (e) => {
+        if (e.key === 'Enter' || e.type === 'click') {
+          e.preventDefault();
+          if (customTagInput.trim() && !appliedTags.includes(customTagInput.trim())) {
+            setAppliedTags([...appliedTags, customTagInput.trim()]);
+            setCustomTagInput('');
+          }
+        }
+      };
+
+      const handleSubmitForm = (e) => {
+        e.preventDefault();
+        showToast('Game submission payload dispatched to Admin Review Queue!', 'success');
+      };
+
+      return (
+        <div>
+          {/* Header */}
+          <div style={{ maxWidth: '860px', margin: '0 auto 24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+              <span style={{ fontSize: '13px', background: 'rgba(108, 92, 231, 0.2)', color: '#c4b5fd', padding: '3px 10px', borderRadius: '20px', fontWeight: 600 }}>
+                Developer Portal
+              </span>
+              <span style={{ color: 'var(--text-subtle)' }}>/</span>
+              <span style={{ color: 'var(--text-muted)', fontSize: '13px' }}>Publishing Pipeline</span>
+            </div>
+            <h1 style={{ fontSize: '30px', marginBottom: '8px' }}>Submit Game for Review</h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: '15px' }}>
+              Publish your build to the IndieVault store. Submissions undergo automated QA triage and admin verification.
+            </p>
+          </div>
+
+          <form className="form-card" onSubmit={handleSubmitForm}>
+            {/* Game Title */}
+            <div className="form-group">
+              <label className="form-label">
+                <span>Game Title *</span>
+                <span style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>Public release title</span>
+              </label>
+              <input 
+                type="text" 
+                className="form-input" 
+                value={title} 
+                onChange={(e) => setTitle(e.target.value)} 
+                required 
+              />
+            </div>
+
+            {/* Description & Pitch */}
+            <div className="form-group">
+              <label className="form-label">
+                <span>Description & Pitch *</span>
+                <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Core gameplay loops & mechanics</span>
+              </label>
+              <textarea 
+                className="form-textarea" 
+                rows="4" 
+                value={description} 
+                onChange={(e) => setDescription(e.target.value)} 
+                required 
+              />
+            </div>
+
+            {/* Row: Genre & Price */}
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Primary Genre</label>
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  value={genre} 
+                  onChange={(e) => setGenre(e.target.value)} 
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Price (USD)</label>
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  value={price} 
+                  onChange={(e) => setPrice(e.target.value)} 
+                />
+              </div>
+            </div>
+
+            {/* =========================================================
+                AI TAG SUGGESTION FLOW (CENTRAL TEST SECTION)
+                ========================================================= */}
+            <div className="form-group" style={{ background: 'rgba(15, 17, 21, 0.5)', padding: '20px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
+              <div className="form-label" style={{ marginBottom: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span>Micro-tags & Taxonomy</span>
+                  <span style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>({appliedTags.length} active tags)</span>
+                </div>
+                
+                {/* INLINE AI TAG SUGGESTION BUTTON */}
+                <button 
+                  type="button" 
+                  className="btn btn-primary btn-sm"
+                  style={{ 
+                    background: 'linear-gradient(135deg, #6c5ce7, #8b7af0)', 
+                    border: '1px solid #a29bfe', 
+                    boxShadow: '0 0 16px rgba(108, 92, 231, 0.45)',
+                    padding: '6px 14px',
+                    fontSize: '13px'
+                  }}
+                  onClick={handleSuggestTagsWithAI}
+                  disabled={isSuggestingTags}
+                >
+                  {isSuggestingTags ? '✨ Analyzing Pitch...' : '✨ Suggest Tags with AI'}
+                </button>
+              </div>
+
+              {/* CURRENTLY APPLIED TAGS */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '14px' }}>
+                {appliedTags.map(tag => (
+                  <span 
+                    key={tag} 
+                    className={`tag-pill ${tag === 'Fast-Paced' ? 'just-added' : ''}`}
+                    title={tag === 'Fast-Paced' ? 'Accepted from AI suggestions' : 'Applied tag'}
+                  >
+                    <span>{tag}</span>
+                    {tag === 'Fast-Paced' && <span style={{ fontSize: '10px', color: '#10b981', marginLeft: '-2px' }}>✓</span>}
+                    <button 
+                      type="button" 
+                      onClick={() => handleRemoveAppliedTag(tag)} 
+                      style={{ background: 'none', border: 'none', color: 'var(--text-subtle)', cursor: 'pointer', fontSize: '14px', lineHeight: 1 }}
+                      title="Remove tag"
+                    >
+                      ✕
+                    </button>
+                  </span>
+                ))}
+              </div>
+
+              {/* Add custom tag input */}
+              <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  placeholder="Type custom tag & press Enter..." 
+                  value={customTagInput} 
+                  onChange={(e) => setCustomTagInput(e.target.value)}
+                  onKeyDown={handleAddManualTag}
+                  style={{ padding: '8px 12px', fontSize: '13.5px' }}
+                />
+                <button type="button" className="btn btn-secondary btn-sm" onClick={handleAddManualTag}>
+                  + Add Tag
+                </button>
+              </div>
+
+              {/* DISTINCT AI VISUAL MARKER BANNER & DISMISSIBLE INTERACTIVE CHIPS */}
+              <div className="ai-suggested-chip-box">
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
+                  <div className="ai-indicator-chip" style={{ fontSize: '12px', padding: '4px 12px' }}>
+                    ✨ AI-Generated Tag Suggestions — Review & Accept to Apply (Never auto-applied)
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#c4b5fd' }}>
+                    Context matched: <strong>Cyberpunk</strong>, <strong>Roguelike</strong>, <strong>Procedural</strong>
+                  </div>
+                </div>
+
+                <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                  Tags extracted from your title and gameplay description. You retain complete editorial control:
+                </p>
+
+                {/* Tag Suggestion List with Accept / Edit / Ignore controls */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
+                  {/* Previously accepted indicator note */}
+                  <div 
+                    style={{ 
+                      fontSize: '12.5px', 
+                      background: 'rgba(16, 185, 129, 0.12)', 
+                      border: '1px dashed #10b981', 
+                      color: '#a7f3d0', 
+                      padding: '5px 12px', 
+                      borderRadius: '20px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    <span>✓ "Fast-Paced" Accepted</span>
+                    <span style={{ fontSize: '11px', color: 'var(--text-subtle)' }}>(Added to tags)</span>
+                  </div>
+
+                  {/* Active candidate chips */}
+                  {suggestedTags.map(item => {
+                    if (item.status === 'editing') {
+                      return (
+                        <div key={item.id} className="suggested-chip in-edit">
+                          <span style={{ fontSize: '12px', color: '#fbbf24' }}>Editing:</span>
+                          <input 
+                            type="text" 
+                            className="chip-edit-input"
+                            value={item.draftLabel}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setSuggestedTags(suggestedTags.map(t => t.id === item.id ? { ...t, draftLabel: val } : t));
+                            }}
+                            autoFocus
+                          />
+                          <button 
+                            type="button" 
+                            onClick={() => handleSaveEdit(item.id)}
+                            style={{ background: '#10b981', color: '#fff', border: 'none', borderRadius: '4px', padding: '2px 8px', fontSize: '11.5px', cursor: 'pointer', fontWeight: 600 }}
+                          >
+                            ✓ Save & Accept
+                          </button>
+                          <button 
+                            type="button" 
+                            onClick={() => handleCancelEdit(item.id)}
+                            style={{ background: 'transparent', color: 'var(--text-muted)', border: '1px solid var(--border-color)', borderRadius: '4px', padding: '2px 6px', fontSize: '11.5px', cursor: 'pointer' }}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <div key={item.id} className="suggested-chip">
+                        <strong style={{ color: 'var(--text-main)', letterSpacing: '-0.01em' }}>{item.label}</strong>
+                        
+                        {/* ACCEPT BUTTON */}
+                        <button 
+                          type="button" 
+                          title="Accept and add to active tags"
+                          onClick={() => handleAccept(item.id)}
+                          style={{ 
+                            background: '#10b981', 
+                            color: '#ffffff', 
+                            border: 'none', 
+                            borderRadius: '4px', 
+                            padding: '3px 8px', 
+                            fontSize: '11px', 
+                            cursor: 'pointer',
+                            fontWeight: 600,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px'
+                          }}
+                        >
+                          ✓ Accept
+                        </button>
+
+                        {/* EDIT BUTTON */}
+                        <button 
+                          type="button" 
+                          title="Edit tag label before applying"
+                          onClick={() => handleStartEdit(item.id)}
+                          style={{ 
+                            background: 'var(--bg-surface)', 
+                            color: 'var(--text-main)', 
+                            border: '1px solid var(--border-light)', 
+                            borderRadius: '4px', 
+                            padding: '3px 8px', 
+                            fontSize: '11px', 
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '3px'
+                          }}
+                        >
+                          ✎ Edit
+                        </button>
+
+                        {/* IGNORE BUTTON */}
+                        <button 
+                          type="button" 
+                          title="Ignore and dismiss suggestion"
+                          onClick={() => handleIgnore(item.id)}
+                          style={{ 
+                            background: 'transparent', 
+                            color: 'var(--text-subtle)', 
+                            border: 'none', 
+                            padding: '3px 6px', 
+                            fontSize: '13px', 
+                            cursor: 'pointer',
+                            lineHeight: 1
+                          }}
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Build Upload Dropzone */}
+            <div className="form-group">
+              <label className="form-label">
+                <span>Game Build Package (.zip, .tar.gz, .exe) *</span>
+                <span style={{ fontSize: '12px', color: '#10b981', fontWeight: 600 }}>✓ Binary package attached & hash checked</span>
+              </label>
+              
+              <div className="file-dropzone" onClick={() => showToast('Build package verified: neon_abyss_v0.9.4_build.zip', 'info')}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <span style={{ fontSize: '24px' }}>📦</span>
+                  <div style={{ textAlign: 'left' }}>
+                    <div style={{ color: '#ffffff', fontWeight: 600, fontSize: '15px' }}>
+                      {fileName}
+                    </div>
+                    <div style={{ fontSize: '12.5px', color: '#10b981' }}>
+                      ✓ SHA-256 binary integrity verified • Windows x64 & Linux binaries detected
+                    </div>
+                  </div>
+                </div>
+                <div style={{ fontSize: '11.5px', color: 'var(--text-subtle)', marginTop: '4px' }}>
+                  Click to replace or upload alternative patch archive (Max: 4GB)
+                </div>
+              </div>
+            </div>
+
+            {/* Version & Release notes */}
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Build Version Tag</label>
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  value={version} 
+                  onChange={(e) => setVersion(e.target.value)} 
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Target Architecture</label>
+                <select className="form-select">
+                  <option>Windows 10/11 x64 + Steam Deck Verified</option>
+                  <option>Universal (Windows, Linux, macOS)</option>
+                  <option>WebAssembly / HTML5</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Changelog & QA Reviewer Notes</label>
+              <textarea 
+                className="form-textarea" 
+                rows="3" 
+                value={changelog} 
+                onChange={(e) => setChangelog(e.target.value)} 
+              />
+            </div>
+
+            {/* Actions */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '20px', marginTop: '10px' }}>
+              <button 
+                type="button" 
+                className="btn btn-outline" 
+                onClick={() => showToast('Draft saved locally.', 'info')}
+              >
+                Save as Draft
+              </button>
+
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button 
+                  type="button" 
+                  className="btn btn-secondary" 
+                  onClick={() => showToast('Form reset', 'info')}
+                >
+                  Cancel
+                </button>
+                
+                <button type="submit" className="btn btn-primary" style={{ padding: '10px 24px' }}>
+                  Submit Game for Approval →
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      );
+    }
+
+    // Render the React app
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body></html>

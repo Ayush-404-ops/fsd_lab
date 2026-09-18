@@ -1,106 +1,161 @@
-.submit-game-page {
-  max-width: 800px;
+/* =========================================================
+   SUBMIT GAME STYLES (from Stitch Design System)
+   ========================================================= */
+
+.submit-page-container {
+  max-width: 880px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
+  padding: 24px 20px 60px;
+  width: 100%;
 }
 
-.submit-game-header {
-  text-align: center;
-  margin-bottom: 2.5rem;
-}
-
-.submit-game-title {
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: #fff;
-  margin: 0 0 0.5rem 0;
-}
-
-.submit-game-subtitle {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 1rem;
-  margin: 0;
-}
-
-.submit-game-access-denied {
-  max-width: 500px;
-  margin: 4rem auto;
-  text-align: center;
-  padding: 3rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.submit-game-access-denied h2 {
-  color: #fff;
-  margin: 0 0 0.75rem 0;
-}
-
-.submit-game-access-denied p {
-  margin-bottom: 1.5rem;
-}
-
-.submit-game-form {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 2rem;
+.submit-header-wrap {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 8px;
+  margin-bottom: 24px;
 }
 
-.form-group {
+.submit-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.dev-portal-badge {
+  background: rgba(108, 92, 231, 0.2);
+  color: #c4b5fd;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.crumb-sep {
+  color: var(--text-subtle);
+}
+
+.crumb-text {
+  color: var(--text-muted);
+}
+
+.submit-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.submit-page-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.submit-page-desc {
+  font-size: 14.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Feedback banner */
+.feedback-alert {
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  animation: slideUp 0.2s ease-out;
+}
+
+.feedback-alert.info {
+  background: rgba(108, 92, 231, 0.15);
+  border: 1px solid rgba(108, 92, 231, 0.4);
+  color: #e4dfff;
+}
+
+.feedback-alert.success {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+
+.feedback-alert.error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+/* Form Card */
+.form-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 28px;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
-.form-row {
+.form-row-2col {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 20px;
 }
 
-@media (max-width: 600px) {
-  .form-row {
+/* File Dropzone */
+.file-dropzone-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-dark);
+  border: 1px dashed var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: var(--transition);
+  min-height: 48px;
+}
+
+.file-dropzone-label:hover {
+  border-color: var(--accent);
+  background: #13161e;
+}
+
+.hidden-file-input {
+  display: none;
+}
+
+.dropzone-text {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Form actions */
+.form-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+}
+
+@media (max-width: 680px) {
+  .form-row-2col {
     grid-template-columns: 1fr;
   }
-}
-
-.label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.form-help {
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.45);
-  margin: -0.15rem 0 0.35rem 0;
-}
-
-.form-error {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #f87171;
-  padding: 0.75rem 1rem;
-  border-radius: 10px;
-  font-size: 0.85rem;
-}
-
-.form-success {
-  background: rgba(34, 197, 94, 0.15);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  color: #4ade80;
-  padding: 0.75rem 1rem;
-  border-radius: 10px;
-  font-size: 0.85rem;
-}
-
-.btn--lg {
-  height: 48px;
-  font-size: 1rem;
+  .form-actions-row {
+    flex-direction: column;
+  }
+  .form-actions-row button {
+    width: 100%;
+  }
 }

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-dim": "#101319", "tertiary-container": "#0673c9", "on-secondary-fixed": "#160066", "inverse-on-surface": "#2e3037", "on-error": "#690005", "error": "#ffb4ab", "on-tertiary-fixed-variant": "#004882", "error-container": "#93000a", "primary-fixed-dim": "#c6bfff", "secondary-fixed": "#e4dfff", "tertiary-fixed-dim": "#a2c9ff", "secondary-container": "#4230b7", "on-tertiary-fixed": "#001c38", "primary-fixed": "#e4dfff", "on-error-container": "#ffdad6", "on-surface-variant": "#c8c4d7", "secondary": "#c6bfff", "on-primary": "#2900a0", "surface-bright": "#363940", "secondary-fixed-dim": "#c6bfff", "on-surface": "#e1e2eb", "primary-container": "#6c5ce7", "surface-tint": "#c6bfff", "tertiary-fixed": "#d3e4ff", "on-primary-fixed": "#160066", "primary": "#c6bfff", "on-secondary": "#28019f", "inverse-primary": "#5847d2", "inverse-surface": "#e1e2eb", "outline": "#928ea0", "on-tertiary": "#00315c", "surface-container-lowest": "#0b0e14", "on-tertiary-container": "#f4f7ff", "on-primary-fixed-variant": "#4029ba", "on-primary-container": "#faf6ff", "surface-container": "#1d2026", "surface-variant": "#32353c", "surface-container-low": "#191c22", "on-secondary-container": "#b7afff", "surface-container-high": "#272a31", "on-background": "#e1e2eb", "on-secondary-fixed-variant": "#402db4", "surface": "#101319", "background": "#101319", "outline-variant": "#474554", "surface-container-highest": "#32353c", "tertiary": "#a2c9ff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin": "2rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "space-md": "1rem", "space-xl": "2.5rem", "space-lg": "1.5rem", "margin-mobile": "1rem", "gutter": "1.5rem", "gutter-mobile": "1rem" }, "fontFamily": { "body-md": ["Geist"], "label-sm": ["Geist"], "headline-lg-mobile": ["Geist"], "headline-xl-mobile": ["Geist"], "headline-md": ["Geist"], "label-md": ["Geist"], "headline-xl": ["Geist"], "body-sm": ["Geist"], "headline-sm": ["Geist"], "headline-lg": ["Geist"], "body-lg": ["Geist"], "label-lg": ["Geist"] }, "fontSize": { "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-xl-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "600" }], "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }] } } } };</script></head><body class="bg-background text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col"><header class="fixed top-0 left-0 right-0 z-50 h-16 bg-surface-container-low/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.5)]"><div class="w-full h-16 px-gutter flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><a class="flex items-center gap-space-xs group" data-path="browse-store" href="#"><div class="w-8 h-8 rounded-lg bg-surface-container-highest flex items-center justify-center shadow-[0_0_12px_rgba(108,92,231,0.4)]"><span class="material-symbols-outlined text-primary text-[20px]">deployed_code</span></div><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Indie<span class="text-primary">Vault</span></span></a><nav class="hidden md:flex items-center gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-label-md text-label-md rounded-lg"><a class="px-space-md py-space-xs rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="browse-store" href="#">Browse Store</a><a class="px-space-md py-space-xs rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="dev-dashboard" href="#">Dev Dashboard</a><a aria-current="page" class="flex items-center gap-space-xs px-space-md py-space-xs transition-colors bg-primary-container text-on-primary-container font-label-md text-label-md rounded-lg" data-path="admin-review-queue" href="#"><span>Admin Review Queue</span><span class="px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">3 Pending</span></a></nav></div><div class="flex items-center gap-space-md"><div class="hidden sm:flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg bg-surface-container"><span class="material-symbols-outlined text-primary text-[16px]">security</span><span class="font-label-sm text-label-sm text-on-surface-variant">System Admin (SecOps)</span></div><div class="relative flex items-center"><button class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors font-label-md text-label-md" type="button"><span>Role: Admin</span><span class="material-symbols-outlined text-[18px] text-on-surface-variant">arrow_drop_down</span></button></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 flex-1 px-gutter bg-background"><div class="flex flex-col w-full">
+<div class="w-full max-w-7xl mx-auto py-space-md flex flex-col gap-space-lg">
+<!-- Top Meta: Breadcrumbs & System Status Pill -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs pb-space-xs">
+<div class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant">
+<span class="hover:text-on-surface cursor-pointer transition-colors">Admin Portal</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-secondary font-label-md text-label-md">Submission Verification Pipeline</span>
+</div>
+<div class="flex items-center gap-space-xs self-start sm:self-auto px-space-sm py-1 rounded-full bg-surface-container-high text-on-surface">
+<span class="inline-block w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">SecOps Enclave Active</span>
+</div>
+</div>
+<!-- Header Section -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Admin Review Queue</h1>
+<span class="px-space-sm py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">3 Pending</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+          Triaged verification pipeline for incoming indie binary payloads, telemetry audits, and store asset licensing checks.
+        </p>
+</div>
+<!-- Live Sync Controls -->
+<div class="flex items-center gap-space-xs bg-surface-container px-space-sm py-1 rounded-lg">
+<span class="material-symbols-outlined text-primary text-[16px]">sync</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Telemetry sync: <span class="text-on-surface">Live</span></span>
+</div>
+</div>
+<!-- Summary Stat Counters Row -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-sm">
+<div class="bg-surface-container rounded-lg p-space-md flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Queue Depth</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">pending_actions</span>
+</div>
+<div class="mt-space-md">
+<div class="font-headline-md text-headline-md text-on-surface tracking-tight">3</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Pending Verification</div>
+</div>
+<div class="absolute -right-2 -bottom-2 w-16 h-16 bg-secondary-container/10 rounded-full blur-xl pointer-events-none"></div>
+</div>
+<div class="bg-surface-container rounded-lg p-space-md flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Triage Flags</span>
+<span class="material-symbols-outlined text-error text-[20px]">crisis_alert</span>
+</div>
+<div class="mt-space-md">
+<div class="font-headline-md text-headline-md text-error tracking-tight">1</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Flagged by AI Triage</div>
+</div>
+<div class="absolute -right-2 -bottom-2 w-16 h-16 bg-error-container/20 rounded-full blur-xl pointer-events-none"></div>
+</div>
+<div class="bg-surface-container rounded-lg p-space-md flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Throughput</span>
+<span class="material-symbols-outlined text-tertiary text-[20px]">verified</span>
+</div>
+<div class="mt-space-md">
+<div class="font-headline-md text-headline-md text-on-surface tracking-tight">14</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Approved This Week</div>
+</div>
+<div class="absolute -right-2 -bottom-2 w-16 h-16 bg-tertiary-container/10 rounded-full blur-xl pointer-events-none"></div>
+</div>
+<div class="bg-surface-container rounded-lg p-space-md flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Efficiency</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">timer</span>
+</div>
+<div class="mt-space-md">
+<div class="font-headline-md text-headline-md text-on-surface tracking-tight">4.2m</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Avg Triage Time</div>
+</div>
+</div>
+</div>
+<!-- Filter & Search Bar + AI Fallback Toggle -->
+<div class="bg-surface-container rounded-lg p-space-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-sm">
+<div class="flex flex-1 flex-col sm:flex-row items-stretch sm:items-center gap-space-sm">
+<!-- Search input -->
+<div class="relative flex-1 min-w-[240px]">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full pl-9 pr-3 py-2 bg-surface-container-lowest text-on-surface placeholder-on-surface-variant font-body-sm text-body-sm rounded-lg focus:outline-none focus:bg-surface-container-high transition-colors" placeholder="Search by game title or developer..." type="text"/>
+</div>
+<!-- Filter tabs -->
+<div class="flex items-center bg-surface-container-lowest p-1 rounded-lg">
+<button class="px-space-sm py-1 rounded font-label-sm text-label-sm bg-surface-container text-on-surface shadow-sm">All Submissions</button>
+<button class="px-space-sm py-1 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors">Needs Decision</button>
+<button class="px-space-sm py-1 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors">Flagged Risks</button>
+</div>
+</div>
+<!-- Outage / Fallback Simulation Control -->
+<div class="flex items-center justify-between sm:justify-end gap-space-sm pt-2 lg:pt-0">
+<label class="flex items-center gap-space-xs cursor-pointer select-none bg-surface-container-lowest px-space-sm py-1.5 rounded-lg">
+<input class="sr-only peer" id="ai-outage-toggle" onchange="toggleAiFallback(this.checked)" type="checkbox"/>
+<div class="w-8 h-4 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-surface-variant peer-checked:after:bg-on-primary-container peer-checked:bg-primary-container after:rounded-full after:h-3 after:w-3 after:transition-all relative"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant peer-checked:text-primary">Simulate AI Triage Outage</span>
+</label>
+</div>
+</div>
+<!-- Submissions List -->
+<div class="flex flex-col gap-space-md">
+<!-- ITEM 1: CURRENTLY EXPANDED / INSPECTED -->
+<div class="bg-surface-container rounded-xl overflow-hidden shadow-md flex flex-col">
+<!-- Main Card Summary Bar -->
+<div class="p-space-md lg:p-space-lg flex flex-col md:flex-row md:items-center justify-between gap-space-md bg-surface-container-high/40">
+<div class="flex items-start gap-space-md">
+<div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="Futuristic neon-lit cyberpunk arcade scene with digital glyphs, high contrast indigo shadows and electric cyan highlights representing Neon Abyss Zero Cycle indie roguelike game." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA57chCmMy0FPQeKsycJG95hJYzIEIkFB7J_yO6C4Ybl8IjUtHg2PMCLAFLBvrNWxxPd02lc0kwZumsCCINK088tU3lBs026z_1Ln5JxCvRi3EK-vUBOoyON9FG1AJGHz0dbBaWl00rnjdYdgbupsYJX06Dv_N1_sTnIagxxMHLpMSEjLfzW2Qr7nJYTTrd5iC4HLhJZIXcNXfxWI3sR1ElEFjaQ5QZmWwZOpSM2CQydX2YcNoFHoaL"/>
+<div class="absolute bottom-1 right-1 px-1 rounded bg-surface-dim/80 font-label-sm text-[9px] text-on-surface">v0.9.4b</div>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex flex-wrap items-center gap-space-xs">
+<h2 class="font-headline-sm text-headline-sm text-on-surface truncate">Neon Abyss: Zero Cycle</h2>
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-container/60 text-secondary font-label-sm text-label-sm">Under Review</span>
+</div>
+<div class="flex flex-wrap items-center gap-x-space-sm gap-y-1 mt-1 font-body-sm text-body-sm text-on-surface-variant">
+<span>By <strong class="text-on-surface font-label-md">DevStudio Pro</strong></span>
+<span class="inline-block w-1 h-1 rounded-full bg-outline"></span>
+<span>Submitted 2h ago</span>
+<span class="inline-block w-1 h-1 rounded-full bg-outline"></span>
+<span>482 MB payload</span>
+<span class="inline-block w-1 h-1 rounded-full bg-outline"></span>
+<span class="flex items-center gap-1 text-on-surface"><span class="material-symbols-outlined text-[14px]">desktop_windows</span> Win / Linux / Deck</span>
+</div>
+<!-- Category tags -->
+<div class="flex flex-wrap gap-1.5 mt-space-xs">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-label-sm text-[10px]">Cyberpunk</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-label-sm text-[10px]">Roguelike</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-label-sm text-[10px]">Twin-Stick Shooter</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-label-sm text-[10px]">Fast-Paced</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-xs shrink-0 self-end md:self-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant hidden sm:inline">Active Inspection</span>
+<button class="w-8 h-8 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-[20px]">expand_less</span>
+</button>
+</div>
+</div>
+<!-- Expanded Inspection Detail Body -->
+<div class="p-space-md lg:p-space-lg flex flex-col gap-space-lg">
+<!-- Submitter Metadata Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<div class="bg-surface-container-low p-space-md rounded-lg flex flex-col gap-1">
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span>Submitter Reputation</span>
+<span class="material-symbols-outlined text-secondary text-[16px]">verified_user</span>
+</div>
+<div class="font-label-lg text-label-lg text-on-surface mt-1 flex items-center gap-1.5">
+<span class="inline-block w-2 h-2 rounded-full bg-secondary"></span>
+                Trusted Entity
+              </div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">2 previous indie titles verified & released on store</span>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-lg flex flex-col gap-1">
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span>Binary Hash Status</span>
+<span class="material-symbols-outlined text-tertiary text-[16px]">fingerprint</span>
+</div>
+<div class="font-label-lg text-label-lg text-on-surface mt-1 truncate">
+                SHA-256 Verified
+              </div>
+<span class="font-body-sm text-body-sm font-mono text-on-surface-variant truncate">e3b0c44298fc1c149afbf4c8996fb92427ae41...</span>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-lg flex flex-col gap-1">
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span>Changelog Note</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">description</span>
+</div>
+<div class="font-label-lg text-label-lg text-on-surface mt-1 truncate">
+                Zero Cycle Engine Upgrade
+              </div>
+<span class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1">Added custom raytracing shadows and upgraded Deck controller mapping.</span>
+</div>
+</div>
+<!-- Fallback Outage Banner (Hidden by default, shown via toggle) -->
+<div class="hidden bg-surface-container-high rounded-lg p-space-md flex-row items-start gap-space-sm text-on-surface" id="ai-fallback-notice">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">cloud_off</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">AI Triage unavailable — Standard manual verification checklist applied</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">The automatic parsing daemon returned an offline code. Please run local sandbox heuristics or complete the 12-point security manifest manually.</span>
+</div>
+</div>
+<!-- Prominent AI Triage Note Container -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md lg:p-space-lg flex flex-col gap-space-md relative overflow-hidden shadow-inner" id="ai-triage-container">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<div class="w-6 h-6 rounded bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined text-[16px]">auto_awesome</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">
+                  AI-Generated Triage Report — Review Required
+                </span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">(Never auto-decides)</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Heuristic Pass: #9941-R</span>
+</div>
+<!-- AI Summary Block -->
+<div class="bg-surface-container-low p-space-md rounded-lg">
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                Fast-paced cyber-roguelike with procedural dungeons. Content scan completed cleanly across visual assets. Automated static binary audit detected <strong>1 flagged external network hook in telemetry module</strong> that requires manual developer clarification before general distribution.
+              </p>
+</div>
+<!-- Risk Flags Array -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Inspection Signals & Risk Flags</span>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-xs">
+<!-- Flag 1 (Medium) -->
+<div class="bg-surface-container p-space-sm rounded-lg flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5">warning</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">Network: Unresolved Host</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant font-mono text-[11px] truncate">api.metrics-internal.dev</span>
+<span class="font-label-sm text-[10px] text-secondary mt-1 font-semibold">Medium Risk (Clarification needed)</span>
+</div>
+</div>
+<!-- Flag 2 (Low) -->
+<div class="bg-surface-container p-space-sm rounded-lg flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] shrink-0 mt-0.5">info</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">Audio: Copyright Scan</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Unregistered match on track 3</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant mt-1">Low Risk (Royalty-free FP)</span>
+</div>
+</div>
+<!-- Flag 3 (Clean) -->
+<div class="bg-surface-container p-space-sm rounded-lg flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate">Age Rating: ESRB Teen</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Mild cartoon violence verified</span>
+<span class="font-label-sm text-[10px] text-tertiary mt-1">Clean Scan</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Missing Info & Suggested Action Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
+<div class="bg-surface-container/60 p-space-sm rounded-lg flex flex-col gap-0.5">
+<span class="font-label-sm text-label-sm text-error flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[14px]">report_problem</span> Missing Package Files
+                </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+                  Missing Linux startup script in archive root; Deck launch params require fallback wrapper.
+                </span>
+</div>
+<div class="bg-surface-container/60 p-space-sm rounded-lg flex flex-col gap-0.5">
+<span class="font-label-sm text-label-sm text-secondary flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[14px]">tips_and_updates</span> Suggested Triage Action
+                </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+                  Needs Changes — Request telemetry disclosure and Linux binary run script verification.
+                </span>
+</div>
+</div>
+</div>
+<!-- Action Toolbar & Interactive Review Decision Panel -->
+<div class="bg-surface-container-high rounded-xl p-space-md lg:p-space-lg flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface">Admin Review Decision</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Select a verdict below to finalize submission status.</span>
+</div>
+<!-- Button Row -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<!-- Approve -->
+<button class="px-space-md py-2 rounded-lg bg-tertiary-container hover:bg-tertiary-container/90 text-on-tertiary-container font-label-md text-label-md flex items-center gap-1.5 transition-colors shadow-sm" onclick="triggerDecision('Approve')" type="button">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+<span>Approve & Publish</span>
+</button>
+<!-- Request Changes (Active selected) -->
+<button class="px-space-md py-2 rounded-lg bg-secondary-container text-on-secondary-container font-label-md text-label-md flex items-center gap-1.5 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">rule</span>
+<span>Request Changes</span>
+</button>
+<!-- Reject -->
+<button class="px-space-md py-2 rounded-lg bg-surface-container-highest hover:bg-error/20 hover:text-error text-on-surface font-label-md text-label-md flex items-center gap-1.5 transition-colors" onclick="triggerDecision('Reject')" type="button">
+<span class="material-symbols-outlined text-[18px]">cancel</span>
+<span>Reject</span>
+</button>
+</div>
+</div>
+<!-- Inline Required Review Notes (Active state for Request Changes) -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface flex items-center gap-1.5" for="review-notes">
+<span class="material-symbols-outlined text-secondary text-[16px]">edit_note</span>
+<span>Required Review Notes (Dispatched directly to DevStudio Pro)</span>
+</label>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Markdown Supported</span>
+</div>
+<textarea class="w-full bg-surface-container text-on-surface font-body-md text-body-md p-space-sm rounded-lg focus:outline-none focus:bg-surface-container-high transition-colors resize-y leading-relaxed" id="review-notes" rows="3">Please provide clarification on the telemetry endpoint 'api.metrics-internal.dev' and verify the Linux launch script in the archive root before release.</textarea>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pt-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">lock</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Submission will lock for developer revision until re-uploaded.</span>
+</div>
+<div class="flex items-center gap-space-xs self-end sm:self-auto">
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" type="button">Cancel</button>
+<button class="px-space-md py-1.5 rounded-lg bg-primary-container hover:bg-primary-container/90 text-on-primary-container font-label-md text-label-md flex items-center gap-1 transition-colors shadow-sm" onclick="dispatchFeedback()" type="button">
+<span>Send Feedback to Developer</span>
+<span class="material-symbols-outlined text-[16px]">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ITEM 2: COLLAPSED ROW -->
+<div class="bg-surface-container rounded-xl p-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-md hover:bg-surface-container-high/60 transition-colors shadow-sm">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="relative w-12 h-12 rounded-lg overflow-hidden shrink-0 bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="Whimsical cozy bakery pixel art with warm golden croissants, wooden fantasy counters, and cute pastry fantasy characters in Dungeon Baker game." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ5pV4G2JLmQz-fYN9KOWwGW_86wB8pUSGHFDfdnW3Bf3f63IrgEWB2Y525iExapKB1RnhEizHfOFlP6cHGbu0FmbaG1uKFDrYSZF8FwZXIYHg0pec3yZiBQNr1gMYQbpvG-tfvOIB4w5nTQaBqaaEiiJABPBKd52dnY7RTwg8JLN93xTaHFGqR6uiWUc641PbcCEZvWIs_W2yi37ghjdzFq3pDQw5I5P5Q5nDL5WhvhH6Im4uaAe6"/>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex flex-wrap items-center gap-space-xs">
+<h3 class="font-label-lg text-label-lg text-on-surface truncate">Dungeon Baker: Pastry Quest</h3>
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm">Pending Triage</span>
+<span class="px-space-xs py-0.5 rounded-full bg-tertiary-container/30 text-tertiary font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">check</span> Clean Pass (0 flags)
+              </span>
+</div>
+<div class="flex flex-wrap items-center gap-x-space-sm gap-y-0.5 mt-0.5 font-body-sm text-body-sm text-on-surface-variant">
+<span>By Croissant Coven</span>
+<span class="inline-block w-1 h-1 rounded-full bg-outline"></span>
+<span>v1.0.2 Release Candidate</span>
+<span class="inline-block w-1 h-1 rounded-full bg-outline"></span>
+<span>310 MB</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0 self-end md:self-center">
+<button class="px-space-sm py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-md text-label-md flex items-center gap-1 transition-colors" onclick="toggleItem(this)" type="button">
+<span>Expand Details</span>
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+</div>
+<!-- ITEM 3: COLLAPSED ROW -->
+<div class="bg-surface-container rounded-xl p-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-md hover:bg-surface-container-high/60 transition-colors shadow-sm">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="relative w-12 h-12 rounded-lg overflow-hidden shrink-0 bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="Deep space science fiction planetary exploration simulator with glowing nebula, orbital vessels and deep violet atmospheric lighting for Solaris Drifter." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyDlQgrXEF9iwHu0zTx3pU2Z0xJvUQ8LthhgwmGv4oA4Yvhk4RJs4w_8e_WjYsgFKbz8vCFo1GXnpS1zDgqcIjZ8WKXsWg5DwJfUbjsHNEF6Mbh7qvQz13eWgFUu6Fz7fKgs5OKp0OneJNwBRVx1tIxoENd-88yT3UapGNW9Y2y9SNHXtnuKeBydkCt5xi32dpVGufBbTtpJNkZGQSyXwb45tfTiI4wJzbXn0QDr5zfOZUF701rQ6s"/>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex flex-wrap items-center gap-space-xs">
+<h3 class="font-label-lg text-label-lg text-on-surface truncate">Solaris Drifter</h3>
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-container/50 text-secondary font-label-sm text-label-sm">Under Review</span>
+<span class="px-space-xs py-0.5 rounded-full bg-error-container/40 text-error font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">warning</span> 2 Risk Flags
+              </span>
+</div>
+<div class="flex flex-wrap items-center gap-x-space-sm gap-y-0.5 mt-0.5 font-body-sm text-body-sm text-on-surface-variant">
+<span>By Horizon Labs</span>
+<span class="inline-block w-1 h-1 rounded-full bg-outline"></span>
+<span>v0.8.0</span>
+<span class="inline-block w-1 h-1 rounded-full bg-outline"></span>
+<span>1.2 GB</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0 self-end md:self-center">
+<button class="px-space-sm py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-md text-label-md flex items-center gap-1 transition-colors" onclick="toggleItem(this)" type="button">
+<span>Expand Details</span>
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Activity Audit Ledger Sub-Section -->
+<div class="bg-surface-container rounded-xl p-space-md mt-space-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">history</span>
+<span>Recent Queue History & Automated Audit Trail</span>
+</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Past 24 Hours</span>
+</div>
+<div class="divide-y divide-surface-container-high">
+<div class="py-2 flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-space-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="text-on-surface">Void Weaver v1.4</span>
+<span class="text-on-surface-variant">Published to Production Catalog</span>
+</div>
+<span class="text-on-surface-variant">42m ago by Admin-SecOps</span>
+</div>
+<div class="py-2 flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-space-sm">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="text-on-surface">Hyper Speedway: Overdrive</span>
+<span class="text-on-surface-variant">Binary Rejected (Unsigned dynamic linked library)</span>
+</div>
+<span class="text-on-surface-variant">3h ago by AutoDaemon-2</span>
+</div>
+<div class="py-2 flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-space-sm">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-on-surface">Pixel Realm v0.2.1</span>
+<span class="text-on-surface-variant">Re-submission Received & Queued</span>
+</div>
+<span class="text-on-surface-variant">5h ago by DevStudio Pro</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Toast Notification (Fixed bottom-right) -->
+<div class="fixed bottom-6 right-6 z-50 max-w-sm w-full bg-surface-container-high text-on-surface p-space-md rounded-xl shadow-2xl flex items-start gap-space-sm transition-all duration-300 transform translate-y-0" id="toast-notification">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface">AI Triage Notification</span>
+<button class="text-on-surface-variant hover:text-on-surface" onclick="dismissToast()">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 leading-snug">
+        ✨ AI Triage generated automated report for <strong class="text-on-surface">Neon Abyss: Zero Cycle</strong>
+</p>
+</div>
+</div>
+</div>
+<script>
+  function toggleAiFallback(isOutage) {
+    const fallbackBanner = document.getElementById('ai-fallback-notice');
+    const aiContainer = document.getElementById('ai-triage-container');
+    
+    if (isOutage) {
+      fallbackBanner.classList.remove('hidden');
+      fallbackBanner.classList.add('flex');
+      aiContainer.classList.add('opacity-40', 'pointer-events-none');
+    } else {
+      fallbackBanner.classList.add('hidden');
+      fallbackBanner.classList.remove('flex');
+      aiContainer.classList.remove('opacity-40', 'pointer-events-none');
+    }
+  }
+
+  function dismissToast() {
+    const toast = document.getElementById('toast-notification');
+    if (toast) {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(16px)';
+      setTimeout(() => toast.remove(), 300);
+    }
+  }
+
+  function triggerDecision(decisionType) {
+    const notes = document.getElementById('review-notes');
+    if (decisionType === 'Approve') {
+      notes.value = 'Submission approved for production store publishing. Binary hashes confirmed.';
+    } else if (decisionType === 'Reject') {
+      notes.value = 'Submission rejected. Please refer to Section 4.2 of the IndieVault Developer Distribution guidelines.';
+    }
+  }
+
+  function dispatchFeedback() {
+    const toast = document.getElementById('toast-notification');
+    if (toast) {
+      toast.querySelector('p').innerHTML = 'Feedback dispatched successfully to developer. Submission locked for revision.';
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateY(0)';
+      setTimeout(dismissToast, 4000);
+    }
+  }
+
+  function toggleItem(btn) {
+    const label = btn.querySelector('span:first-child');
+    const icon = btn.querySelector('span:last-child');
+    if (label.innerText === 'Expand Details') {
+      label.innerText = 'Collapse';
+      icon.innerText = 'expand_less';
+    } else {
+      label.innerText = 'Expand Details';
+      icon.innerText = 'expand_more';
+    }
+  }
+</script></main><footer class="w-full bg-surface-container-lowest mt-auto py-space-lg"><div class="w-full px-gutter flex flex-col md:flex-row items-center justify-between gap-space-md text-on-surface-variant font-body-sm text-body-sm"><div><span>© 2025 IndieVault. Decentralized & Curated Indie Gaming Marketplace.</span></div><div class="flex items-center gap-space-md"><span>Powered by Plain CSS & Adaptive Dark Tokens</span><span class="w-1 h-1 rounded-full bg-outline-variant"></span><span>Role-Based Workflows</span><span class="w-1 h-1 rounded-full bg-outline-variant"></span><span>AI Triage Protocol</span></div></div></footer></body></html>

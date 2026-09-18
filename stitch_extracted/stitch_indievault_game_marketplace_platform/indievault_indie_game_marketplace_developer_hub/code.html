@@ -1,0 +1,2538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IndieVault — Indie Game Marketplace & Developer Hub</title>
+  <!-- Load React 18, Babel for in-browser compilation, and Feather/Lucide icons -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       GLOBAL & RESET (Plain CSS, no Tailwind/Bootstrap)
+       Design: Dark/neutral itch.io/Steam indie aesthetic.
+       Two font weights (400, 600), vibrant purple/violet CTA accent (#6c5ce7).
+       ========================================================= */
+    :root {
+      --bg-dark: #0f1115;
+      --bg-surface: #181b21;
+      --bg-surface-elevated: #222630;
+      --bg-surface-hover: #2b303c;
+      --border-color: #2e3440;
+      --border-light: #3e4657;
+      
+      --text-main: #f0f2f5;
+      --text-muted: #9aa2b1;
+      --text-subtle: #6c7484;
+
+      --accent: #6c5ce7;
+      --accent-hover: #5846e0;
+      --accent-glow: rgba(108, 92, 231, 0.25);
+      
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #0ea5e9;
+      --ai-badge-bg: rgba(108, 92, 231, 0.15);
+      --ai-badge-border: #8b7af0;
+      --ai-badge-text: #c4b5fd;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* TYPOGRAPHY - Strict constraint: 2 weights max (400 and 600) */
+    h1, h2, h3, h4, h5, h6, strong, .font-bold {
+      font-weight: 600;
+      letter-spacing: -0.015em;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    /* COMMON BUTTONS & INTERACTION */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+      white-space: nowrap;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 2px 8px var(--accent-glow);
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+    .btn-secondary {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+    .btn-secondary:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-light);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+    }
+    .btn-outline:hover {
+      color: var(--text-main);
+      border-color: var(--text-muted);
+      background: rgba(255,255,255,0.03);
+    }
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+    .btn-danger:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 13px;
+      border-radius: 4px;
+    }
+
+    /* AI MARKER / BADGE */
+    .ai-indicator-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--ai-badge-bg);
+      border: 1px solid var(--ai-badge-border);
+      color: var(--ai-badge-text);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.02em;
+    }
+
+    /* SKELETON / LOADING */
+    .skeleton {
+      background: linear-gradient(90deg, #1e222b 25%, #2a303c 50%, #1e222b 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: var(--radius-sm);
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* TOAST NOTIFICATION */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .toast {
+      pointer-events: auto;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-light);
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      animation: slideUp 0.25s ease-out;
+      max-width: 380px;
+    }
+    .toast.success { border-left: 4px solid var(--success); }
+    .toast.error { border-left: 4px solid var(--danger); }
+    .toast.info { border-left: 4px solid var(--accent); }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* =========================================================
+       COMPONENT: NAVBAR.CSS
+       ========================================================= */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(24, 27, 33, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      width: 100%;
+    }
+    .navbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+    .nav-brand svg {
+      color: var(--accent);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-item {
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-item:hover {
+      color: var(--text-main);
+      background: var(--bg-surface-elevated);
+    }
+    .nav-item.active {
+      color: #fff;
+      background: var(--bg-surface-hover);
+    }
+    .nav-role-switcher {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-dark);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      font-size: 13px;
+    }
+    .nav-role-select {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+    }
+    .nav-hamburger {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    /* Mobile Nav Drawer */
+    .mobile-menu {
+      display: none;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 20px;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    /* =========================================================
+       COMPONENT: GAMECARD.CSS & GRID
+       ========================================================= */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 22px;
+      width: 100%;
+    }
+    .game-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+    }
+    .game-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-light);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+    }
+    .game-card-thumb-wrap {
+      position: relative;
+      width: 100%;
+      height: 156px;
+      background: #121418;
+      overflow: hidden;
+    }
+    .game-card-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .game-card:hover .game-card-thumb {
+      transform: scale(1.05);
+    }
+    .game-card-wish-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(15, 17, 21, 0.75);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      cursor: pointer;
+      transition: var(--transition);
+      z-index: 2;
+    }
+    .game-card-wish-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .game-card-wish-btn.active {
+      color: #ef4444;
+      background: #ffffff;
+      border-color: #ffffff;
+    }
+    .game-card-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 10px;
+    }
+    .game-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .game-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-main);
+      line-height: 1.3;
+    }
+    .game-card-price {
+      font-weight: 600;
+      color: var(--accent);
+      background: rgba(108, 92, 231, 0.12);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .game-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: auto;
+    }
+    .tag-pill {
+      font-size: 11.5px;
+      background: var(--bg-surface-elevated);
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      padding: 2px 8px;
+      border-radius: 20px;
+      transition: var(--transition);
+    }
+    .tag-pill.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* =========================================================
+       PAGE WRAPPER
+       ========================================================= */
+    .page-container {
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+      flex-grow: 1;
+    }
+
+    /* =========================================================
+       PAGE: BROWSE.CSS
+       ========================================================= */
+    .browse-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 28px;
+      background: var(--bg-surface);
+      padding: 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+    }
+    .search-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .search-input-wrap {
+      position: relative;
+      flex-grow: 1;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px 10px 38px;
+      color: var(--text-main);
+      outline: none;
+      transition: var(--transition);
+    }
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-subtle);
+      pointer-events: none;
+    }
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 14px;
+    }
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .select-dropdown {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* =========================================================
+       PAGE: GAMEDETAIL.CSS
+       ========================================================= */
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 32px;
+    }
+    .hero-banner {
+      width: 100%;
+      height: 380px;
+      border-radius: var(--radius-md);
+      object-fit: cover;
+      background: #14171d;
+      border: 1px solid var(--border-color);
+    }
+    .detail-main {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .detail-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .sidebar-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .ai-synthesis-card {
+      background: linear-gradient(145deg, #1b1c28, #181b21);
+      border: 1px solid #4a3e7a;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      box-shadow: 0 8px 24px rgba(108, 92, 231, 0.08);
+    }
+    .ai-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .pros-cons-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 6px;
+    }
+    .pros-list, .cons-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 13.5px;
+    }
+    .pros-list li { color: #a7f3d0; display: flex; gap: 6px; }
+    .cons-list li { color: #fecaca; display: flex; gap: 6px; }
+
+    /* REVIEWS SECTION */
+    .reviews-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .review-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .star-rating {
+      color: #fbbf24;
+      display: flex;
+      gap: 2px;
+    }
+
+    /* =========================================================
+       PAGE: DEVDASHBOARD.CSS & ADMIN QUEUE
+       ========================================================= */
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .data-table-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .data-table th {
+      background: var(--bg-dark);
+      padding: 14px 18px;
+      font-size: 13px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+    }
+    .data-table td {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 14px;
+      vertical-align: middle;
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table tr:hover td {
+      background: rgba(255,255,255,0.015);
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+    .status-pending { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid #b45309; }
+    .status-under_review { background: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid #0369a1; }
+    .status-needs_changes { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid #b91c1c; }
+    .status-approved { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid #047857; }
+    .status-rejected { background: rgba(100, 116, 139, 0.2); color: #94a3b8; border: 1px solid #475569; }
+
+    .expanded-review-panel {
+      background: var(--bg-dark);
+      border-top: 1px dashed var(--border-light);
+      padding: 18px;
+    }
+
+    /* =========================================================
+       PAGE: SUBMITGAME.CSS (FORM)
+       ========================================================= */
+    .form-card {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 32px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+    .form-label {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .form-input, .form-textarea, .form-select {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 11px 14px;
+      color: var(--text-main);
+      outline: none;
+      transition: var(--transition);
+      width: 100%;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .file-dropzone {
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 36px 20px;
+      text-align: center;
+      background: var(--bg-dark);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .file-dropzone:hover {
+      border-color: var(--accent);
+      background: rgba(108, 92, 231, 0.03);
+    }
+    .ai-suggested-chip-box {
+      background: var(--bg-dark);
+      border: 1px solid #483d78;
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .suggested-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+
+    /* =========================================================
+       PAGE: AUTH.CSS
+       ========================================================= */
+    .auth-container {
+      max-width: 440px;
+      margin: 40px auto;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.3);
+    }
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--bg-dark);
+      padding: 4px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 24px;
+    }
+    .auth-tab {
+      padding: 9px;
+      text-align: center;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 4px;
+      transition: var(--transition);
+      font-size: 14px;
+    }
+    .auth-tab.active {
+      background: var(--bg-surface-elevated);
+      color: var(--text-main);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    /* =========================================================
+       EMPTY STATES
+       ========================================================= */
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      border: 1px dashed var(--border-color);
+      margin: 20px 0;
+    }
+    .empty-icon {
+      font-size: 44px;
+      color: var(--text-subtle);
+    }
+
+    /* =========================================================
+       RESPONSIVENESS (Below 768px and 480px)
+       ========================================================= */
+    @media (max-width: 860px) {
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-banner {
+        height: 260px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-role-switcher {
+        display: none;
+      }
+      .nav-hamburger {
+        display: block;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .pros-cons-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page-container {
+        padding: 16px 12px 50px;
+      }
+      .games-grid {
+        grid-template-columns: 1fr; /* Strict 1 col on mobile */
+      }
+      .auth-container, .form-card {
+        padding: 20px 16px;
+      }
+      .search-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React Application Source Code -->
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    // --- MOCK DATABASE & INITIAL ASSETS ---
+    const INITIAL_GAMES = [
+      {
+        id: 'g1',
+        title: 'Chrono Rift: Synthetica',
+        price: 14.99,
+        genre: 'Action Roguelite',
+        tags: ['Pixel Art', 'Cyberpunk', 'Fast-Paced', 'Deckbuilder'],
+        thumbnail: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80',
+        hero: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80',
+        developer: 'NeonVoid Studios',
+        version: '1.2.0',
+        description: 'Dash through fractured timeline dimensions where every run unlocks synergistic augments and cybernetic deck enhancements. Built with tight 60fps controls.',
+        reviewsCount: 42,
+        avgRating: 4.6,
+        aiSynthesis: {
+          sentiment: 'Overwhelmingly Positive (89%)',
+          pros: ['Remarkable build diversity', 'Ultra-responsive parry timing', 'Atmospheric synthwave OST'],
+          cons: ['Difficulty spike on Sector 4 boss', 'Minor controller mapping glitch on Linux']
+        },
+        reviews: [
+          { id: 'r1', user: 'PixelKnight', rating: 5, date: '2 days ago', text: 'One of the crispiest combat loops this year! The synergy between dash and deck is genius.' },
+          { id: 'r2', user: 'VaporDave', rating: 4, date: '1 week ago', text: 'Incredible art and music. Difficulty curve could use slight smoothing on stage 4 though.' },
+          { id: 'r3', user: 'SarahIndie', rating: 5, date: '2 weeks ago', text: 'Runs flawlessly on Steam Deck! Love the dev team updates.' }
+        ]
+      },
+      {
+        id: 'g2',
+        title: 'Whispering Pines Forest',
+        price: 0.00,
+        genre: 'Adventure',
+        tags: ['Cozy', 'Atmospheric', 'Story Rich', 'Free to Play'],
+        thumbnail: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80',
+        hero: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80',
+        developer: 'Meadow Lark Games',
+        version: '1.0.4',
+        description: 'A serene narrative walking sim about cataloging forgotten flora and befriending woodland spirits in the Pacific Northwest.',
+        reviewsCount: 18,
+        avgRating: 4.8,
+        aiSynthesis: {
+          sentiment: 'Very Positive (94%)',
+          pros: ['Zero-stress tranquil gameplay', 'Hand-painted watercolor backgrounds', 'Beautiful ambient audio design'],
+          cons: ['Short playtime (~2 hours)', 'Linear story path without branching']
+        },
+        reviews: [
+          { id: 'r4', user: 'CozyGamerSam', rating: 5, date: 'Yesterday', text: 'Pure relaxation in game form. Made a cup of tea and finished it in one cozy evening.' },
+          { id: 'r5', user: 'NatureWanderer', rating: 5, date: '3 days ago', text: 'Soundtrack alone is worth checking this out.' }
+        ]
+      },
+      {
+        id: 'g3',
+        title: 'Voidfall Orbital Siege',
+        price: 19.99,
+        genre: 'Strategy',
+        tags: ['Sci-Fi', 'Turn-Based', 'Tactics', 'Space'],
+        thumbnail: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+        hero: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
+        developer: 'Vector Forge',
+        version: '0.9.8 (Beta)',
+        description: 'Command deep-space battle fleets in 3D Newtonian physics skirmishes against an insurgent algorithmic swarm.',
+        reviewsCount: 3, // Fewer than 5 reviews to test the requirement!
+        avgRating: 4.0,
+        aiSynthesis: null, // Hidden per requirement (<5 reviews)
+        reviews: [
+          { id: 'r6', user: 'FleetAdm', rating: 4, date: '3 days ago', text: 'Complex systems! Reminds me of classic Homeworld with modern tactical pausing.' }
+        ]
+      },
+      {
+        id: 'g4',
+        title: 'Dungeon Baker: Pastry Quest',
+        price: 9.99,
+        genre: 'Simulation',
+        tags: ['Pixel Art', 'Cooking', 'Casual', 'Crafting'],
+        thumbnail: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80',
+        hero: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1200&q=80',
+        developer: 'Croissant Coven',
+        version: '1.1.2',
+        description: 'Forage enchanted herbs in dangerous caverns by day, bake magical pastries to feed adventurers by night.',
+        reviewsCount: 29,
+        avgRating: 4.5,
+        aiSynthesis: {
+          sentiment: 'Mostly Positive (78%)',
+          pros: ['Charming loop of foraging and baking', 'Hilarious recipe descriptions', 'Addictive customer rush hours'],
+          cons: ['Oven upgrade grind gets steep', 'Inventory limit is tight early on']
+        },
+        reviews: [
+          { id: 'r7', user: 'FlourPower', rating: 5, date: '5 days ago', text: 'My tavern customers keep demanding Fire-Dragon Brioche and I love it.' }
+        ]
+      }
+    ];
+
+    const INITIAL_SUBMISSIONS = [
+      {
+        id: 'sub-101',
+        title: 'Aether Shift: Horizons',
+        developer: 'Alex Rivera (Solo)',
+        genre: 'Platformer',
+        price: '$12.00',
+        status: 'pending',
+        submittedDate: 'Oct 24, 2024',
+        version: 'v0.9.1',
+        description: 'Gravity-reversing 2D speedrunner through decaying celestial monoliths.',
+        tags: ['Speedrun', 'Hardcore', 'Synthwave'],
+        reviewNotes: '',
+        aiTriage: {
+          summary: 'High mechanical polish, clean submission assets. Verified 60fps build on Windows x64 testbed. Binary hash clean of trojans.',
+          riskFlags: ['High difficulty curve may trigger early refund spike', 'Missing seizure epilepsy advisory in options menu'],
+          missingInfo: ['Privacy policy URL currently 404s', 'Linux / Steam Deck native build not included'],
+          suggestedAction: 'Needs Changes — Request epileptic warning screen & working privacy link.'
+        }
+      },
+      {
+        id: 'sub-102',
+        title: 'Cryptic Relic RPG',
+        developer: 'ShadowWorks Interactive',
+        genre: 'RPG',
+        price: '$18.99',
+        status: 'needs_changes',
+        submittedDate: 'Oct 22, 2024',
+        version: 'v1.0.0',
+        description: 'Isometric tactical dungeon crawler with branching dialogue choices.',
+        tags: ['Turn-Based', 'Dark Fantasy', 'Lore-Heavy'],
+        reviewNotes: 'Admin Note (Oct 23): Found uncompressed 4GB audio folder causing severe memory leak on level transition 3. Please optimize OGG assets.',
+        aiTriage: {
+          summary: 'Extensive lore bible and voice acting. Heavy disk footprint (14GB). High asset fidelity.',
+          riskFlags: ['Severe RAM consumption spike detected during loading sequence'],
+          missingInfo: ['None identified'],
+          suggestedAction: 'Needs Changes — Optimize audio and texture streaming.'
+        }
+      },
+      {
+        id: 'sub-103',
+        title: 'Neon Drift Zero',
+        developer: 'HyperDrive Labs',
+        genre: 'Racing',
+        price: '$8.50',
+        status: 'approved',
+        submittedDate: 'Oct 19, 2024',
+        version: 'v1.0.2',
+        description: 'Low-poly arcade anti-grav drifting with leaderboards and ghost telemetry.',
+        tags: ['Arcade', 'Multiplayer', 'Retro'],
+        reviewNotes: 'Approved for public catalog listing on Oct 20.',
+        aiTriage: {
+          summary: 'Verified clean release build. High viral streamer appeal and verified controller support.',
+          riskFlags: [],
+          missingInfo: [],
+          suggestedAction: 'Approve directly.'
+        }
+      }
+    ];
+
+    // --- MAIN REACT APPLICATION CONTAINER ---
+    function App() {
+      // Role simulated via client-side JWT state: 'player' | 'developer' | 'curator' | 'admin'
+      const [role, setRole] = useState('player');
+      const [jwtToken, setJwtToken] = useState('mock-jwt-role-player');
+      const [activePage, setActivePage] = useState('browse'); // browse, detail, wishlist, library, dev-dashboard, submit-game, admin-queue, auth
+      const [selectedGameId, setSelectedGameId] = useState('g1');
+
+      // State stores
+      const [games, setGames] = useState(INITIAL_GAMES);
+      const [submissions, setSubmissions] = useState(INITIAL_SUBMISSIONS);
+      const [wishlist, setWishlist] = useState(['g1']);
+      const [library, setLibrary] = useState(['g2']);
+      const [toast, setToast] = useState(null);
+      const [isLoading, setIsLoading] = useState(false);
+      const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+      // Trigger toast
+      const showToast = (message, type = 'info') => {
+        setToast({ message, type });
+        setTimeout(() => setToast(null), 3800);
+      };
+
+      // Handle role changes
+      const handleRoleChange = (newRole) => {
+        setRole(newRole);
+        setJwtToken(`mock-jwt-role-${newRole}`);
+        showToast(`Switched active profile role to "${newRole.toUpperCase()}". Navigation updated.`, 'info');
+      };
+
+      // Toggle Wishlist
+      const toggleWishlist = (gameId, e) => {
+        if (e) e.stopPropagation();
+        if (wishlist.includes(gameId)) {
+          setWishlist(wishlist.filter(id => id !== gameId));
+          showToast('Removed from your Wishlist');
+        } else {
+          setWishlist([...wishlist, gameId]);
+          showToast('Added to your Wishlist!', 'success');
+        }
+      };
+
+      // View game detail
+      const handleViewGame = (gameId) => {
+        setIsLoading(true);
+        setSelectedGameId(gameId);
+        setActivePage('detail');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => setIsLoading(false), 250);
+      };
+
+      // Current game detail
+      const currentGame = games.find(g => g.id === selectedGameId) || games[0];
+
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+          {/* Toast Notification */}
+          {toast && (
+            <div className="toast-container">
+              <div className={`toast ${toast.type}`}>
+                <span>{toast.type === 'success' ? '✓' : toast.type === 'error' ? '⚠' : 'ℹ'}</span>
+                <div>{toast.message}</div>
+              </div>
+            </div>
+          )}
+
+          {/* NAVBAR COMPONENT */}
+          <header className="navbar">
+            <div className="navbar-inner">
+              <div className="nav-brand" onClick={() => setActivePage('browse')}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                  <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+                <span>IndieVault</span>
+              </div>
+
+              {/* Desktop Nav Items */}
+              <nav className="nav-links">
+                <div className={`nav-item ${activePage === 'browse' ? 'active' : ''}`} onClick={() => setActivePage('browse')}>
+                  Browse Store
+                </div>
+                
+                {/* Available to Player / Curator / Dev */}
+                <div className={`nav-item ${activePage === 'wishlist' ? 'active' : ''}`} onClick={() => setActivePage('wishlist')}>
+                  Wishlist ({wishlist.length})
+                </div>
+                <div className={`nav-item ${activePage === 'library' ? 'active' : ''}`} onClick={() => setActivePage('library')}>
+                  Library ({library.length})
+                </div>
+
+                {/* Conditional based on developer role */}
+                {(role === 'developer' || role === 'admin') && (
+                  <>
+                    <div className={`nav-item ${activePage === 'dev-dashboard' ? 'active' : ''}`} onClick={() => setActivePage('dev-dashboard')}>
+                      Dev Hub
+                    </div>
+                    <div className={`nav-item ${activePage === 'submit-game' ? 'active' : ''}`} onClick={() => setActivePage('submit-game')}>
+                      + Submit Game
+                    </div>
+                  </>
+                )}
+
+                {/* Conditional based on Admin / Curator role */}
+                {(role === 'admin' || role === 'curator') && (
+                  <div className={`nav-item ${activePage === 'admin-queue' ? 'active' : ''}`} onClick={() => setActivePage('admin-queue')} style={{ color: '#fbbf24' }}>
+                    🛡️ Admin Queue ({submissions.filter(s => s.status === 'pending').length})
+                  </div>
+                )}
+              </nav>
+
+              {/* Right: Role Switcher & Auth */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div className="nav-role-switcher" title="Simulate client-side role stored in JWT">
+                  <span style={{ color: 'var(--text-muted)' }}>Role:</span>
+                  <select 
+                    className="nav-role-select" 
+                    value={role} 
+                    onChange={(e) => handleRoleChange(e.target.value)}
+                  >
+                    <option value="player">Player</option>
+                    <option value="developer">Developer</option>
+                    <option value="curator">Curator</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+
+                <button className="btn btn-secondary btn-sm" onClick={() => setActivePage('auth')}>
+                  {role ? `👤 Account` : 'Sign In'}
+                </button>
+
+                {/* Hamburger for mobile */}
+                <button className="nav-hamburger" onClick={() => setMobileNavOpen(!mobileNavOpen)} aria-label="Toggle menu">
+                  ☰
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile Menu Dropdown */}
+            {mobileNavOpen && (
+              <div className="mobile-menu open">
+                <div className={`nav-item ${activePage === 'browse' ? 'active' : ''}`} onClick={() => { setActivePage('browse'); setMobileNavOpen(false); }}>
+                  Browse Store
+                </div>
+                <div className={`nav-item ${activePage === 'wishlist' ? 'active' : ''}`} onClick={() => { setActivePage('wishlist'); setMobileNavOpen(false); }}>
+                  Wishlist ({wishlist.length})
+                </div>
+                <div className={`nav-item ${activePage === 'library' ? 'active' : ''}`} onClick={() => { setActivePage('library'); setMobileNavOpen(false); }}>
+                  Library ({library.length})
+                </div>
+                {(role === 'developer' || role === 'admin') && (
+                  <>
+                    <div className={`nav-item ${activePage === 'dev-dashboard' ? 'active' : ''}`} onClick={() => { setActivePage('dev-dashboard'); setMobileNavOpen(false); }}>
+                      Dev Hub
+                    </div>
+                    <div className={`nav-item ${activePage === 'submit-game' ? 'active' : ''}`} onClick={() => { setActivePage('submit-game'); setMobileNavOpen(false); }}>
+                      + Submit Game
+                    </div>
+                  </>
+                )}
+                {(role === 'admin' || role === 'curator') && (
+                  <div className={`nav-item ${activePage === 'admin-queue' ? 'active' : ''}`} onClick={() => { setActivePage('admin-queue'); setMobileNavOpen(false); }}>
+                    🛡️ Admin Queue
+                  </div>
+                )}
+                <div className="nav-item" onClick={() => { setActivePage('auth'); setMobileNavOpen(false); }}>
+                  Auth & Profile
+                </div>
+              </div>
+            )}
+          </header>
+
+          {/* PAGE ROUTER */}
+          <main className="page-container">
+            {activePage === 'browse' && (
+              <BrowsePage 
+                games={games} 
+                wishlist={wishlist} 
+                onToggleWishlist={toggleWishlist} 
+                onSelectGame={handleViewGame} 
+                isLoading={isLoading}
+              />
+            )}
+
+            {activePage === 'detail' && (
+              <GameDetailPage 
+                game={currentGame} 
+                wishlist={wishlist} 
+                onToggleWishlist={toggleWishlist} 
+                onBuy={() => {
+                  if (!library.includes(currentGame.id)) {
+                    setLibrary([...library, currentGame.id]);
+                    showToast(`Added "${currentGame.title}" to your game library!`, 'success');
+                  } else {
+                    showToast('Game is already in your library!', 'info');
+                  }
+                }}
+                isOwned={library.includes(currentGame.id)}
+                onBack={() => setActivePage('browse')}
+                showToast={showToast}
+              />
+            )}
+
+            {activePage === 'wishlist' && (
+              <WishlistPage 
+                games={games.filter(g => wishlist.includes(g.id))} 
+                onSelectGame={handleViewGame} 
+                onToggleWishlist={toggleWishlist} 
+                onExplore={() => setActivePage('browse')}
+              />
+            )}
+
+            {activePage === 'library' && (
+              <LibraryPage 
+                games={games.filter(g => library.includes(g.id))} 
+                onSelectGame={handleViewGame} 
+                onExplore={() => setActivePage('browse')}
+              />
+            )}
+
+            {activePage === 'dev-dashboard' && (
+              <DeveloperDashboardPage 
+                submissions={submissions} 
+                onSubmitNew={() => setActivePage('submit-game')} 
+              />
+            )}
+
+            {activePage === 'submit-game' && (
+              <SubmitGamePage 
+                onCancel={() => setActivePage('dev-dashboard')} 
+                onSubmitSuccess={(newSub) => {
+                  setSubmissions([newSub, ...submissions]);
+                  showToast('Game submission uploaded successfully! Sent to admin review.', 'success');
+                  setActivePage('dev-dashboard');
+                }}
+                showToast={showToast}
+              />
+            )}
+
+            {activePage === 'admin-queue' && (
+              <AdminQueuePage 
+                submissions={submissions} 
+                onUpdateStatus={(id, newStatus, notes) => {
+                  setSubmissions(submissions.map(s => {
+                    if (s.id === id) {
+                      return { ...s, status: newStatus, reviewNotes: notes || s.reviewNotes };
+                    }
+                    return s;
+                  }));
+                  showToast(`Submission #${id} updated to ${newStatus.replace('_', ' ').toUpperCase()}`, 'info');
+                }}
+                showToast={showToast}
+              />
+            )}
+
+            {activePage === 'auth' && (
+              <AuthPage 
+                currentRole={role} 
+                onAuthSuccess={(newRole, email) => {
+                  handleRoleChange(newRole);
+                  showToast(`Authenticated as ${email} (${newRole})`, 'success');
+                  setActivePage('browse');
+                }}
+              />
+            )}
+          </main>
+
+          {/* FOOTER */}
+          <footer style={{ borderTop: '1px solid var(--border-color)', background: 'var(--bg-surface)', padding: '24px 20px', marginTop: 'auto' }}>
+            <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', fontSize: '13px', color: 'var(--text-muted)' }}>
+              <div>© 2025 IndieVault. Dedicated two-sided marketplace for independent developers & players.</div>
+              <div style={{ display: 'flex', gap: '16px' }}>
+                <span>Plain CSS (Grid/Flexbox)</span>
+                <span>•</span>
+                <span>AI-Assisted Triage & Review Synthesis</span>
+                <span>•</span>
+                <span>Vite/React</span>
+              </div>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    // =========================================================
+    // PAGE 1: BROWSE / CATALOG (/pages/Browse.jsx + Browse.css)
+    // =========================================================
+    function BrowsePage({ games, wishlist, onToggleWishlist, onSelectGame, isLoading }) {
+      const [searchQuery, setSearchQuery] = useState('');
+      const [selectedGenre, setSelectedGenre] = useState('All');
+      const [selectedTag, setSelectedTag] = useState('All');
+      const [sortBy, setSortBy] = useState('popular');
+      const [priceFilter, setPriceFilter] = useState('all');
+
+      const allTags = useMemo(() => {
+        const set = new Set();
+        games.forEach(g => g.tags.forEach(t => set.add(t)));
+        return ['All', ...Array.from(set)];
+      }, [games]);
+
+      const filteredGames = useMemo(() => {
+        return games.filter(game => {
+          const matchSearch = game.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                              game.developer.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                              game.genre.toLowerCase().includes(searchQuery.toLowerCase());
+          const matchGenre = selectedGenre === 'All' || game.genre === selectedGenre;
+          const matchTag = selectedTag === 'All' || game.tags.includes(selectedTag);
+          const matchPrice = priceFilter === 'all' 
+            ? true 
+            : priceFilter === 'free' 
+              ? game.price === 0 
+              : priceFilter === 'under10' 
+                ? game.price < 10 
+                : game.price >= 10;
+          return matchSearch && matchGenre && matchTag && matchPrice;
+        }).sort((a, b) => {
+          if (sortBy === 'price-low') return a.price - b.price;
+          if (sortBy === 'price-high') return b.price - a.price;
+          if (sortBy === 'rating') return b.avgRating - a.avgRating;
+          return b.reviewsCount - a.reviewsCount; // popular
+        });
+      }, [games, searchQuery, selectedGenre, selectedTag, sortBy, priceFilter]);
+
+      return (
+        <div>
+          {/* Header text */}
+          <div style={{ marginBottom: '22px' }}>
+            <h1 style={{ fontSize: '28px', color: 'var(--text-main)', marginBottom: '6px' }}>Discover Indie Gems</h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: '15px' }}>Explore curated independent creations, directly supporting developer studios.</p>
+          </div>
+
+          {/* Controls: Search, Tag/Genre filters, Sort */}
+          <div className="browse-controls">
+            <div className="search-row">
+              <div className="search-input-wrap">
+                <span className="search-icon">🔍</span>
+                <input 
+                  type="text" 
+                  className="search-input" 
+                  placeholder="Search by game title, studio or genre..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+
+              <select 
+                className="select-dropdown" 
+                value={sortBy} 
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value="popular">Sort: Most Popular</option>
+                <option value="rating">Sort: Highest Rated</option>
+                <option value="price-low">Sort: Price (Low to High)</option>
+                <option value="price-high">Sort: Price (High to Low)</option>
+              </select>
+
+              <select 
+                className="select-dropdown" 
+                value={priceFilter} 
+                onChange={(e) => setPriceFilter(e.target.value)}
+              >
+                <option value="all">Price: Any</option>
+                <option value="free">Free to Play ($0.00)</option>
+                <option value="under10">Under $10</option>
+                <option value="10plus">$10 and above</option>
+              </select>
+            </div>
+
+            {/* Micro-tags bar */}
+            <div className="filter-row">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-muted)' }}>
+                <span>Tags:</span>
+                <div className="filter-chips">
+                  {allTags.slice(0, 8).map(tag => (
+                    <button 
+                      key={tag}
+                      className={`tag-pill ${selectedTag === tag ? 'active' : ''}`}
+                      onClick={() => setSelectedTag(tag)}
+                      style={{ cursor: 'pointer', border: '1px solid var(--border-color)' }}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div style={{ fontSize: '13px', color: 'var(--text-subtle)' }}>
+                Showing {filteredGames.length} of {games.length} titles
+              </div>
+            </div>
+          </div>
+
+          {/* Games Grid (collapses to 1 column on mobile via CSS) */}
+          {isLoading ? (
+            <div className="games-grid">
+              {[1, 2, 3, 4].map(n => (
+                <div key={n} className="game-card" style={{ height: '310px' }}>
+                  <div className="skeleton" style={{ height: '156px', width: '100%' }}></div>
+                  <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <div className="skeleton" style={{ height: '20px', width: '70%' }}></div>
+                    <div className="skeleton" style={{ height: '16px', width: '40%' }}></div>
+                    <div className="skeleton" style={{ height: '24px', width: '90%', marginTop: '20px' }}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : filteredGames.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-icon">🎮</div>
+              <h3>No games matched your criteria</h3>
+              <p style={{ color: 'var(--text-muted)', maxWidth: '400px' }}>Try resetting your tag filters, search term, or price threshold.</p>
+              <button className="btn btn-secondary btn-sm" onClick={() => { setSearchQuery(''); setSelectedTag('All'); setPriceFilter('all'); }}>
+                Reset Filters
+              </button>
+            </div>
+          ) : (
+            <div className="games-grid">
+              {filteredGames.map(game => (
+                <GameCard 
+                  key={game.id} 
+                  game={game} 
+                  isWishlisted={wishlist.includes(game.id)} 
+                  onToggleWishlist={onToggleWishlist} 
+                  onSelect={onSelectGame} 
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // =========================================================
+    // COMPONENT: GAMECARD (/components/GameCard.jsx)
+    // =========================================================
+    function GameCard({ game, isWishlisted, onToggleWishlist, onSelect }) {
+      return (
+        <div className="game-card" onClick={() => onSelect(game.id)}>
+          <div className="game-card-thumb-wrap">
+            <img src={game.thumbnail} alt={game.title} className="game-card-thumb" loading="lazy" />
+            <button 
+              className={`game-card-wish-btn ${isWishlisted ? 'active' : ''}`}
+              title={isWishlisted ? 'In Wishlist' : 'Add to Wishlist'}
+              onClick={(e) => onToggleWishlist(game.id, e)}
+            >
+              ♥
+            </button>
+          </div>
+          <div className="game-card-content">
+            <div className="game-card-header">
+              <h3 className="game-card-title">{game.title}</h3>
+              <span className="game-card-price">
+                {game.price === 0 ? 'Free' : `$${game.price.toFixed(2)}`}
+              </span>
+            </div>
+            
+            <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+              by {game.developer}
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12.5px', color: '#fbbf24' }}>
+              <span>★ {game.avgRating}</span>
+              <span style={{ color: 'var(--text-subtle)' }}>({game.reviewsCount} reviews)</span>
+            </div>
+
+            <div className="game-card-tags">
+              {game.tags.slice(0, 3).map(tag => (
+                <span key={tag} className="tag-pill">{tag}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // =========================================================
+    // PAGE 2: GAME DETAIL (/pages/GameDetail.jsx + GameDetail.css)
+    // =========================================================
+    function GameDetailPage({ game, wishlist, onToggleWishlist, onBuy, isOwned, onBack, showToast }) {
+      const [newReviewText, setNewReviewText] = useState('');
+      const [newRating, setNewRating] = useState(5);
+      const [aiSimulateError, setAiSimulateError] = useState(false);
+
+      const handleAddReview = (e) => {
+        e.preventDefault();
+        if (!newReviewText.trim()) return;
+        showToast('Review submitted! AI synthesis will update on next batch cycle.', 'success');
+        setNewReviewText('');
+      };
+
+      const hasFewerThan5Reviews = game.reviewsCount < 5;
+
+      return (
+        <div className="detail-main">
+          {/* Breadcrumb / Back button */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button className="btn btn-outline btn-sm" onClick={onBack}>
+              ← Back to Catalog
+            </button>
+            <span style={{ color: 'var(--text-subtle)' }}>/</span>
+            <span style={{ color: 'var(--text-muted)', fontSize: '14px' }}>{game.genre}</span>
+            <span style={{ color: 'var(--text-subtle)' }}>/</span>
+            <span style={{ color: 'var(--text-main)', fontSize: '14px', fontWeight: 600 }}>{game.title}</span>
+          </div>
+
+          <div className="detail-grid">
+            {/* Left Column: Visuals, Description, AI synthesis, Reviews */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <img src={game.hero} alt={game.title} className="hero-banner" />
+
+              <div>
+                <h1 style={{ fontSize: '32px', marginBottom: '8px' }}>{game.title}</h1>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
+                  <span className="tag-pill" style={{ background: 'var(--accent)', color: '#fff', borderColor: 'var(--accent)' }}>
+                    {game.genre}
+                  </span>
+                  {game.tags.map(t => (
+                    <span key={t} className="tag-pill">{t}</span>
+                  ))}
+                </div>
+                <p style={{ color: 'var(--text-muted)', lineHeight: '1.7', fontSize: '16px' }}>
+                  {game.description}
+                </p>
+              </div>
+
+              {/* SPEC REQUIREMENT:
+                  AI Synthesis Card (clearly labeled "AI-generated") showing Pros/Cons/Overall Sentiment:
+                  - Hidden entirely if fewer than 5 reviews exist.
+                  - Replaced by a plain average-rating line if the AI call fails.
+              */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <h3 style={{ fontSize: '18px' }}>Community Reception & Sentiment</h3>
+                  {/* Test toggle for simulation */}
+                  <button 
+                    className="btn btn-outline btn-sm" 
+                    style={{ fontSize: '11px', padding: '2px 8px' }}
+                    onClick={() => setAiSimulateError(!aiSimulateError)}
+                  >
+                    {aiSimulateError ? 'Restore AI Service' : 'Simulate AI Outage'}
+                  </button>
+                </div>
+
+                {hasFewerThan5Reviews ? (
+                  /* Condition 1: Fewer than 5 reviews -> Hidden entirely per spec */
+                  <div style={{ background: 'var(--bg-surface)', padding: '14px 18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', color: 'var(--text-muted)', fontSize: '13.5px' }}>
+                    ℹ️ AI Synthesis unavailable: This newly listed title has fewer than 5 reviews ({game.reviewsCount}/5 required).
+                  </div>
+                ) : aiSimulateError ? (
+                  /* Condition 2: AI call fails -> Replaced by plain average-rating line */
+                  <div style={{ background: 'var(--bg-surface)', padding: '14px 18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+                    <p style={{ color: 'var(--text-main)', fontSize: '14.5px' }}>
+                      <strong>Average Rating:</strong> ★ {game.avgRating} / 5.0 (based on {game.reviewsCount} customer reviews).
+                    </p>
+                    <span style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>* Automated AI review summary service currently unreachable.</span>
+                  </div>
+                ) : (
+                  /* Condition 3: Active AI Synthesis Card */
+                  <div className="ai-synthesis-card">
+                    <div className="ai-card-header">
+                      <span className="ai-indicator-chip">
+                        ✨ AI-generated Review Synthesis
+                      </span>
+                      <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                        Analyzed {game.reviewsCount} verified player logs
+                      </span>
+                    </div>
+
+                    <div>
+                      <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Overall Player Sentiment:</div>
+                      <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-main)', marginTop: '2px' }}>
+                        {game.aiSynthesis ? game.aiSynthesis.sentiment : 'Positive'}
+                      </div>
+                    </div>
+
+                    <div className="pros-cons-grid">
+                      <div>
+                        <strong style={{ fontSize: '13px', color: '#10b981', display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '6px' }}>
+                          ✓ Highlighted Strengths
+                        </strong>
+                        <ul className="pros-list">
+                          {game.aiSynthesis?.pros.map((pro, idx) => (
+                            <li key={idx}><span>+</span> <span>{pro}</span></li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div>
+                        <strong style={{ fontSize: '13px', color: '#f87171', display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '6px' }}>
+                          ⚠ Noted Weaknesses
+                        </strong>
+                        <ul className="cons-list">
+                          {game.aiSynthesis?.cons.map((con, idx) => (
+                            <li key={idx}><span>-</span> <span>{con}</span></li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* RAW REVIEW LIST */}
+              <div className="reviews-section">
+                <h3 style={{ fontSize: '18px' }}>Player Reviews ({game.reviews.length})</h3>
+                {game.reviews.map(r => (
+                  <div key={r.id} className="review-item">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontWeight: 600 }}>{r.user}</span>
+                      <span style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>{r.date}</span>
+                    </div>
+                    <div className="star-rating">
+                      {'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}
+                    </div>
+                    <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>{r.text}</p>
+                  </div>
+                ))}
+
+                {/* Submit quick review */}
+                <form onSubmit={handleAddReview} style={{ background: 'var(--bg-surface)', padding: '18px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', marginTop: '8px' }}>
+                  <h4 style={{ marginBottom: '10px' }}>Leave a Customer Review</h4>
+                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '12px' }}>
+                    <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Rating:</span>
+                    <select 
+                      value={newRating} 
+                      onChange={(e) => setNewRating(Number(e.target.value))}
+                      className="select-dropdown"
+                      style={{ padding: '4px 8px' }}
+                    >
+                      <option value="5">★★★★★ (5/5)</option>
+                      <option value="4">★★★★☆ (4/5)</option>
+                      <option value="3">★★★☆☆ (3/5)</option>
+                      <option value="2">★★☆☆☆ (2/5)</option>
+                      <option value="1">★☆☆☆☆ (1/5)</option>
+                    </select>
+                  </div>
+                  <textarea 
+                    className="form-textarea" 
+                    rows="3" 
+                    placeholder="Share your thoughts on game balance, visuals, performance..."
+                    value={newReviewText}
+                    onChange={(e) => setNewReviewText(e.target.value)}
+                  />
+                  <button type="submit" className="btn btn-secondary btn-sm" style={{ marginTop: '10px' }}>
+                    Submit Review
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            {/* Right Column: Buy box / Metadata */}
+            <div className="detail-sidebar">
+              <div className="sidebar-card">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                  <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Price:</span>
+                  <span style={{ fontSize: '28px', fontWeight: 600, color: 'var(--accent)' }}>
+                    {game.price === 0 ? 'Free to Play' : `$${game.price.toFixed(2)}`}
+                  </span>
+                </div>
+
+                <button 
+                  className={`btn ${isOwned ? 'btn-secondary' : 'btn-primary'}`} 
+                  style={{ width: '100%', padding: '12px' }}
+                  onClick={onBuy}
+                  disabled={isOwned}
+                >
+                  {isOwned ? '✓ In Your Library' : game.price === 0 ? 'Add to Library' : 'Buy Now'}
+                </button>
+
+                <button 
+                  className="btn btn-outline" 
+                  style={{ width: '100%' }}
+                  onClick={(e) => onToggleWishlist(game.id, e)}
+                >
+                  {wishlist.includes(game.id) ? '♥ Wishlisted' : '♡ Add to Wishlist'}
+                </button>
+
+                <hr style={{ borderColor: 'var(--border-color)', margin: '4px 0' }} />
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: 'var(--text-muted)' }}>Developer:</span>
+                    <span>{game.developer}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: 'var(--text-muted)' }}>Version:</span>
+                    <span>{game.version}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: 'var(--text-muted)' }}>Release Date:</span>
+                    <span>Recent</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: 'var(--text-muted)' }}>Platforms:</span>
+                    <span>Windows, macOS, Linux</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // =========================================================
+    // PAGE 3: WISHLIST (/pages/Wishlist.jsx)
+    // =========================================================
+    function WishlistPage({ games, onSelectGame, onToggleWishlist, onExplore }) {
+      return (
+        <div>
+          <div style={{ marginBottom: '24px' }}>
+            <h1 style={{ fontSize: '28px', marginBottom: '6px' }}>Your Wishlist</h1>
+            <p style={{ color: 'var(--text-muted)' }}>Keep track of anticipated indie titles and sales alerts.</p>
+          </div>
+
+          {games.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-icon">♡</div>
+              <h3>Your wishlist is empty</h3>
+              <p style={{ color: 'var(--text-muted)', maxWidth: '400px' }}>
+                Browse our catalog and click the heart icon on any game to bookmark it here.
+              </p>
+              <button className="btn btn-primary btn-sm" onClick={onExplore}>
+                Browse Indie Catalog
+              </button>
+            </div>
+          ) : (
+            <div className="games-grid">
+              {games.map(game => (
+                <GameCard 
+                  key={game.id} 
+                  game={game} 
+                  isWishlisted={true} 
+                  onToggleWishlist={onToggleWishlist} 
+                  onSelect={onSelectGame} 
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // =========================================================
+    // PAGE 4: LIBRARY (/pages/Library.jsx)
+    // =========================================================
+    function LibraryPage({ games, onSelectGame, onExplore }) {
+      return (
+        <div>
+          <div style={{ marginBottom: '24px' }}>
+            <h1 style={{ fontSize: '28px', marginBottom: '6px' }}>Game Library</h1>
+            <p style={{ color: 'var(--text-muted)' }}>All purchased and claimed games ready to download.</p>
+          </div>
+
+          {games.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-icon">📦</div>
+              <h3>Your library is waiting</h3>
+              <p style={{ color: 'var(--text-muted)', maxWidth: '400px' }}>
+                You haven't added any games to your vault yet. Check out free-to-play titles or recent releases.
+              </p>
+              <button className="btn btn-primary btn-sm" onClick={onExplore}>
+                Explore Indie Games
+              </button>
+            </div>
+          ) : (
+            <div className="games-grid">
+              {games.map(game => (
+                <div key={game.id} className="game-card" onClick={() => onSelectGame(game.id)}>
+                  <div className="game-card-thumb-wrap">
+                    <img src={game.thumbnail} alt={game.title} className="game-card-thumb" />
+                  </div>
+                  <div className="game-card-content">
+                    <h3 className="game-card-title">{game.title}</h3>
+                    <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Build: {game.version}</div>
+                    <button 
+                      className="btn btn-primary btn-sm" 
+                      style={{ marginTop: '12px' }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        alert(`Downloading standalone build for ${game.title} (${game.version})`);
+                      }}
+                    >
+                      ⬇ Download Build
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // =========================================================
+    // PAGE 5: DEVELOPER DASHBOARD (/pages/DeveloperDashboard.jsx)
+    // =========================================================
+    function DeveloperDashboardPage({ submissions, onSubmitNew }) {
+      const [expandedRow, setExpandedRow] = useState(null);
+
+      const toggleExpand = (id) => {
+        setExpandedRow(expandedRow === id ? null : id);
+      };
+
+      return (
+        <div>
+          <div className="dashboard-header">
+            <div>
+              <h1 style={{ fontSize: '28px', marginBottom: '6px' }}>Developer Hub</h1>
+              <p style={{ color: 'var(--text-muted)' }}>Manage your game submissions, track review approvals, and monitor release pipelines.</p>
+            </div>
+            <button className="btn btn-primary" onClick={onSubmitNew}>
+              + Submit New Game
+            </button>
+          </div>
+
+          {submissions.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-icon">🛠️</div>
+              <h3>No game submissions found</h3>
+              <p style={{ color: 'var(--text-muted)', maxWidth: '400px' }}>
+                Upload your first indie title build to trigger the automated verification and admin approval workflow.
+              </p>
+              <button className="btn btn-primary btn-sm" onClick={onSubmitNew}>
+                Start New Submission
+              </button>
+            </div>
+          ) : (
+            <div className="data-table-container">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Title & Version</th>
+                    <th>Genre</th>
+                    <th>Price</th>
+                    <th>Date Submitted</th>
+                    <th>Review Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {submissions.map(sub => {
+                    const isExpanded = expandedRow === sub.id;
+                    const statusClass = `status-${sub.status}`;
+                    return (
+                      <React.Fragment key={sub.id}>
+                        <tr style={{ cursor: 'pointer' }} onClick={() => toggleExpand(sub.id)}>
+                          <td>
+                            <strong>{sub.title}</strong>
+                            <div style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>{sub.version}</div>
+                          </td>
+                          <td>{sub.genre}</td>
+                          <td>{sub.price}</td>
+                          <td>{sub.submittedDate}</td>
+                          <td>
+                            <span className={`status-badge ${statusClass}`}>
+                              {sub.status.replace('_', ' ')}
+                            </span>
+                          </td>
+                          <td>
+                            <button className="btn btn-outline btn-sm">
+                              {isExpanded ? 'Hide Details' : 'View Notes'}
+                            </button>
+                          </td>
+                        </tr>
+                        {isExpanded && (
+                          <tr>
+                            <td colSpan="6" style={{ padding: 0 }}>
+                              <div className="expanded-review-panel">
+                                <h4 style={{ fontSize: '14px', marginBottom: '8px', color: 'var(--text-main)' }}>
+                                  Admin Notes & Feedback:
+                                </h4>
+                                {sub.reviewNotes ? (
+                                  <div style={{ background: 'var(--bg-surface)', padding: '12px 16px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', color: 'var(--text-muted)', fontSize: '13.5px' }}>
+                                    {sub.reviewNotes}
+                                  </div>
+                                ) : (
+                                  <p style={{ color: 'var(--text-subtle)', fontSize: '13px' }}>
+                                    No administrative feedback recorded yet. Your submission is queued in regular triage.
+                                  </p>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // =========================================================
+    // PAGE 6: SUBMIT GAME FORM (/pages/SubmitGame.jsx)
+    // =========================================================
+    function SubmitGamePage({ onCancel, onSubmitSuccess, showToast }) {
+      const [title, setTitle] = useState('');
+      const [description, setDescription] = useState('');
+      const [price, setPrice] = useState('14.99');
+      const [genre, setGenre] = useState('Action Roguelite');
+      const [version, setVersion] = useState('1.0.0');
+      const [changelog, setChangelog] = useState('');
+      
+      // Micro-tags state
+      const [tags, setTags] = useState(['Pixel Art', 'Singleplayer']);
+      const [customTagInput, setCustomTagInput] = useState('');
+      
+      // AI tag suggestion state
+      const [isSuggestingTags, setIsSuggestingTags] = useState(false);
+      const [suggestedTags, setSuggestedTags] = useState([]);
+      const [fileName, setFileName] = useState('');
+
+      // SPEC: "✨ Suggest Tags with AI" button that shows suggested tags as dismissible chips
+      // (Accept/Edit/Ignore — never auto-applied)
+      const handleSuggestTagsWithAI = () => {
+        if (!title && !description) {
+          showToast('Please enter a game title or short description first for AI tag context', 'error');
+          return;
+        }
+
+        setIsSuggestingTags(true);
+        setTimeout(() => {
+          setIsSuggestingTags(false);
+          // AI derived suggestions based on prompt input
+          const sampleBank = ['Atmospheric', 'Synthwave', 'Deckbuilder', 'Cyberpunk', 'High Difficulty', 'Controller Support'];
+          const freshSuggestions = sampleBank.filter(t => !tags.includes(t)).slice(0, 4);
+          setSuggestedTags(freshSuggestions);
+          showToast('AI generated 4 relevant tag recommendations', 'info');
+        }, 600);
+      };
+
+      const acceptSuggestedTag = (tag) => {
+        if (!tags.includes(tag)) {
+          setTags([...tags, tag]);
+        }
+        setSuggestedTags(suggestedTags.filter(t => t !== tag));
+      };
+
+      const ignoreSuggestedTag = (tag) => {
+        setSuggestedTags(suggestedTags.filter(t => t !== tag));
+      };
+
+      const editAndAcceptTag = (tag) => {
+        const edited = prompt('Edit tag label before applying:', tag);
+        if (edited && edited.trim()) {
+          setTags([...tags, edited.trim()]);
+          setSuggestedTags(suggestedTags.filter(t => t !== tag));
+        }
+      };
+
+      const removeTag = (tagToRemove) => {
+        setTags(tags.filter(t => t !== tagToRemove));
+      };
+
+      const handleAddManualTag = (e) => {
+        if (e.key === 'Enter' || e.type === 'click') {
+          e.preventDefault();
+          if (customTagInput.trim() && !tags.includes(customTagInput.trim())) {
+            setTags([...tags, customTagInput.trim()]);
+            setCustomTagInput('');
+          }
+        }
+      };
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!title.trim() || !description.trim()) {
+          showToast('Please fill out all required fields (title & description)', 'error');
+          return;
+        }
+
+        const newSub = {
+          id: `sub-${Math.floor(100 + Math.random() * 900)}`,
+          title,
+          developer: 'Active Studio User',
+          genre,
+          price: `$${parseFloat(price || 0).toFixed(2)}`,
+          status: 'pending',
+          submittedDate: 'Just now',
+          version: version || '1.0.0',
+          description,
+          tags,
+          reviewNotes: '',
+          aiTriage: {
+            summary: `Automated scan of build archive '${fileName || 'game_build.zip'}': No malicious code detected. Binary verified.`,
+            riskFlags: ['Requires manual testing on ultrawide resolution'],
+            missingInfo: [],
+            suggestedAction: 'Needs review of gameplay pacing.'
+          }
+        };
+
+        onSubmitSuccess(newSub);
+      };
+
+      return (
+        <div>
+          <div style={{ maxWidth: '760px', margin: '0 auto 20px' }}>
+            <h1 style={{ fontSize: '28px', marginBottom: '6px' }}>Submit Game for Review</h1>
+            <p style={{ color: 'var(--text-muted)' }}>Publish your build to IndieVault. Submissions go through automated QA triage and admin verification.</p>
+          </div>
+
+          <form className="form-card" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label className="form-label">Game Title *</label>
+              <input 
+                type="text" 
+                className="form-input" 
+                placeholder="e.g. Starward Bound: Echoes" 
+                value={title} 
+                onChange={(e) => setTitle(e.target.value)} 
+                required 
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Description & Pitch *</label>
+              <textarea 
+                className="form-textarea" 
+                rows="4" 
+                placeholder="Hook players with your core gameplay loop, story setting, and mechanics..." 
+                value={description} 
+                onChange={(e) => setDescription(e.target.value)} 
+                required 
+              />
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Primary Genre</label>
+                <select className="form-select" value={genre} onChange={(e) => setGenre(e.target.value)}>
+                  <option value="Action Roguelite">Action Roguelite</option>
+                  <option value="Adventure">Adventure / Walking Sim</option>
+                  <option value="Strategy">Strategy / Tactics</option>
+                  <option value="Simulation">Simulation / Crafting</option>
+                  <option value="Puzzle">Puzzle / Logic</option>
+                  <option value="Horror">Survival Horror</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Price (USD)</label>
+                <input 
+                  type="number" 
+                  step="0.01" 
+                  min="0" 
+                  className="form-input" 
+                  placeholder="0.00 for Free" 
+                  value={price} 
+                  onChange={(e) => setPrice(e.target.value)} 
+                />
+              </div>
+            </div>
+
+            {/* MICRO-TAG PICKER WITH AI SUGGESTIONS */}
+            <div className="form-group">
+              <div className="form-label">
+                <span>Micro-tags</span>
+                <button 
+                  type="button" 
+                  className="btn btn-secondary btn-sm"
+                  style={{ border: '1px solid #8b7af0', color: '#c4b5fd' }}
+                  onClick={handleSuggestTagsWithAI}
+                  disabled={isSuggestingTags}
+                >
+                  {isSuggestingTags ? '✨ Analyzing Pitch...' : '✨ Suggest Tags with AI'}
+                </button>
+              </div>
+
+              {/* Active tags */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
+                {tags.map(tag => (
+                  <span key={tag} className="tag-pill" style={{ background: 'var(--bg-surface-elevated)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                    {tag}
+                    <button 
+                      type="button" 
+                      onClick={() => removeTag(tag)} 
+                      style={{ background: 'none', border: 'none', color: 'var(--text-subtle)', cursor: 'pointer', fontSize: '14px' }}
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+
+              {/* Add custom tag */}
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  placeholder="Type custom tag & press Enter..." 
+                  value={customTagInput} 
+                  onChange={(e) => setCustomTagInput(e.target.value)}
+                  onKeyDown={handleAddManualTag}
+                />
+                <button type="button" className="btn btn-secondary btn-sm" onClick={handleAddManualTag}>Add</button>
+              </div>
+
+              {/* AI Suggested Tags Container (SPEC: dismissible chips: Accept/Edit/Ignore — NEVER auto-applied) */}
+              {suggestedTags.length > 0 && (
+                <div className="ai-suggested-chip-box">
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span className="ai-indicator-chip">
+                      ✨ AI Tag Suggestions (Review before adding)
+                    </span>
+                    <span style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>Never auto-applied</span>
+                  </div>
+
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                    {suggestedTags.map(st => (
+                      <div key={st} className="suggested-chip">
+                        <strong>{st}</strong>
+                        <button 
+                          type="button" 
+                          title="Accept and add"
+                          onClick={() => acceptSuggestedTag(st)} 
+                          style={{ background: '#10b981', color: '#fff', border: 'none', borderRadius: '4px', padding: '2px 6px', fontSize: '11px', cursor: 'pointer' }}
+                        >
+                          ✓ Accept
+                        </button>
+                        <button 
+                          type="button" 
+                          title="Edit label"
+                          onClick={() => editAndAcceptTag(st)} 
+                          style={{ background: 'var(--bg-surface)', color: 'var(--text-main)', border: '1px solid var(--border-color)', borderRadius: '4px', padding: '2px 6px', fontSize: '11px', cursor: 'pointer' }}
+                        >
+                          ✎ Edit
+                        </button>
+                        <button 
+                          type="button" 
+                          title="Dismiss"
+                          onClick={() => ignoreSuggestedTag(st)} 
+                          style={{ background: 'transparent', color: 'var(--text-subtle)', border: 'none', cursor: 'pointer', fontSize: '13px' }}
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Build Upload Dropzone */}
+            <div className="form-group">
+              <label className="form-label">Game Build Package (.zip, .tar.gz, .exe) *</label>
+              <div 
+                className="file-dropzone" 
+                onClick={() => {
+                  const mock = `build-v${version}-${Date.now().toString().slice(-4)}.zip`;
+                  setFileName(mock);
+                  showToast(`Selected file: ${mock}`, 'info');
+                }}
+              >
+                <div style={{ fontSize: '32px' }}>📁</div>
+                <div><strong>{fileName ? fileName : 'Click or Drag & Drop build archive here'}</strong></div>
+                <div style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>Max file size: 4GB. DRM-free binaries preferred.</div>
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Version Number</label>
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  value={version} 
+                  onChange={(e) => setVersion(e.target.value)} 
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Changelog / Release Notes</label>
+                <textarea 
+                  className="form-textarea" 
+                  rows="2" 
+                  placeholder="Key features or fixes in this build version..." 
+                  value={changelog} 
+                  onChange={(e) => setChangelog(e.target.value)} 
+                />
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '16px' }}>
+              <button type="button" className="btn btn-outline" onClick={onCancel}>
+                Cancel
+              </button>
+              <button type="submit" className="btn btn-primary">
+                Submit Game for Approval
+              </button>
+            </div>
+          </form>
+        </div>
+      );
+    }
+
+    // =========================================================
+    // PAGE 7: ADMIN REVIEW QUEUE (/pages/AdminQueue.jsx)
+    // =========================================================
+    function AdminQueuePage({ submissions, onUpdateStatus, showToast }) {
+      const [expandedId, setExpandedId] = useState(submissions[0]?.id || null);
+      const [modalAction, setModalAction] = useState(null); // { id: 'sub-101', type: 'needs_changes' | 'reject' }
+      const [actionNote, setActionNote] = useState('');
+      const [simulateAiFailure, setSimulateAiFailure] = useState(false);
+
+      const handleOpenModal = (id, type) => {
+        setModalAction({ id, type });
+        setActionNote('');
+      };
+
+      const handleConfirmModal = () => {
+        if (!actionNote.trim()) {
+          showToast('Administrative note is required when requesting changes or rejecting a build.', 'error');
+          return;
+        }
+        onUpdateStatus(modalAction.id, modalAction.type, actionNote);
+        setModalAction(null);
+      };
+
+      return (
+        <div>
+          <div className="dashboard-header">
+            <div>
+              <h1 style={{ fontSize: '28px', marginBottom: '6px' }}>🛡️ Administrative Triage & Verification</h1>
+              <p style={{ color: 'var(--text-muted)' }}>Review incoming builds, inspect AI security triage reports, and issue publication decisions.</p>
+            </div>
+            
+            <button 
+              className="btn btn-outline btn-sm" 
+              onClick={() => setSimulateAiFailure(!simulateAiFailure)}
+            >
+              {simulateAiFailure ? 'Restore AI Triage Service' : 'Simulate AI Triage Outage'}
+            </button>
+          </div>
+
+          <div className="data-table-container">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Submission ID</th>
+                  <th>Game Title</th>
+                  <th>Developer</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Triage Detail</th>
+                </tr>
+              </thead>
+              <tbody>
+                {submissions.map(sub => {
+                  const isExpanded = expandedId === sub.id;
+                  const statusClass = `status-${sub.status}`;
+                  return (
+                    <React.Fragment key={sub.id}>
+                      <tr onClick={() => setExpandedId(isExpanded ? null : sub.id)} style={{ cursor: 'pointer' }}>
+                        <td><code>{sub.id}</code></td>
+                        <td><strong>{sub.title}</strong></td>
+                        <td>{sub.developer}</td>
+                        <td>
+                          <span className={`status-badge ${statusClass}`}>
+                            {sub.status.replace('_', ' ')}
+                          </span>
+                        </td>
+                        <td>{sub.submittedDate}</td>
+                        <td>
+                          <button className="btn btn-outline btn-sm">
+                            {isExpanded ? '▲ Collapse' : '▼ Expand Panel'}
+                          </button>
+                        </td>
+                      </tr>
+
+                      {/* EXPANDABLE DETAIL PANEL */}
+                      {isExpanded && (
+                        <tr>
+                          <td colSpan="6" style={{ padding: 0 }}>
+                            <div className="expanded-review-panel">
+                              {/* SPEC REQUIREMENT:
+                                  Detail panel showing the AI Triage Note (summary, risk flags as small warning tags,
+                                  missing info, suggested action) clearly labeled "AI-generated — review required",
+                                  with a visible fallback message if AI triage is unavailable, plus Approve /
+                                  Needs Changes / Reject buttons — the latter two open a required notes textarea.
+                              */}
+                              <div style={{ background: 'var(--bg-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                                  <span className="ai-indicator-chip">
+                                    🛡️ AI-generated — review required
+                                  </span>
+                                  <span style={{ fontSize: '13px', color: 'var(--text-subtle)' }}>Automated Build Sanity Check</span>
+                                </div>
+
+                                {simulateAiFailure ? (
+                                  /* Fallback when AI triage is unavailable */
+                                  <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '14px', borderRadius: 'var(--radius-sm)', color: '#fca5a5', marginBottom: '16px', fontSize: '14px' }}>
+                                    ⚠️ AI triage analysis is currently unavailable. Please perform manual code inspection and security scans.
+                                  </div>
+                                ) : (
+                                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
+                                    <div>
+                                      <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Automated Summary:</span>
+                                      <p style={{ color: 'var(--text-main)', fontSize: '14px', marginTop: '2px' }}>
+                                        {sub.aiTriage?.summary || 'Standard build integrity validated.'}
+                                      </p>
+                                    </div>
+
+                                    {/* Risk flags */}
+                                    <div>
+                                      <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Detected Risk Flags:</span>
+                                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '4px' }}>
+                                        {sub.aiTriage?.riskFlags && sub.aiTriage.riskFlags.length > 0 ? (
+                                          sub.aiTriage.riskFlags.map((rf, i) => (
+                                            <span key={i} style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)', color: '#fca5a5', fontSize: '12px', padding: '3px 8px', borderRadius: '4px' }}>
+                                              ⚠ {rf}
+                                            </span>
+                                          ))
+                                        ) : (
+                                          <span style={{ color: '#34d399', fontSize: '13px' }}>✓ No critical risks flagged</span>
+                                        )}
+                                      </div>
+                                    </div>
+
+                                    {/* Missing info */}
+                                    {sub.aiTriage?.missingInfo && sub.aiTriage.missingInfo.length > 0 && (
+                                      <div>
+                                        <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Missing Information:</span>
+                                        <ul style={{ paddingLeft: '18px', color: '#fbbf24', fontSize: '13px', marginTop: '4px' }}>
+                                          {sub.aiTriage.missingInfo.map((mi, i) => (
+                                            <li key={i}>{mi}</li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    )}
+
+                                    <div>
+                                      <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>AI Suggested Action:</span>
+                                      <div style={{ fontWeight: 600, color: 'var(--text-main)', fontSize: '14px' }}>
+                                        {sub.aiTriage?.suggestedAction || 'Manual QA'}
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* Admin Action Bar */}
+                                <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+                                  <div style={{ fontSize: '13px', color: 'var(--text-subtle)' }}>
+                                    Current Status: <strong style={{ textTransform: 'capitalize' }}>{sub.status.replace('_', ' ')}</strong>
+                                  </div>
+
+                                  <div style={{ display: 'flex', gap: '10px' }}>
+                                    <button 
+                                      className="btn btn-danger btn-sm"
+                                      onClick={() => handleOpenModal(sub.id, 'rejected')}
+                                    >
+                                      Reject Submission
+                                    </button>
+
+                                    <button 
+                                      className="btn btn-secondary btn-sm"
+                                      style={{ borderColor: '#f59e0b', color: '#fbbf24' }}
+                                      onClick={() => handleOpenModal(sub.id, 'needs_changes')}
+                                    >
+                                      Request Changes
+                                    </button>
+
+                                    <button 
+                                      className="btn btn-primary btn-sm"
+                                      style={{ background: '#10b981' }}
+                                      onClick={() => onUpdateStatus(sub.id, 'approved', 'Build fully verified and approved for marketplace catalog.')}
+                                    >
+                                      ✓ Approve & Publish
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* REQUIRED NOTES MODAL (Needs Changes / Reject) */}
+          {modalAction && (
+            <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)', maxWidth: '520px', width: '100%', padding: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.6)' }}>
+                <h3 style={{ marginBottom: '8px' }}>
+                  {modalAction.type === 'needs_changes' ? 'Request Changes from Developer' : 'Reject Submission'}
+                </h3>
+                <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '16px' }}>
+                  Provide clear instructions for the developer explaining why this action is required.
+                </p>
+
+                <div className="form-group">
+                  <label className="form-label">Review Notes (Required) *</label>
+                  <textarea 
+                    className="form-textarea" 
+                    rows="4" 
+                    placeholder="Describe specific reproduction steps, missing legal links, or optimization requirements..."
+                    value={actionNote}
+                    onChange={(e) => setActionNote(e.target.value)}
+                    autoFocus
+                  />
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                  <button className="btn btn-outline" onClick={() => setModalAction(null)}>
+                    Cancel
+                  </button>
+                  <button 
+                    className={`btn ${modalAction.type === 'needs_changes' ? 'btn-secondary' : 'btn-danger'}`}
+                    onClick={handleConfirmModal}
+                  >
+                    Submit Decision
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // =========================================================
+    // PAGE 8: AUTH (/pages/Auth.jsx)
+    // =========================================================
+    function AuthPage({ currentRole, onAuthSuccess }) {
+      const [tab, setTab] = useState('login'); // 'login' | 'register'
+      const [email, setEmail] = useState('dev@indievault.io');
+      const [password, setPassword] = useState('password123');
+      // Role choice limited to Player or Developer at signup only (SPEC)
+      const [signupRole, setSignupRole] = useState('developer');
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        const finalRole = tab === 'register' ? signupRole : currentRole || 'player';
+        onAuthSuccess(finalRole, email);
+      };
+
+      return (
+        <div>
+          <div className="auth-container">
+            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+              <h2 style={{ fontSize: '24px', marginBottom: '4px' }}>Welcome to IndieVault</h2>
+              <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Connecting indie creators with gaming enthusiasts.</p>
+            </div>
+
+            {/* Toggle Tabs */}
+            <div className="auth-tabs">
+              <div 
+                className={`auth-tab ${tab === 'login' ? 'active' : ''}`}
+                onClick={() => setTab('login')}
+              >
+                Sign In
+              </div>
+              <div 
+                className={`auth-tab ${tab === 'register' ? 'active' : ''}`}
+                onClick={() => setTab('register')}
+              >
+                Register
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label className="form-label">Email Address</label>
+                <input 
+                  type="email" 
+                  className="form-input" 
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)} 
+                  required 
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Password</label>
+                <input 
+                  type="password" 
+                  className="form-input" 
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)} 
+                  required 
+                />
+              </div>
+
+              {/* SPEC REQUIREMENT: role choice limited to Player or Developer at signup only */}
+              {tab === 'register' && (
+                <div className="form-group">
+                  <label className="form-label">Account Type (Signup Only)</label>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '4px' }}>
+                    <div 
+                      onClick={() => setSignupRole('player')}
+                      style={{ 
+                        background: signupRole === 'player' ? 'var(--bg-surface-hover)' : 'var(--bg-dark)',
+                        border: `1px solid ${signupRole === 'player' ? 'var(--accent)' : 'var(--border-color)'}`,
+                        borderRadius: 'var(--radius-sm)',
+                        padding: '12px',
+                        cursor: 'pointer',
+                        textAlign: 'center'
+                      }}
+                    >
+                      <div style={{ fontWeight: 600 }}>Player</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Browse & Play</div>
+                    </div>
+
+                    <div 
+                      onClick={() => setSignupRole('developer')}
+                      style={{ 
+                        background: signupRole === 'developer' ? 'var(--bg-surface-hover)' : 'var(--bg-dark)',
+                        border: `1px solid ${signupRole === 'developer' ? 'var(--accent)' : 'var(--border-color)'}`,
+                        borderRadius: 'var(--radius-sm)',
+                        padding: '12px',
+                        cursor: 'pointer',
+                        textAlign: 'center'
+                      }}
+                    >
+                      <div style={{ fontWeight: 600 }}>Developer</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Submit & Sell</div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '12px', padding: '12px' }}>
+                {tab === 'login' ? 'Sign In' : 'Create Account'}
+              </button>
+            </form>
+          </div>
+        </div>
+      );
+    }
+
+    // Render App
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IndieVault — Indie Game Marketplace &amp; Developer Hub</title>
+<!-- Load React 18, Babel for in-browser compilation -->
+<script crossorigin="" src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin="" src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<style>
+    /* =========================================================
+       GLOBAL & RESET (Plain CSS, no Tailwind/Bootstrap)
+       Design: Dark/neutral itch.io/Steam indie aesthetic.
+       Two font weights (400, 600), vibrant purple/violet CTA accent (#6c5ce7).
+       ========================================================= */
+    :root {
+      --bg-dark: #0f1115;
+      --bg-surface: #181b21;
+      --bg-surface-elevated: #222630;
+      --bg-surface-hover: #2b303c;
+      --border-color: #2e3440;
+      --border-light: #3e4657;
+      
+      --text-main: #f0f2f5;
+      --text-muted: #9aa2b1;
+      --text-subtle: #6c7484;
+
+      --accent: #6c5ce7;
+      --accent-hover: #5846e0;
+      --accent-glow: rgba(108, 92, 231, 0.25);
+      
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #0ea5e9;
+      --ai-badge-bg: rgba(108, 92, 231, 0.15);
+      --ai-badge-border: #8b7af0;
+      --ai-badge-text: #c4b5fd;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* TYPOGRAPHY - Strict constraint: 2 weights max (400 and 600) */
+    h1, h2, h3, h4, h5, h6, strong, .font-bold {
+      font-weight: 600;
+      letter-spacing: -0.015em;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    /* COMMON BUTTONS & INTERACTION */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+      white-space: nowrap;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 2px 8px var(--accent-glow);
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+    .btn-secondary {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+    .btn-secondary:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-light);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+    }
+    .btn-outline:hover {
+      color: var(--text-main);
+      border-color: var(--text-muted);
+      background: rgba(255,255,255,0.03);
+    }
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+    .btn-danger:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 13px;
+      border-radius: 4px;
+    }
+
+    /* AI MARKER / BADGE */
+    .ai-indicator-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--ai-badge-bg);
+      border: 1px solid var(--ai-badge-border);
+      color: var(--ai-badge-text);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.02em;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.02em;
+    }
+    .badge-status.just-approved {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+
+    /* TOAST NOTIFICATION */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .toast {
+      pointer-events: auto;
+      background: #1c202a;
+      border: 1px solid var(--border-light);
+      padding: 14px 20px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      animation: slideUp 0.25s ease-out;
+      max-width: 440px;
+    }
+    .toast.info { border-left: 4px solid var(--accent); }
+    .toast-close {
+      margin-left: auto;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .toast-close:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* =========================================================
+       COMPONENT: NAVBAR.CSS
+       ========================================================= */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(24, 27, 33, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      width: 100%;
+    }
+    .navbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+    .nav-brand svg {
+      color: var(--accent);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-item {
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-item:hover {
+      color: var(--text-main);
+      background: var(--bg-surface-elevated);
+    }
+    .nav-item.active {
+      color: #fff;
+      background: var(--bg-surface-hover);
+    }
+    .nav-role-switcher {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-dark);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      font-size: 13px;
+    }
+    .nav-role-select {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+    }
+    .nav-hamburger {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    /* Mobile Nav Drawer */
+    .mobile-menu {
+      display: none;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 20px;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    /* =========================================================
+       HERO SPOTLIGHT BANNER
+       ========================================================= */
+    .spotlight-banner {
+      background: linear-gradient(135deg, rgba(34, 38, 48, 0.95) 0%, rgba(24, 27, 33, 0.98) 100%);
+      border: 1px solid rgba(108, 92, 231, 0.35);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55), 0 0 30px rgba(108, 92, 231, 0.12);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 30px;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 28px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .spotlight-banner::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(108, 92, 231, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .spotlight-media-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      background: #0d0f13;
+    }
+    .spotlight-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .spotlight-banner:hover .spotlight-img {
+      transform: scale(1.02);
+    }
+    .spotlight-content {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 2;
+    }
+    .spotlight-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    .spotlight-title {
+      font-size: 28px;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+    .spotlight-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .spotlight-rating {
+      color: #fbbf24;
+      font-weight: 600;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .spotlight-desc {
+      font-size: 14.5px;
+      color: #c9ced8;
+      line-height: 1.6;
+    }
+    .spotlight-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 4px 0 6px;
+    }
+    .spotlight-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    /* =========================================================
+       COMPONENT: GAMECARD.CSS & GRID
+       ========================================================= */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 22px;
+      width: 100%;
+    }
+    .game-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+    }
+    .game-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-light);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+    }
+    .game-card-thumb-wrap {
+      position: relative;
+      width: 100%;
+      height: 156px;
+      background: #121418;
+      overflow: hidden;
+    }
+    .game-card-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .game-card:hover .game-card-thumb {
+      transform: scale(1.05);
+    }
+    .game-card-wish-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(15, 17, 21, 0.75);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      cursor: pointer;
+      transition: var(--transition);
+      z-index: 2;
+    }
+    .game-card-wish-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .game-card-wish-btn.active {
+      color: #ef4444;
+      background: #ffffff;
+      border-color: #ffffff;
+    }
+    .game-card-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 10px;
+    }
+    .game-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .game-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-main);
+      line-height: 1.3;
+    }
+    .game-card-price {
+      font-weight: 600;
+      color: var(--accent);
+      background: rgba(108, 92, 231, 0.12);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .game-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: auto;
+    }
+    .tag-pill {
+      font-size: 11.5px;
+      background: var(--bg-surface-elevated);
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      padding: 2px 8px;
+      border-radius: 20px;
+      transition: var(--transition);
+    }
+    .tag-pill.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* =========================================================
+       PAGE WRAPPER
+       ========================================================= */
+    .page-container {
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+      flex-grow: 1;
+    }
+
+    /* =========================================================
+       PAGE: BROWSE.CSS
+       ========================================================= */
+    .browse-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 28px;
+      background: var(--bg-surface);
+      padding: 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+    }
+    .search-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .search-input-wrap {
+      position: relative;
+      flex-grow: 1;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px 10px 38px;
+      color: var(--text-main);
+      outline: none;
+      transition: var(--transition);
+    }
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-subtle);
+      pointer-events: none;
+    }
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 14px;
+    }
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .select-dropdown {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* =========================================================
+       PAGE: GAMEDETAIL.CSS
+       ========================================================= */
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 32px;
+    }
+    .hero-banner {
+      width: 100%;
+      height: 380px;
+      border-radius: var(--radius-md);
+      object-fit: cover;
+      background: #14171d;
+      border: 1px solid var(--border-color);
+    }
+    .detail-main {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .detail-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .sidebar-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* EMPTY STATES */
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      border: 1px dashed var(--border-color);
+      margin: 20px 0;
+    }
+    .empty-icon {
+      font-size: 44px;
+      color: var(--text-subtle);
+    }
+
+    /* =========================================================
+       RESPONSIVENESS (Below 860px, 768px and 480px)
+       ========================================================= */
+    @media (max-width: 960px) {
+      .spotlight-banner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-banner {
+        height: 260px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-role-switcher {
+        display: none;
+      }
+      .nav-hamburger {
+        display: block;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page-container {
+        padding: 16px 12px 50px;
+      }
+      .games-grid {
+        grid-template-columns: 1fr;
+      }
+      .search-row {
+        flex-direction: column;
+      }
+      .spotlight-banner {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<!-- React Application Source Code -->
+<script type="text/babel">
+    const { useState, useMemo } = React;
+
+    // --- MOCK DATABASE & INITIAL ASSETS ---
+    const INITIAL_GAMES = [
+      {
+        id: 'g1',
+        title: 'Chrono Rift: Synthetica',
+        price: 14.99,
+        genre: 'Action Roguelite',
+        tags: ['Pixel Art', 'Cyberpunk', 'Fast-Paced'],
+        thumbnail: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80',
+        hero: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80',
+        developer: 'NeonVoid Studios',
+        version: '1.2.0',
+        description: 'Dash through fractured timeline dimensions where every run unlocks synergistic augments and cybernetic deck enhancements. Built with tight 60fps controls.',
+        reviewsCount: 42,
+        avgRating: 4.6,
+        isNew: false
+      },
+      {
+        id: 'g4',
+        title: 'Dungeon Baker: Pastry Quest',
+        price: 9.99,
+        genre: 'Simulation',
+        tags: ['Pixel Art', 'Cooking', 'Casual'],
+        thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBmunysrHNojVbxpvfkTNT3KK7TAc-uKYodUkQdtbAZ3dr9xWejqdi3duwRda3B6vPmtZgC1exoM6TFt31jlZupjPSKEvdJ6e_p5OODjyu9nXqQHD0CmBkFdJ9_YiDJoB915F53wqJcpM_4k6MVlm3dC6GyDVHNKDqVl3aYwq-E-q3AOpI_9h5petdXNSdoOV3voZ_DqgyJr6VRpzn3a0c2lsX-IHE69jMEMyNQi_x0RHA2xjborvIq',
+        hero: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBmunysrHNojVbxpvfkTNT3KK7TAc-uKYodUkQdtbAZ3dr9xWejqdi3duwRda3B6vPmtZgC1exoM6TFt31jlZupjPSKEvdJ6e_p5OODjyu9nXqQHD0CmBkFdJ9_YiDJoB915F53wqJcpM_4k6MVlm3dC6GyDVHNKDqVl3aYwq-E-q3AOpI_9h5petdXNSdoOV3voZ_DqgyJr6VRpzn3a0c2lsX-IHE69jMEMyNQi_x0RHA2xjborvIq',
+        developer: 'Croissant Coven',
+        version: 'v1.0.2',
+        description: 'Step into the Flourishing Hearth! Bake enchanted sourdough, craft magical croissants, and serve whimsical dungeon adventurers in this cozy tavern management RPG. Verified clean build, Steam Deck ready.',
+        reviewsCount: 29,
+        avgRating: 4.5,
+        isNew: true
+      },
+      {
+        id: 'g2',
+        title: 'Whispering Pines Forest',
+        price: 0.00,
+        genre: 'Adventure',
+        tags: ['Cozy', 'Atmospheric', 'Story Rich'],
+        thumbnail: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80',
+        hero: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80',
+        developer: 'Meadow Lark Games',
+        version: '1.0.4',
+        description: 'A serene narrative walking sim about cataloging forgotten flora and befriending woodland spirits in the Pacific Northwest.',
+        reviewsCount: 18,
+        avgRating: 4.8,
+        isNew: false
+      },
+      {
+        id: 'g3',
+        title: 'Voidfall Orbital Siege',
+        price: 19.99,
+        genre: 'Strategy',
+        tags: ['Sci-Fi', 'Turn-Based', 'Tactics'],
+        thumbnail: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+        hero: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
+        developer: 'Vector Forge',
+        version: '0.9.8 (Beta)',
+        description: 'Command deep-space battle fleets in 3D Newtonian physics skirmishes against an insurgent algorithmic swarm.',
+        reviewsCount: 3,
+        avgRating: 4.0,
+        isNew: false
+      }
+    ];
+
+    // --- MAIN REACT APPLICATION CONTAINER ---
+    function App() {
+      // Per Edit Request: Set active selected role to 'Player'
+      const [role, setRole] = useState('player');
+      const [activePage, setActivePage] = useState('browse'); // 'browse' | 'wishlist' | 'library' | 'detail'
+      const [selectedGameId, setSelectedGameId] = useState('g4');
+
+      // State stores
+      const [games, setGames] = useState(INITIAL_GAMES);
+      const [wishlist, setWishlist] = useState(['g1']); // wishlist count is 1
+      const [library, setLibrary] = useState(['g2']);   // library count is 1
+      
+      // Default persistent notification requested
+      const [toast, setToast] = useState({
+        message: '✨ New Game Live: Dungeon Baker: Pastry Quest (v1.0.2) is now available in the store!',
+        type: 'info'
+      });
+      const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+      const showToast = (message, type = 'info') => {
+        setToast({ message, type });
+      };
+
+      const handleRoleChange = (newRole) => {
+        setRole(newRole);
+        showToast(`Switched active profile role to "${newRole.toUpperCase()}".`, 'info');
+      };
+
+      const toggleWishlist = (gameId, e) => {
+        if (e) e.stopPropagation();
+        if (wishlist.includes(gameId)) {
+          setWishlist(wishlist.filter(id => id !== gameId));
+          showToast('Removed from your Wishlist');
+        } else {
+          setWishlist([...wishlist, gameId]);
+          showToast('Added to your Wishlist!', 'info');
+        }
+      };
+
+      const handleViewGame = (gameId) => {
+        setSelectedGameId(gameId);
+        setActivePage('detail');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      const handleBuyGame = (game) => {
+        if (!library.includes(game.id)) {
+          setLibrary([...library, game.id]);
+          showToast(`Added "${game.title}" to your game library!`, 'info');
+        } else {
+          showToast('Game is already in your library!', 'info');
+        }
+      };
+
+      const currentGame = games.find(g => g.id === selectedGameId) || games[0];
+
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+          {/* TOAST NOTIFICATION */}
+          {toast && (
+            <div className="toast-container">
+              <div className={`toast ${toast.type}`}>
+                <span style={{ fontSize: '18px' }}>✨</span>
+                <div style={{ lineHeight: '1.4' }}>{toast.message}</div>
+                <button 
+                  className="toast-close" 
+                  onClick={() => setToast(null)}
+                  title="Dismiss notification"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* TOP NAVBAR */}
+          <header className="navbar">
+            <div className="navbar-inner">
+              <div className="nav-brand" onClick={() => setActivePage('browse')}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                  <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+                <span>IndieVault</span>
+              </div>
+
+              {/* Navigation items: 'Browse Store' (active highlight), 'Wishlist (1)', 'Library (1)' */}
+              {/* Dev and Admin links are NOT shown per Player role specification */}
+              <nav className="nav-links">
+                <div 
+                  className={`nav-item ${activePage === 'browse' ? 'active' : ''}`} 
+                  onClick={() => setActivePage('browse')}
+                >
+                  Browse Store
+                </div>
+                
+                <div 
+                  className={`nav-item ${activePage === 'wishlist' ? 'active' : ''}`} 
+                  onClick={() => setActivePage('wishlist')}
+                >
+                  Wishlist ({wishlist.length})
+                </div>
+
+                <div 
+                  className={`nav-item ${activePage === 'library' ? 'active' : ''}`} 
+                  onClick={() => setActivePage('library')}
+                >
+                  Library ({library.length})
+                </div>
+              </nav>
+
+              {/* Right: Role Switcher & Player / Account button */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div className="nav-role-switcher">
+                  <span style={{ color: 'var(--text-muted)' }}>Role:</span>
+                  <select 
+                    className="nav-role-select" 
+                    value={role} 
+                    onChange={(e) => handleRoleChange(e.target.value)}
+                  >
+                    <option value="player">Player</option>
+                    <option value="developer">Developer</option>
+                    <option value="curator">Curator</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+
+                <button 
+                  className="btn btn-secondary btn-sm" 
+                  onClick={() => showToast('Viewing Player Profile & Vault Settings', 'info')}
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                  <span>👤</span>
+                  <span>Player / Account</span>
+                </button>
+
+                {/* Mobile hamburger */}
+                <button className="nav-hamburger" onClick={() => setMobileNavOpen(!mobileNavOpen)} aria-label="Toggle menu">
+                  ☰
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile Drawer */}
+            {mobileNavOpen && (
+              <div className="mobile-menu open">
+                <div className={`nav-item ${activePage === 'browse' ? 'active' : ''}`} onClick={() => { setActivePage('browse'); setMobileNavOpen(false); }}>
+                  Browse Store
+                </div>
+                <div className={`nav-item ${activePage === 'wishlist' ? 'active' : ''}`} onClick={() => { setActivePage('wishlist'); setMobileNavOpen(false); }}>
+                  Wishlist ({wishlist.length})
+                </div>
+                <div className={`nav-item ${activePage === 'library' ? 'active' : ''}`} onClick={() => { setActivePage('library'); setMobileNavOpen(false); }}>
+                  Library ({library.length})
+                </div>
+              </div>
+            )}
+          </header>
+
+          {/* PAGE CONTENT */}
+          <main className="page-container">
+            {activePage === 'browse' && (
+              <BrowsePage 
+                games={games} 
+                wishlist={wishlist} 
+                onToggleWishlist={toggleWishlist} 
+                onSelectGame={handleViewGame}
+                onBuyGame={handleBuyGame}
+              />
+            )}
+
+            {activePage === 'wishlist' && (
+              <WishlistPage 
+                games={games.filter(g => wishlist.includes(g.id))} 
+                onSelectGame={handleViewGame} 
+                onToggleWishlist={toggleWishlist} 
+                onExplore={() => setActivePage('browse')}
+              />
+            )}
+
+            {activePage === 'library' && (
+              <LibraryPage 
+                games={games.filter(g => library.includes(g.id))} 
+                onSelectGame={handleViewGame} 
+                onExplore={() => setActivePage('browse')}
+              />
+            )}
+
+            {activePage === 'detail' && (
+              <GameDetailPage 
+                game={currentGame} 
+                wishlist={wishlist} 
+                onToggleWishlist={toggleWishlist} 
+                onBuy={() => handleBuyGame(currentGame)}
+                isOwned={library.includes(currentGame.id)}
+                onBack={() => setActivePage('browse')}
+              />
+            )}
+          </main>
+
+          {/* FOOTER */}
+          <footer style={{ borderTop: '1px solid var(--border-color)', background: 'var(--bg-surface)', padding: '24px 20px', marginTop: 'auto' }}>
+            <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', fontSize: '13px', color: 'var(--text-muted)' }}>
+              <div>© 2025 IndieVault. Dedicated two-sided marketplace for independent developers & players.</div>
+              <div style={{ display: 'flex', gap: '16px' }}>
+                <span>Plain CSS (Grid/Flexbox)</span>
+                <span>•</span>
+                <span>AI-Assisted Triage & Review Synthesis</span>
+                <span>•</span>
+                <span>Vite/React</span>
+              </div>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    // =========================================================
+    // HERO SPOTLIGHT BANNER COMPONENT
+    // =========================================================
+    function FeaturedSpotlight({ onSelect, onToggleWishlist, isWishlisted, onBuy }) {
+      return (
+        <section className="spotlight-banner">
+          {/* Left Media: 16:9 Image https://lh3.googleusercontent.com/aida-public/AB6AXuBmunysrHNojVbxpvfkTNT3KK7TAc-uKYodUkQdtbAZ3dr9xWejqdi3duwRda3B6vPmtZgC1exoM6TFt31jlZupjPSKEvdJ6e_p5OODjyu9nXqQHD0CmBkFdJ9_YiDJoB915F53wqJcpM_4k6MVlm3dC6GyDVHNKDqVl3aYwq-E-q3AOpI_9h5petdXNSdoOV3voZ_DqgyJr6VRpzn3a0c2lsX-IHE69jMEMyNQi_x0RHA2xjborvIq */}
+          <div className="spotlight-media-wrap" onClick={onSelect} style={{ cursor: 'pointer' }}>
+            <img 
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmunysrHNojVbxpvfkTNT3KK7TAc-uKYodUkQdtbAZ3dr9xWejqdi3duwRda3B6vPmtZgC1exoM6TFt31jlZupjPSKEvdJ6e_p5OODjyu9nXqQHD0CmBkFdJ9_YiDJoB915F53wqJcpM_4k6MVlm3dC6GyDVHNKDqVl3aYwq-E-q3AOpI_9h5petdXNSdoOV3voZ_DqgyJr6VRpzn3a0c2lsX-IHE69jMEMyNQi_x0RHA2xjborvIq" 
+              alt="Dungeon Baker: Pastry Quest - The Flourishing Hearth gameplay screenshot" 
+              className="spotlight-img"
+            />
+          </div>
+
+          {/* Right Details */}
+          <div className="spotlight-content">
+            <div className="spotlight-badge-row">
+              <span className="ai-indicator-chip" style={{ background: 'rgba(108, 92, 231, 0.2)', borderColor: '#a78bfa' }}>
+                ✨ Just Published — Approved via Triage
+              </span>
+              <span className="badge-status just-approved">
+                ✓ Community Verified
+              </span>
+            </div>
+
+            <div>
+              <h2 className="spotlight-title" onClick={onSelect} style={{ cursor: 'pointer' }}>
+                Dungeon Baker: Pastry Quest
+              </h2>
+              <div className="spotlight-sub" style={{ marginTop: '4px' }}>
+                <span>by Croissant Coven • v1.0.2 Release</span>
+                <span>•</span>
+                <span className="spotlight-rating">★ 5.0 (Fresh Release)</span>
+              </div>
+            </div>
+
+            <div className="spotlight-tags">
+              {['Cozy', 'Cooking Sim', 'Pixel Art', 'Deck Verified'].map(tag => (
+                <span key={tag} className="tag-pill" style={{ background: 'var(--bg-surface-elevated)', color: '#d8b4fe', borderColor: '#4c1d95' }}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            <p className="spotlight-desc">
+              Step into the Flourishing Hearth! Bake enchanted sourdough, craft magical croissants, and serve whimsical dungeon adventurers in this cozy tavern management RPG. Verified clean build, Steam Deck ready.
+            </p>
+
+            <div className="spotlight-actions">
+              <button 
+                className="btn btn-primary" 
+                onClick={onBuy}
+                style={{ padding: '10px 22px' }}
+              >
+                Buy Now $9.99
+              </button>
+
+              <button 
+                className="btn btn-secondary" 
+                onClick={onToggleWishlist}
+              >
+                {isWishlisted ? '♥ In Wishlist' : '♡ Add to Wishlist'}
+              </button>
+
+              <button 
+                className="btn btn-outline" 
+                onClick={onSelect}
+              >
+                View Details →
+              </button>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // =========================================================
+    // PAGE 1: BROWSE / CATALOG
+    // =========================================================
+    function BrowsePage({ games, wishlist, onToggleWishlist, onSelectGame, onBuyGame }) {
+      const [searchQuery, setSearchQuery] = useState('');
+      const [sortBy, setSortBy] = useState('popular');
+      const [priceFilter, setPriceFilter] = useState('all');
+      const [selectedTag, setSelectedTag] = useState('All');
+
+      const allTags = ['All', 'Pixel Art', 'Cyberpunk', 'Fast-Paced', 'Deckbuilder', 'Cozy', 'Atmospheric', 'Story Rich'];
+
+      const dungeonBakerGame = games.find(g => g.id === 'g4');
+
+      const filteredGames = useMemo(() => {
+        return games.filter(game => {
+          const matchSearch = game.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                              game.developer.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                              game.genre.toLowerCase().includes(searchQuery.toLowerCase());
+          const matchTag = selectedTag === 'All' || game.tags.includes(selectedTag);
+          const matchPrice = priceFilter === 'all' 
+            ? true 
+            : priceFilter === 'free' 
+              ? game.price === 0 
+              : priceFilter === 'under10' 
+                ? game.price < 10 
+                : game.price >= 10;
+          return matchSearch && matchTag && matchPrice;
+        }).sort((a, b) => {
+          if (sortBy === 'price-low') return a.price - b.price;
+          if (sortBy === 'price-high') return b.price - a.price;
+          if (sortBy === 'rating') return b.avgRating - a.avgRating;
+          return b.reviewsCount - a.reviewsCount;
+        });
+      }, [games, searchQuery, selectedTag, sortBy, priceFilter]);
+
+      return (
+        <div>
+          {/* Header text */}
+          <div style={{ marginBottom: '22px' }}>
+            <h1 style={{ fontSize: '28px', color: 'var(--text-main)', marginBottom: '6px' }}>Discover Indie Gems</h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: '15px' }}>Explore curated independent creations, directly supporting developer studios.</p>
+          </div>
+
+          {/* ITEM 2: HERO SPOTLIGHT BANNER */}
+          {dungeonBakerGame && (
+            <FeaturedSpotlight 
+              onSelect={() => onSelectGame('g4')}
+              onToggleWishlist={(e) => onToggleWishlist('g4', e)}
+              isWishlisted={wishlist.includes('g4')}
+              onBuy={() => onBuyGame(dungeonBakerGame)}
+            />
+          )}
+
+          {/* Controls: Search, Tag filters, Sort */}
+          <div className="browse-controls">
+            <div className="search-row">
+              <div className="search-input-wrap">
+                <span className="search-icon">🔍</span>
+                <input 
+                  type="text" 
+                  className="search-input" 
+                  placeholder="Search by game title, studio or genre..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+
+              <select 
+                className="select-dropdown" 
+                value={sortBy} 
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value="popular">Sort: Most Popular</option>
+                <option value="rating">Sort: Highest Rated</option>
+                <option value="price-low">Sort: Price (Low to High)</option>
+                <option value="price-high">Sort: Price (High to Low)</option>
+              </select>
+
+              <select 
+                className="select-dropdown" 
+                value={priceFilter} 
+                onChange={(e) => setPriceFilter(e.target.value)}
+              >
+                <option value="all">Price: Any</option>
+                <option value="free">Free to Play ($0.00)</option>
+                <option value="under10">Under $10</option>
+                <option value="10plus">$10 and above</option>
+              </select>
+            </div>
+
+            {/* Micro-tags bar */}
+            <div className="filter-row">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-muted)' }}>
+                <span>Tags:</span>
+                <div className="filter-chips">
+                  {allTags.map(tag => (
+                    <button 
+                      key={tag}
+                      className={`tag-pill ${selectedTag === tag ? 'active' : ''}`}
+                      onClick={() => setSelectedTag(tag)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div style={{ fontSize: '13px', color: 'var(--text-subtle)' }}>
+                Showing {filteredGames.length} of {games.length} titles
+              </div>
+            </div>
+          </div>
+
+          {/* ITEM 3: BROWSE CATALOG GRID WITH 4 CARDS */}
+          <div className="games-grid">
+            {filteredGames.map(game => (
+              <GameCard 
+                key={game.id} 
+                game={game} 
+                isWishlisted={wishlist.includes(game.id)} 
+                onToggleWishlist={onToggleWishlist} 
+                onSelect={onSelectGame} 
+              />
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // =========================================================
+    // COMPONENT: GAMECARD
+    // =========================================================
+    function GameCard({ game, isWishlisted, onToggleWishlist, onSelect }) {
+      return (
+        <div className="game-card" onClick={() => onSelect(game.id)}>
+          <div className="game-card-thumb-wrap">
+            <img src={game.thumbnail} alt={game.title} className="game-card-thumb" loading="lazy" />
+            <button 
+              className={`game-card-wish-btn ${isWishlisted ? 'active' : ''}`}
+              title={isWishlisted ? 'In Wishlist' : 'Add to Wishlist'}
+              onClick={(e) => onToggleWishlist(game.id, e)}
+            >
+              ♥
+            </button>
+            {game.isNew && (
+              <div style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(16, 185, 129, 0.9)', color: '#ffffff', fontSize: '11px', fontWeight: 600, padding: '3px 8px', borderRadius: '4px', backdropFilter: 'blur(4px)', letterSpacing: '0.04em' }}>
+                NEW
+              </div>
+            )}
+          </div>
+          <div className="game-card-content">
+            <div className="game-card-header">
+              <h3 className="game-card-title">{game.title}</h3>
+              <span className="game-card-price">
+                {game.price === 0 ? 'Free' : `$${game.price.toFixed(2)}`}
+              </span>
+            </div>
+            
+            <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+              by {game.developer}
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12.5px', color: '#fbbf24' }}>
+              <span>★ {game.avgRating}</span>
+              <span style={{ color: 'var(--text-subtle)' }}>({game.reviewsCount} reviews)</span>
+            </div>
+
+            <div className="game-card-tags">
+              {game.tags.slice(0, 3).map(tag => (
+                <span key={tag} className="tag-pill">{tag}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // =========================================================
+    // PAGE 2: GAME DETAIL
+    // =========================================================
+    function GameDetailPage({ game, wishlist, onToggleWishlist, onBuy, isOwned, onBack }) {
+      return (
+        <div className="detail-main">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button className="btn btn-outline btn-sm" onClick={onBack}>
+              ← Back to Catalog
+            </button>
+            <span style={{ color: 'var(--text-subtle)' }}>/</span>
+            <span style={{ color: 'var(--text-muted)', fontSize: '14px' }}>{game.genre}</span>
+            <span style={{ color: 'var(--text-subtle)' }}>/</span>
+            <span style={{ color: 'var(--text-main)', fontSize: '14px', fontWeight: 600 }}>{game.title}</span>
+          </div>
+
+          <div className="detail-grid">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <img src={game.hero} alt={game.title} className="hero-banner" />
+
+              <div>
+                <h1 style={{ fontSize: '32px', marginBottom: '8px' }}>{game.title}</h1>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
+                  <span className="tag-pill" style={{ background: 'var(--accent)', color: '#fff', borderColor: 'var(--accent)' }}>
+                    {game.genre}
+                  </span>
+                  {game.tags.map(t => (
+                    <span key={t} className="tag-pill">{t}</span>
+                  ))}
+                </div>
+                <p style={{ color: 'var(--text-muted)', lineHeight: '1.7', fontSize: '16px' }}>
+                  {game.description}
+                </p>
+              </div>
+            </div>
+
+            <div className="detail-sidebar">
+              <div className="sidebar-card">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                  <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Price:</span>
+                  <span style={{ fontSize: '28px', fontWeight: 600, color: 'var(--accent)' }}>
+                    {game.price === 0 ? 'Free to Play' : `$${game.price.toFixed(2)}`}
+                  </span>
+                </div>
+
+                <button 
+                  className={`btn ${isOwned ? 'btn-secondary' : 'btn-primary'}`} 
+                  style={{ width: '100%', padding: '12px' }}
+                  onClick={onBuy}
+                  disabled={isOwned}
+                >
+                  {isOwned ? '✓ In Your Library' : game.price === 0 ? 'Add to Library' : 'Buy Now'}
+                </button>
+
+                <button 
+                  className="btn btn-outline" 
+                  style={{ width: '100%' }}
+                  onClick={(e) => onToggleWishlist(game.id, e)}
+                >
+                  {wishlist.includes(game.id) ? '♥ In Wishlist' : '♡ Add to Wishlist'}
+                </button>
+
+                <hr style={{ borderColor: 'var(--border-color)', margin: '4px 0' }} />
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: 'var(--text-muted)' }}>Developer:</span>
+                    <span>{game.developer}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: 'var(--text-muted)' }}>Version:</span>
+                    <span>{game.version}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: 'var(--text-muted)' }}>Platforms:</span>
+                    <span>Windows, macOS, Linux, Steam Deck</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // =========================================================
+    // PAGE 3: WISHLIST
+    // =========================================================
+    function WishlistPage({ games, onSelectGame, onToggleWishlist, onExplore }) {
+      return (
+        <div>
+          <div style={{ marginBottom: '24px' }}>
+            <h1 style={{ fontSize: '28px', marginBottom: '6px' }}>Your Wishlist ({games.length})</h1>
+            <p style={{ color: 'var(--text-muted)' }}>Keep track of anticipated indie titles and sales alerts.</p>
+          </div>
+
+          {games.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-icon">♡</div>
+              <h3>Your wishlist is empty</h3>
+              <p style={{ color: 'var(--text-muted)', maxWidth: '400px' }}>
+                Browse our catalog and click the heart icon on any game to bookmark it here.
+              </p>
+              <button className="btn btn-primary btn-sm" onClick={onExplore}>
+                Browse Indie Catalog
+              </button>
+            </div>
+          ) : (
+            <div className="games-grid">
+              {games.map(game => (
+                <GameCard 
+                  key={game.id} 
+                  game={game} 
+                  isWishlisted={true} 
+                  onToggleWishlist={onToggleWishlist} 
+                  onSelect={onSelectGame} 
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // =========================================================
+    // PAGE 4: LIBRARY
+    // =========================================================
+    function LibraryPage({ games, onSelectGame, onExplore }) {
+      return (
+        <div>
+          <div style={{ marginBottom: '24px' }}>
+            <h1 style={{ fontSize: '28px', marginBottom: '6px' }}>Game Library ({games.length})</h1>
+            <p style={{ color: 'var(--text-muted)' }}>All claimed titles ready to download and play DRM-free.</p>
+          </div>
+
+          {games.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-icon">📦</div>
+              <h3>Your library is waiting</h3>
+              <p style={{ color: 'var(--text-muted)', maxWidth: '400px' }}>
+                You haven't added any games to your vault yet. Check out free-to-play titles or recent releases.
+              </p>
+              <button className="btn btn-primary btn-sm" onClick={onExplore}>
+                Explore Indie Games
+              </button>
+            </div>
+          ) : (
+            <div className="games-grid">
+              {games.map(game => (
+                <div key={game.id} className="game-card" onClick={() => onSelectGame(game.id)}>
+                  <div className="game-card-thumb-wrap">
+                    <img src={game.thumbnail} alt={game.title} className="game-card-thumb" />
+                  </div>
+                  <div className="game-card-content">
+                    <h3 className="game-card-title">{game.title}</h3>
+                    <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Build: {game.version}</div>
+                    <button 
+                      className="btn btn-primary btn-sm" 
+                      style={{ marginTop: '12px' }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        alert(`Downloading standalone package for ${game.title}`);
+                      }}
+                    >
+                      ⬇ Download Build
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // Render App
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body></html>

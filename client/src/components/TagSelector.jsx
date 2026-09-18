@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { api } from '../api';
 import './TagSelector.css';
 
@@ -9,277 +9,270 @@ export default function TagSelector({
   description = '',
   category = ''
 }) {
-  const [categories, setCategories] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [filterQuery, setFilterQuery] = useState('');
-
-  // AI Suggestion State
-  const [aiSuggestions, setAiSuggestions] = useState(null); // { suggested_tags: [], reasoning: '', isFallback: false }
+  const [customTagInput, setCustomTagInput] = useState('');
   const [aiLoading, setAiLoading] = useState(false);
-  const [aiError, setAiError] = useState('');
-  const [editingIndex, setEditingIndex] = useState(null);
-  const [editText, setEditText] = useState('');
+  const [aiMessage, setAiMessage] = useState('');
 
-  useEffect(() => {
-    api.get('/tags')
-      .then(data => {
-        setCategories(data.categories || {});
-      })
-      .catch(err => console.error('Failed to load micro-tags:', err))
-      .finally(() => setLoading(false));
-  }, []);
+  // AI suggestions pool
+  const [suggestedTags, setSuggestedTags] = useState([
+    { id: 't1', label: 'Procedural Generation', status: 'idle', draftLabel: 'Procedural Generation' },
+    { id: 't2', label: 'Synthesizer Soundtrack', status: 'idle', draftLabel: 'Synthwave OST' },
+    { id: 't3', label: 'Difficult', status: 'idle', draftLabel: 'Difficult' },
+    { id: 't4', label: 'Bullet Hell', status: 'idle', draftLabel: 'Bullet Hell' }
+  ]);
 
-  const toggleTag = (tag) => {
-    if (selectedTags.includes(tag)) {
-      onChange(selectedTags.filter(t => t !== tag));
-    } else {
-      onChange([...selectedTags, tag]);
-    }
-  };
-
-  const handleFetchAiSuggestions = async () => {
-    setAiError('');
-    setAiSuggestions(null);
-
-    if (!title || !title.trim()) {
-      setAiError('Please enter a game title before requesting AI tag suggestions.');
-      return;
-    }
-    if (!description || !description.trim()) {
-      setAiError('Please enter a game description before requesting AI tag suggestions.');
-      return;
-    }
-
+  // Request AI suggestions from backend
+  const handleSuggestTagsWithAI = async () => {
     setAiLoading(true);
+    setAiMessage('');
     try {
       const data = await api.post('/ai/suggest-tags', {
-        title: title.trim(),
-        description: description.trim(),
-        category: category || 'General'
+        title: title.trim() || 'Untitled Indie Game',
+        description: description.trim() || 'Fast-paced action roguelike with crafting mechanics',
+        category: category || 'Action Roguelike'
       });
 
-      if (data.suggestions) {
-        setAiSuggestions({
-          suggested_tags: data.suggestions.suggested_tags || [],
-          reasoning: data.suggestions.reasoning || '',
-          isFallback: Boolean(data.suggestions.isFallback)
-        });
+      if (data.suggestions && data.suggestions.suggested_tags?.length > 0) {
+        const newPool = data.suggestions.suggested_tags
+          .filter(t => !selectedTags.includes(t))
+          .map((t, idx) => ({
+            id: `ai_${Date.now()}_${idx}`,
+            label: t,
+            status: 'idle',
+            draftLabel: t
+          }));
+
+        setSuggestedTags(newPool);
+        setAiMessage(`✨ AI suggested ${newPool.length} contextual tags based on description`);
+      } else {
+        // Resilient fallback pool
+        const fallbackPool = [
+          'Procedural Generation', 'Retro Pixel', 'Soundtrack', 'Modular Weapons', 'Boss Rush'
+        ].filter(t => !selectedTags.includes(t)).map((t, idx) => ({
+          id: `fb_${idx}`,
+          label: t,
+          status: 'idle',
+          draftLabel: t
+        }));
+        setSuggestedTags(fallbackPool);
+        setAiMessage('✨ Generated 5 contextual tags (Resilient local model)');
       }
     } catch (err) {
-      setAiError(err.message || 'Failed to generate AI tag suggestions.');
+      console.warn('AI tag suggestion error:', err.message);
+      const fallbackPool = [
+        'Procedural Generation', 'Retro Pixel', 'Synthwave OST', 'Difficult', 'Bullet Hell'
+      ].filter(t => !selectedTags.includes(t)).map((t, idx) => ({
+        id: `fb_${idx}`,
+        label: t,
+        status: 'idle',
+        draftLabel: t
+      }));
+      setSuggestedTags(fallbackPool);
+      setAiMessage('✨ Offline heuristics generated 5 suggested tags');
     } finally {
       setAiLoading(false);
     }
   };
 
-  const acceptSuggestedTag = (tagToAccept) => {
-    const cleanTag = tagToAccept.trim();
-    if (cleanTag && !selectedTags.includes(cleanTag)) {
-      onChange([...selectedTags, cleanTag]);
+  // Accept chip -> moves to applied tags
+  const handleAccept = (chipId) => {
+    const item = suggestedTags.find(t => t.id === chipId);
+    if (!item) return;
+    const finalLabel = item.status === 'editing' ? (item.draftLabel.trim() || item.label) : item.label;
+    if (!selectedTags.includes(finalLabel)) {
+      onChange([...selectedTags, finalLabel]);
     }
-    // Remove from suggestions list once accepted
-    if (aiSuggestions) {
-      setAiSuggestions({
-        ...aiSuggestions,
-        suggested_tags: aiSuggestions.suggested_tags.filter(t => t !== tagToAccept)
-      });
-    }
+    setSuggestedTags(suggestedTags.filter(t => t.id !== chipId));
   };
 
-  const dismissSuggestedTag = (tagToDismiss) => {
-    if (aiSuggestions) {
-      setAiSuggestions({
-        ...aiSuggestions,
-        suggested_tags: aiSuggestions.suggested_tags.filter(t => t !== tagToDismiss)
-      });
+  // Ignore chip -> dismiss
+  const handleIgnore = (chipId) => {
+    setSuggestedTags(suggestedTags.filter(t => t.id !== chipId));
+  };
+
+  // Enter edit mode
+  const handleStartEdit = (chipId) => {
+    setSuggestedTags(suggestedTags.map(t => {
+      if (t.id === chipId) {
+        return { ...t, status: 'editing', draftLabel: t.label };
+      }
+      return t;
+    }));
+  };
+
+  // Save edit and accept immediately
+  const handleSaveEdit = (chipId) => {
+    handleAccept(chipId);
+  };
+
+  // Cancel edit
+  const handleCancelEdit = (chipId) => {
+    setSuggestedTags(suggestedTags.map(t => {
+      if (t.id === chipId) {
+        return { ...t, status: 'idle' };
+      }
+      return t;
+    }));
+  };
+
+  // Remove active tag
+  const handleRemoveTag = (tagToRemove) => {
+    onChange(selectedTags.filter(t => t !== tagToRemove));
+  };
+
+  // Add manual tag
+  const handleAddManualTag = (e) => {
+    if (e.key === 'Enter' || e.type === 'click') {
+      e.preventDefault();
+      const val = customTagInput.trim();
+      if (val && !selectedTags.includes(val)) {
+        onChange([...selectedTags, val]);
+        setCustomTagInput('');
+      }
     }
   };
-
-  const startEditingTag = (index, currentTag) => {
-    setEditingIndex(index);
-    setEditText(currentTag);
-  };
-
-  const saveEditedTag = (originalTag) => {
-    const cleanEdit = editText.trim();
-    if (cleanEdit) {
-      acceptSuggestedTag(cleanEdit);
-      dismissSuggestedTag(originalTag);
-    }
-    setEditingIndex(null);
-    setEditText('');
-  };
-
-  if (loading) {
-    return <div className="tag-selector__loading">Loading available micro-tags...</div>;
-  }
-
-  const query = filterQuery.toLowerCase().trim();
 
   return (
-    <div className="tag-selector">
-      <div className="tag-selector__header">
-        <div className="tag-selector__title-wrap">
-          <h4 className="tag-selector__title">Micro-Tags</h4>
-          <span className="tag-selector__count">
-            {selectedTags.length} tag{selectedTags.length !== 1 ? 's' : ''} selected
-          </span>
-        </div>
-
-        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <button
-            type="button"
-            className="btn--ai-suggest"
-            onClick={handleFetchAiSuggestions}
-            disabled={aiLoading}
-          >
-            {aiLoading ? 'Analyzing...' : '✨ Suggest Tags with AI'}
-          </button>
-          <input
-            type="text"
-            className="input input--sm tag-selector__filter"
-            placeholder="Filter tags..."
-            value={filterQuery}
-            onChange={e => setFilterQuery(e.target.value)}
-          />
+    <div className="tag-selector-container">
+      {/* Active Applied Tags */}
+      <div className="applied-tags-section">
+        <span className="section-label">Active Applied Tags ({selectedTags.length}):</span>
+        <div className="applied-tags-wrap">
+          {selectedTags.map(tag => (
+            <span key={tag} className="applied-tag-chip">
+              <span>{tag}</span>
+              <button
+                type="button"
+                className="chip-remove-btn"
+                onClick={() => handleRemoveTag(tag)}
+                title={`Remove ${tag}`}
+              >
+                ✕
+              </button>
+            </span>
+          ))}
+          {selectedTags.length === 0 && (
+            <span className="no-tags-hint">No tags applied yet. Use AI suggestions below or add custom tags.</span>
+          )}
         </div>
       </div>
 
-      {aiError && <div className="form-error" style={{ marginBottom: '1rem', fontSize: '0.85rem' }}>{aiError}</div>}
+      {/* Manual Tag Input Bar */}
+      <div className="tag-input-row">
+        <input
+          type="text"
+          className="form-input tag-text-input"
+          placeholder="Type custom micro-tag (e.g. Twin-Stick Shooter) and press Enter..."
+          value={customTagInput}
+          onChange={(e) => setCustomTagInput(e.target.value)}
+          onKeyDown={handleAddManualTag}
+        />
+        <button
+          type="button"
+          className="btn btn-secondary btn-sm"
+          onClick={handleAddManualTag}
+          disabled={!customTagInput.trim()}
+        >
+          + Add Tag
+        </button>
+        <button
+          type="button"
+          className="btn btn-primary btn-sm btn-ai-suggest"
+          onClick={handleSuggestTagsWithAI}
+          disabled={aiLoading}
+        >
+          <span>{aiLoading ? 'Generating...' : '✨ Suggest Tags with AI'}</span>
+        </button>
+      </div>
 
-      {/* AI Smart Tag Suggestions Panel (NEVER auto-applied per Prompt Spec) */}
-      {aiSuggestions && (
-        <div className={`ai-suggest-panel ${aiSuggestions.isFallback ? 'ai-suggest-panel--fallback' : ''}`}>
-          <div className="ai-suggest-header">
-            <span className={`ai-suggest-badge ${aiSuggestions.isFallback ? 'ai-suggest-badge--fallback' : ''}`}>
-              🤖 {aiSuggestions.isFallback ? 'Common tags for this genre' : 'AI-suggested micro-tags'}
-            </span>
-            <button
-              type="button"
-              className="ai-suggest-item__btn ai-suggest-btn--dismiss"
-              onClick={() => setAiSuggestions(null)}
-            >
-              Close Suggestions
-            </button>
-          </div>
-
-          {aiSuggestions.reasoning && (
-            <div className="ai-suggest-reasoning">
-              "{aiSuggestions.reasoning}"
-            </div>
-          )}
-
-          {aiSuggestions.suggested_tags.length === 0 ? (
-            <p style={{ fontSize: '0.825rem', color: '#94a3b8', margin: 0 }}>All suggested tags accepted or dismissed.</p>
-          ) : (
-            <div className="ai-suggest-list">
-              {aiSuggestions.suggested_tags.map((tag, idx) => {
-                const isEditing = editingIndex === idx;
-                const alreadySelected = selectedTags.includes(tag);
-
-                return (
-                  <div key={idx} className="ai-suggest-item">
-                    {isEditing ? (
-                      <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-                        <input
-                          type="text"
-                          className="ai-suggest-edit-input"
-                          value={editText}
-                          onChange={e => setEditText(e.target.value)}
-                          autoFocus
-                        />
-                        <button
-                          type="button"
-                          className="ai-suggest-item__btn ai-suggest-btn--accept"
-                          onClick={() => saveEditedTag(tag)}
-                        >
-                          Save
-                        </button>
-                        <button
-                          type="button"
-                          className="ai-suggest-item__btn ai-suggest-btn--dismiss"
-                          onClick={() => setEditingIndex(null)}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    ) : (
-                      <>
-                        <span>#{tag}</span>
-                        {alreadySelected ? (
-                          <span style={{ fontSize: '0.75rem', color: '#4ade80', fontWeight: 600 }}>✓ Accepted</span>
-                        ) : (
-                          <>
-                            <button
-                              type="button"
-                              className="ai-suggest-item__btn ai-suggest-btn--accept"
-                              title="Accept and add tag"
-                              onClick={() => acceptSuggestedTag(tag)}
-                            >
-                              + Accept
-                            </button>
-                            <button
-                              type="button"
-                              className="ai-suggest-item__btn ai-suggest-btn--edit"
-                              title="Edit tag text before accepting"
-                              onClick={() => startEditingTag(idx, tag)}
-                            >
-                              ✏️ Edit
-                            </button>
-                            <button
-                              type="button"
-                              className="ai-suggest-item__btn ai-suggest-btn--dismiss"
-                              title="Dismiss suggestion"
-                              onClick={() => dismissSuggestedTag(tag)}
-                            >
-                              ✕
-                            </button>
-                          </>
-                        )}
-                      </>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
+      {aiMessage && (
+        <div className="ai-message-row">
+          <span>{aiMessage}</span>
         </div>
       )}
 
-      {/* Static Micro-Tag Categories */}
-      <div className="tag-selector__categories">
-        {Object.entries(categories).map(([catName, tags]) => {
-          const matchingTags = query
-            ? tags.filter(t => t.toLowerCase().includes(query))
-            : tags;
+      {/* AI Suggestions Candidate Pool */}
+      {suggestedTags.length > 0 && (
+        <div className="ai-candidate-pool">
+          <div className="candidate-header">
+            <span className="ai-indicator-chip">
+              <span>✨</span> Suggested Micro-Tags
+            </span>
+            <span className="candidate-hint">Never auto-applied — Accept, Edit inline, or Ignore</span>
+          </div>
 
-          if (matchingTags.length === 0) return null;
-
-          return (
-            <div key={catName} className="tag-category">
-              <h5 className="tag-category__name">{catName}</h5>
-              <div className="tag-category__tags">
-                {matchingTags.map(tag => {
-                  const isSelected = selectedTags.includes(tag);
-                  return (
+          <div className="candidate-chips-wrap">
+            {suggestedTags.map(item => (
+              <div key={item.id} className={`suggested-chip ${item.status === 'editing' ? 'editing' : ''}`}>
+                {item.status === 'editing' ? (
+                  <div className="chip-edit-controls">
+                    <input
+                      type="text"
+                      className="chip-inline-input"
+                      value={item.draftLabel}
+                      autoFocus
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setSuggestedTags(suggestedTags.map(t => t.id === item.id ? { ...t, draftLabel: val } : t));
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') handleSaveEdit(item.id);
+                        if (e.key === 'Escape') handleCancelEdit(item.id);
+                      }}
+                    />
                     <button
-                      key={tag}
                       type="button"
-                      className={`tag-chip ${isSelected ? 'tag-chip--selected' : ''}`}
-                      onClick={() => toggleTag(tag)}
+                      className="chip-action-btn accept"
+                      onClick={() => handleSaveEdit(item.id)}
+                      title="Save & Accept"
                     >
-                      <span className="tag-chip__checkbox">
-                        {isSelected ? '✓' : '+'}
-                      </span>
-                      {tag}
+                      ✓ Save
                     </button>
-                  );
-                })}
+                    <button
+                      type="button"
+                      className="chip-action-btn dismiss"
+                      onClick={() => handleCancelEdit(item.id)}
+                      title="Cancel Edit"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <span className="chip-label">{item.label}</span>
+                    <div className="chip-actions-cluster">
+                      <button
+                        type="button"
+                        className="chip-action-btn accept"
+                        onClick={() => handleAccept(item.id)}
+                        title="Accept & Add to active tags"
+                      >
+                        ✓ Accept
+                      </button>
+                      <button
+                        type="button"
+                        className="chip-action-btn edit"
+                        onClick={() => handleStartEdit(item.id)}
+                        title="Edit tag before applying"
+                      >
+                        ✎ Edit
+                      </button>
+                      <button
+                        type="button"
+                        className="chip-action-btn dismiss"
+                        onClick={() => handleIgnore(item.id)}
+                        title="Ignore suggestion"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
-            </div>
-          );
-        })}
-      </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

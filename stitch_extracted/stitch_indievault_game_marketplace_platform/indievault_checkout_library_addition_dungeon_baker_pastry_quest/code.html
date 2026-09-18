@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-dim": "#101319", "tertiary-container": "#0673c9", "on-secondary-fixed": "#160066", "inverse-on-surface": "#2e3037", "on-error": "#690005", "error": "#ffb4ab", "on-tertiary-fixed-variant": "#004882", "error-container": "#93000a", "primary-fixed-dim": "#c6bfff", "secondary-fixed": "#e4dfff", "tertiary-fixed-dim": "#a2c9ff", "secondary-container": "#4230b7", "on-tertiary-fixed": "#001c38", "primary-fixed": "#e4dfff", "on-error-container": "#ffdad6", "on-surface-variant": "#c8c4d7", "secondary": "#c6bfff", "on-primary": "#2900a0", "surface-bright": "#363940", "secondary-fixed-dim": "#c6bfff", "on-surface": "#e1e2eb", "primary-container": "#6c5ce7", "surface-tint": "#c6bfff", "tertiary-fixed": "#d3e4ff", "on-primary-fixed": "#160066", "primary": "#c6bfff", "on-secondary": "#28019f", "inverse-primary": "#5847d2", "inverse-surface": "#e1e2eb", "outline": "#928ea0", "on-tertiary": "#00315c", "surface-container-lowest": "#0b0e14", "on-tertiary-container": "#f4f7ff", "on-primary-fixed-variant": "#4029ba", "on-primary-container": "#faf6ff", "surface-container": "#1d2026", "surface-variant": "#32353c", "surface-container-low": "#191c22", "on-secondary-container": "#b7afff", "surface-container-high": "#272a31", "on-background": "#e1e2eb", "on-secondary-fixed-variant": "#402db4", "surface": "#101319", "background": "#101319", "outline-variant": "#474554", "surface-container-highest": "#32353c", "tertiary": "#a2c9ff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin": "2rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "space-md": "1rem", "space-xl": "2.5rem", "space-lg": "1.5rem", "margin-mobile": "1rem", "gutter": "1.5rem", "gutter-mobile": "1rem" }, "fontFamily": { "body-md": ["Geist"], "label-sm": ["Geist"], "headline-lg-mobile": ["Geist"], "headline-xl-mobile": ["Geist"], "headline-md": ["Geist"], "label-md": ["Geist"], "headline-xl": ["Geist"], "body-sm": ["Geist"], "headline-sm": ["Geist"], "headline-lg": ["Geist"], "body-lg": ["Geist"], "label-lg": ["Geist"] }, "fontSize": { "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-xl-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "600" }], "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }] } } } };</script></head><body class="bg-background text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col"><header class="fixed top-0 left-0 right-0 z-50 h-16 bg-surface-container-low/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.5)]"><div class="w-full h-16 px-gutter flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><a class="flex items-center gap-space-xs group" data-path="browse-store" href="#"><div class="w-8 h-8 rounded-lg bg-surface-container-highest flex items-center justify-center shadow-[0_0_12px_rgba(108,92,231,0.4)]"><span class="material-symbols-outlined text-primary text-[20px]">deployed_code</span></div><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Indie<span class="text-primary">Vault</span></span></a><nav class="hidden md:flex items-center gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-label-md text-label-md rounded-lg"><a class="px-space-md py-space-xs rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="browse-store" href="#">Browse Store</a><a class="px-space-md py-space-xs rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="dev-dashboard" href="#">Dev Dashboard</a><a aria-current="page" class="flex items-center gap-space-xs px-space-md py-space-xs transition-colors bg-primary-container text-on-primary-container font-label-md text-label-md rounded-lg" data-path="admin-review-queue" href="#"><span>Admin Review Queue</span><span class="px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">3 Pending</span></a></nav></div><div class="flex items-center gap-space-md"><div class="hidden sm:flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg bg-surface-container"><span class="material-symbols-outlined text-primary text-[16px]">security</span><span class="font-label-sm text-label-sm text-on-surface-variant">System Admin (SecOps)</span></div><div class="relative flex items-center"><button class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors font-label-md text-label-md" type="button"><span>Role: Admin</span><span class="material-symbols-outlined text-[18px] text-on-surface-variant">arrow_drop_down</span></button></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 flex-1 px-gutter bg-background"><div class="flex flex-col w-full pb-space-xl">
+<!-- Subtle Ambient Glow -->
+<div class="relative w-full overflow-hidden">
+<div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[850px] h-[340px] bg-primary-container/15 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+<div class="absolute top-20 right-10 w-[420px] h-[280px] bg-tertiary-container/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+<!-- Contextual Breadcrumbs & Session Meta -->
+<div class="w-full pt-space-lg pb-space-md flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<nav class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">storefront</span>
+<span>Store</span>
+</a>
+<span class="text-outline-variant">/</span>
+<span class="hover:text-primary transition-colors">RPG & Simulation</span>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface font-semibold">Dungeon Baker: Pastry Quest</span>
+<span class="text-outline-variant">/</span>
+<span class="text-primary font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+          Instant Claim & Vault Receipt
+        </span>
+</nav>
+<div class="flex items-center gap-space-sm self-start sm:self-auto">
+<div class="flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container-high text-tertiary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">sports_esports</span>
+<span>Steam Deck Verified (Native Proton)</span>
+</div>
+<div class="flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">sync</span>
+<span>Cloud Saves: Ready</span>
+</div>
+</div>
+</div>
+<!-- Purchase Confirmation Banner / Celebration Hero Bar -->
+<div class="w-full rounded-xl bg-gradient-to-r from-surface-container-high via-surface-container to-surface-container-high p-space-lg shadow-xl relative overflow-hidden mb-space-lg">
+<div class="absolute -right-8 -bottom-10 opacity-10 pointer-events-none select-none text-primary">
+<span class="material-symbols-outlined text-[240px]">check_circle</span>
+</div>
+<div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-space-lg">
+<div class="flex items-start gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-primary-container text-on-primary-container flex items-center justify-center shadow-lg shadow-primary-container/40 shrink-0">
+<span class="material-symbols-outlined text-[28px]">verified</span>
+</div>
+<div class="space-y-1">
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight">Order Confirmed & Added to Vault!</span>
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container-highest text-primary font-label-sm text-label-sm">Receipt #IV-99420-BK</span>
+</div>
+<p class="text-on-surface-variant font-body-md text-body-md">
+              Transaction finalized instantly. Direct creator royalty dispatched on-chain with perpetual offline play authorization.
+            </p>
+</div>
+</div>
+<!-- Cryptographic License Pill -->
+<div class="flex flex-col sm:flex-row items-start sm:items-center gap-space-sm self-stretch md:self-auto bg-surface-container-lowest/80 p-space-sm rounded-lg backdrop-blur-sm">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-primary text-[16px]">token</span>
+<span>Vault Proof of License:</span>
+</div>
+<code class="font-label-sm text-label-sm text-secondary bg-surface-container px-2 py-0.5 rounded text-[11px] tracking-wide">0x8F92...D3A</code>
+<button class="text-on-surface-variant hover:text-on-surface text-label-sm font-label-sm transition-colors ml-auto sm:ml-0" id="copy-license-btn" onclick="navigator.clipboard.writeText('0x8F929AC4E813FD3A'); this.innerText='Copied!';">
+            Copy
+          </button>
+</div>
+</div>
+</div>
+<!-- Main Content Grid: Split Left (Game Card & Direct Creator Split) + Right (Receipt & Instant Play CTA) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Left Column: Purchased Game Showcase & Instant Installer (7 Cols) -->
+<div class="lg:col-span-7 space-y-space-lg">
+<!-- Game Featured Card -->
+<div class="rounded-xl bg-surface-container overflow-hidden shadow-md">
+<!-- Pixel Art Hero Preview Frame -->
+<div class="relative w-full aspect-video sm:h-80 bg-surface-container-lowest overflow-hidden group">
+<img class="w-full h-full object-cover object-center group-hover:scale-[1.01] transition-transform duration-500" data-alt="Detailed warm pixel art interior of a bustling fantasy dungeon bakery tavern named The Flourishing Hearth. In the foreground, chef Lyra in a baker hat casts a glowing magical flour swirl over freshly baked golden croissants. Adventurers sit drinking ale at wooden tables beside a blazing stone hearth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAr-DimnVD7K98vTgUkUu7vDywiVKkfRGjzx8yL43J6W8hq_Cja665GZ2lKzVWxjT2t265axWZexRucH00h-KqhFdz-UvJw3D8tRSGmCNlfEh-cfvPpbAxS87_uQSeawK2x8QT2tnixj8q9GYBK57QmIJEIUwhVRN3DAsb6He3lyNRcF4ToywiEKB539-Dd9zL83CqKkPOfim8fhSUnTMqpAWxxNQ-UhvGtkYdbwc4tqa1Hd3YT9LWo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container via-surface-container/20 to-transparent"></div>
+<div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+<span class="px-2 py-1 rounded bg-surface-container-lowest/90 backdrop-blur-md text-primary font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">bolt</span>
+<span>DRM-Free Standalone</span>
+</span>
+<span class="px-2 py-1 rounded bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm">
+                v1.0.2 Stable
+              </span>
+</div>
+<div class="absolute bottom-3 left-4 right-4 flex items-end justify-between">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary">RPG Tavern Simulator</span>
+<h1 class="font-headline-lg text-headline-lg text-on-surface drop-shadow-sm">Dungeon Baker: Pastry Quest</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+<span>By Croissant Coven Studio</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span>Released Today</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span>310 MB Installed</span>
+</p>
+</div>
+</div>
+</div>
+<!-- Interactive Play & Installer Deck -->
+<div class="p-space-lg space-y-space-md">
+<!-- Dynamic Download / Launch Progress Unit -->
+<div class="p-space-md rounded-lg bg-surface-container-high space-y-space-sm" id="download-box">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></div>
+<span class="font-label-md text-label-md text-on-surface" id="download-status-text">Client Ready: Steam Deck, Windows, macOS, Linux</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant" id="download-metrics">310.4 MB • High-Speed CDN</span>
+</div>
+<!-- Animated Progress Bar (Simulated on install click) -->
+<div class="w-full h-2.5 rounded-full bg-surface-container-lowest overflow-hidden">
+<div class="h-full bg-primary transition-all duration-300 ease-out" id="install-progress" style="width: 0%"></div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span id="download-state-hint">One-click background sync to client library</span>
+<span class="font-mono text-primary font-semibold" id="download-percent">Ready to Install</span>
+</div>
+</div>
+<!-- Primary CTAs -->
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-sm pt-space-xs">
+<button class="flex-1 flex items-center justify-center gap-space-xs px-space-lg py-3 rounded-lg bg-primary-container text-on-primary-container font-label-lg text-label-lg hover:brightness-110 active:scale-[0.99] transition-all shadow-md shadow-primary-container/20" id="primary-install-btn" onclick="startInstall()">
+<span class="material-symbols-outlined text-[20px]" id="install-icon">download</span>
+<span id="install-btn-label">Install Game Now (310 MB)</span>
+</button>
+<button class="flex items-center justify-center gap-space-xs px-space-md py-3 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest font-label-lg text-label-lg transition-colors">
+<span class="material-symbols-outlined text-[18px]">folder_zip</span>
+<span>Direct .zip Binary</span>
+</button>
+</div>
+<!-- Secondary Actions Row -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs text-on-surface-variant font-label-sm text-label-sm border-t border-surface-container-highest/60">
+<div class="flex items-center gap-space-md">
+<a class="flex items-center gap-1 hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-[16px]">card_giftcard</span>
+<span>Gift extra copy ($9.99)</span>
+</a>
+<a class="flex items-center gap-1 hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-[16px]">key</span>
+<span>Generate Steam/GOG Key</span>
+</a>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+<span>Zero Telemetry / Offline Certified</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 95/5 Creator Direct Payout Transparency Module -->
+<div class="p-space-lg rounded-xl bg-surface-container space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[22px]">handshake</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">IndieVault 95/5 Fair Split</h2>
+</div>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-high text-tertiary font-label-sm text-label-sm">
+              Standard 30% Platform Tax Rejected
+            </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Unlike legacy walled-garden app stores, your purchase directly fuels independent game craftsmanship.
+          </p>
+<!-- Split Visual Breakdown Bar -->
+<div class="space-y-space-xs pt-space-xs">
+<div class="w-full h-3 rounded-full overflow-hidden flex bg-surface-container-lowest">
+<div class="bg-primary h-full transition-all duration-500" style="width: 95%" title="95% Creator Revenue"></div>
+<div class="bg-surface-container-highest h-full transition-all duration-500" style="width: 5%" title="5% IndieVault Protocol Ops"></div>
+</div>
+<div class="flex items-center justify-between text-label-sm font-label-sm">
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span>$9.49 direct to Croissant Coven Studio</span>
+<span class="text-on-surface-variant font-normal">(95.0%)</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="w-2.5 h-2.5 rounded-full bg-surface-container-highest"></span>
+<span>$0.50 Vault Relay Ops</span>
+<span>(5.0%)</span>
+</div>
+</div>
+</div>
+<!-- Studio note snippet -->
+<div class="flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low">
+<div class="w-9 h-9 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[18px]">favorite</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface italic">
+              “Thanks for supporting our self-funded pastry tavern sim! Every copy helps us finish the free 'Secret Scone Caverns' update.”
+              <span class="not-italic text-on-surface-variant font-label-sm block mt-0.5">— Maya & Theo, Lead Developers</span>
+</p>
+</div>
+</div>
+</div>
+<!-- Right Column: Vault Receipt, Payment Method & Updated Library Drawer (5 Cols) -->
+<div class="lg:col-span-5 space-y-space-lg">
+<!-- Itemized Receipt Card -->
+<div class="rounded-xl bg-surface-container p-space-lg space-y-space-md shadow-md">
+<div class="flex items-center justify-between border-b border-surface-container-highest pb-space-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]">receipt_long</span>
+<span>Purchase Summary</span>
+</h2>
+<button class="text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm flex items-center gap-1 transition-colors" onclick="window.print()">
+<span class="material-symbols-outlined text-[16px]">print</span>
+<span>Print Invoice</span>
+</button>
+</div>
+<!-- Line Items -->
+<div class="space-y-space-sm text-body-md font-body-md">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-on-surface font-semibold">Dungeon Baker: Pastry Quest</p>
+<p class="text-on-surface-variant text-body-sm font-body-sm">Standard Edition • Standalone DRM-Free</p>
+</div>
+<span class="text-on-surface font-mono">$12.99</span>
+</div>
+<div class="flex justify-between items-center text-primary">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">sell</span>
+<span>Launch Celebration (-23%)</span>
+</span>
+<span class="font-mono">-$3.00</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>Cloud Backup Allocation</span>
+<span class="font-mono text-tertiary">FREE</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>Regional Sales Tax (VAT 0.0%)</span>
+<span class="font-mono">$0.00</span>
+</div>
+</div>
+<div class="pt-space-sm border-t border-surface-container-highest space-y-space-xs">
+<div class="flex justify-between items-baseline">
+<span class="font-headline-sm text-headline-sm text-on-surface">Total Paid</span>
+<div class="text-right">
+<span class="font-headline-lg text-headline-lg text-primary font-mono">$9.99</span>
+<span class="block text-label-sm font-label-sm text-on-surface-variant">USD Charged</span>
+</div>
+</div>
+</div>
+<!-- Settled Via Info Pill -->
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-5 rounded bg-surface-container-highest flex items-center justify-center font-bold text-[9px] tracking-wider text-on-surface">
+                VISA
+              </div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">Master Vault Card •••• 4242</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Auth Code: #AUTH-7832819</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-emerald-400 text-[18px]">check_circle</span>
+</div>
+<!-- Refund & Guarantee Policy note -->
+<p class="text-on-surface-variant font-body-sm text-body-sm leading-relaxed text-[12px]">
+            Protected by IndieVault 14-day / 2-hour playtime no-questions-asked refund policy. License stored on sovereign ledger.
+          </p>
+</div>
+<!-- Quick Access: Player's Updated Vault Library Preview -->
+<div class="rounded-xl bg-surface-container p-space-lg space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">My Vault Library</h3>
+</div>
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+              2 Games Total
+            </span>
+</div>
+<!-- List of Titles in Collection -->
+<div class="space-y-space-xs">
+<!-- Newly Added (Dungeon Baker) -->
+<div class="flex items-center justify-between p-space-sm rounded-lg bg-surface-container-high transition-colors">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded bg-surface-container-highest overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Square pixel art avatar icon of Lyra the cheerful dungeon baker with a golden baked croissant icon on dark slate." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVG4A9QRlkUCqiXAEit-f-x9PaGYK2Or6G71niPfkV4_v6U1wdiioaHpP0d-NT68VZti8vVycF6ESbzFB4N5RquRnXTzpojmgdPVNE6MaodIG-6oJ7H-ZvHlCrWGaLlG-5U2xn_f_18Te37m7X6le1ep77wm1fywXDFsOtKguUVVSiMLVs1BWFAVeg5DAF3-jVE4ewwJ5xMc7ruHD_1qNm9Cor4khcBzfSuxHpUu_z0Su9M_uDtt8q"/>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-on-surface truncate">Dungeon Baker: Pastry Quest</span>
+<span class="px-1.5 py-0.2 rounded bg-primary text-on-primary font-label-sm text-[9px] uppercase tracking-wider">NEW</span>
+</div>
+<span class="font-body-sm text-body-sm text-tertiary block truncate">v1.0.2 • Ready to Install</span>
+</div>
+</div>
+<button class="px-space-sm py-1 rounded bg-primary-container text-on-primary-container font-label-sm text-label-sm hover:brightness-110 shrink-0" onclick="startInstall()">
+                Play
+              </button>
+</div>
+<!-- Pre-existing Title (Chrono Rift) -->
+<div class="flex items-center justify-between p-space-sm rounded-lg hover:bg-surface-container-high transition-colors opacity-80 hover:opacity-100">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded bg-surface-container-highest overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Moody neon synthwave aesthetic box art icon featuring an electric purple cyber rift in a dark futuristic metropolis." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvuXghjJqdQPj-hM-k8pAoDLELojw13kEwL12L8AUhK9yzEN3qb0FkvzaPGfQFsbtDT_kYEHuQvnH-gHOC9tYeZIlS-ynPiP5VNob-uh4YlV9jiRPm-02WDrwXHoTS4f6IRELXIjz2ehUHJl64EyJPl44E_hqoFY7MUmVj4VIGccZifKMZXGnLOuBteYRWuZzHCnUfEbtVT1Q4gpVBne7lYXVX45cIm0SoXAR5M3v74zZndDlMGRU1"/>
+</div>
+<div class="min-w-0">
+<span class="font-label-md text-label-md text-on-surface truncate block">Chrono Rift: Synthetica</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block truncate">14.2 hrs played • Cloud Synced</span>
+</div>
+</div>
+<button class="px-space-sm py-1 rounded bg-surface-container-highest text-on-surface font-label-sm text-label-sm hover:bg-surface-bright shrink-0">
+                Launch
+              </button>
+</div>
+</div>
+<a class="block w-full text-center py-2 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-primary font-label-md text-label-md transition-colors" href="#">
+            Open Full Library View →
+          </a>
+</div>
+<!-- Verified Review Contribution Privilege Card -->
+<div class="p-space-md rounded-xl bg-surface-container-low space-y-space-xs">
+<div class="flex items-center gap-1.5 text-on-surface font-label-md text-label-md">
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+<span>Verified Owner Review Unlocked</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Because you purchased directly through the creator guild, your future game review carries full cryptographic weight against bot review bombing.
+          </p>
+<div class="pt-space-xs flex items-center gap-space-sm">
+<span class="text-label-sm font-label-sm text-on-surface-variant">Review status:</span>
+<span class="text-label-sm font-label-sm text-tertiary">Play for 15+ mins to activate review form</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Installation Script -->
+<script>
+    let isInstalling = false;
+    let installProgress = 0;
+    let intervalId = null;
+
+    function startInstall() {
+      if (isInstalling) return;
+      isInstalling = true;
+
+      const btn = document.getElementById('primary-install-btn');
+      const btnLabel = document.getElementById('install-btn-label');
+      const icon = document.getElementById('install-icon');
+      const progressBar = document.getElementById('install-progress');
+      const percentText = document.getElementById('download-percent');
+      const statusText = document.getElementById('download-status-text');
+      const hintText = document.getElementById('download-state-hint');
+
+      btn.classList.remove('bg-primary-container', 'text-on-primary-container');
+      btn.classList.add('bg-surface-container-highest', 'text-on-surface');
+      btnLabel.innerText = 'Allocating SSD Storage...';
+      icon.innerText = 'hourglass_top';
+
+      intervalId = setInterval(() => {
+        installProgress += Math.floor(Math.random() * 14) + 6;
+        if (installProgress >= 100) {
+          installProgress = 100;
+          clearInterval(intervalId);
+          
+          progressBar.style.width = '100%';
+          percentText.innerText = '100% • Installed';
+          statusText.innerText = 'Ready to Play • Verified Integrity';
+          hintText.innerText = 'Cloud save slot initialized on local device';
+
+          btn.classList.remove('bg-surface-container-highest', 'text-on-surface');
+          btn.classList.add('bg-emerald-500', 'text-surface-container-lowest', 'hover:brightness-110');
+          btnLabel.innerText = 'Launch Pastry Quest v1.0.2';
+          icon.innerText = 'play_arrow';
+
+          btn.onclick = () => {
+            alert('Launching Dungeon Baker: Pastry Quest! (Demo Mode: Client binary connected)');
+          };
+        } else {
+          progressBar.style.width = installProgress + '%';
+          percentText.innerText = installProgress + '% (' + ((installProgress * 3.1).toFixed(1)) + ' MB / 310.4 MB)';
+          statusText.innerText = 'Downloading & Decompressing Assets...';
+          btnLabel.innerText = 'Downloading (' + installProgress + '%)';
+          icon.innerText = 'sync';
+        }
+      }, 250);
+    }
+  </script>
+</div></main><footer class="w-full bg-surface-container-lowest mt-auto py-space-lg"><div class="w-full px-gutter flex flex-col md:flex-row items-center justify-between gap-space-md text-on-surface-variant font-body-sm text-body-sm"><div><span>© 2025 IndieVault. Decentralized & Curated Indie Gaming Marketplace.</span></div><div class="flex items-center gap-space-md"><span>Powered by Plain CSS & Adaptive Dark Tokens</span><span class="w-1 h-1 rounded-full bg-outline-variant"></span><span>Role-Based Workflows</span><span class="w-1 h-1 rounded-full bg-outline-variant"></span><span>AI Triage Protocol</span></div></div></footer></body></html>

@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-dim": "#101319", "tertiary-container": "#0673c9", "on-secondary-fixed": "#160066", "inverse-on-surface": "#2e3037", "on-error": "#690005", "error": "#ffb4ab", "on-tertiary-fixed-variant": "#004882", "error-container": "#93000a", "primary-fixed-dim": "#c6bfff", "secondary-fixed": "#e4dfff", "tertiary-fixed-dim": "#a2c9ff", "secondary-container": "#4230b7", "on-tertiary-fixed": "#001c38", "primary-fixed": "#e4dfff", "on-error-container": "#ffdad6", "on-surface-variant": "#c8c4d7", "secondary": "#c6bfff", "on-primary": "#2900a0", "surface-bright": "#363940", "secondary-fixed-dim": "#c6bfff", "on-surface": "#e1e2eb", "primary-container": "#6c5ce7", "surface-tint": "#c6bfff", "tertiary-fixed": "#d3e4ff", "on-primary-fixed": "#160066", "primary": "#c6bfff", "on-secondary": "#28019f", "inverse-primary": "#5847d2", "inverse-surface": "#e1e2eb", "outline": "#928ea0", "on-tertiary": "#00315c", "surface-container-lowest": "#0b0e14", "on-tertiary-container": "#f4f7ff", "on-primary-fixed-variant": "#4029ba", "on-primary-container": "#faf6ff", "surface-container": "#1d2026", "surface-variant": "#32353c", "surface-container-low": "#191c22", "on-secondary-container": "#b7afff", "surface-container-high": "#272a31", "on-background": "#e1e2eb", "on-secondary-fixed-variant": "#402db4", "surface": "#101319", "background": "#101319", "outline-variant": "#474554", "surface-container-highest": "#32353c", "tertiary": "#a2c9ff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin": "2rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "space-md": "1rem", "space-xl": "2.5rem", "space-lg": "1.5rem", "margin-mobile": "1rem", "gutter": "1.5rem", "gutter-mobile": "1rem" }, "fontFamily": { "body-md": ["Geist"], "label-sm": ["Geist"], "headline-lg-mobile": ["Geist"], "headline-xl-mobile": ["Geist"], "headline-md": ["Geist"], "label-md": ["Geist"], "headline-xl": ["Geist"], "body-sm": ["Geist"], "headline-sm": ["Geist"], "headline-lg": ["Geist"], "body-lg": ["Geist"], "label-lg": ["Geist"] }, "fontSize": { "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-xl-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "600" }], "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }] } } } };</script></head><body class="bg-background text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col"><header class="fixed top-0 left-0 right-0 z-50 h-16 bg-surface-container-low/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.5)]"><div class="w-full h-16 px-gutter flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><a class="flex items-center gap-space-xs group" data-path="browse-store" href="#"><div class="w-8 h-8 rounded-lg bg-surface-container-highest flex items-center justify-center shadow-[0_0_12px_rgba(108,92,231,0.4)]"><span class="material-symbols-outlined text-primary text-[20px]">deployed_code</span></div><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Indie<span class="text-primary">Vault</span></span></a><nav class="hidden md:flex items-center gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-label-md text-label-md rounded-lg"><a class="px-space-md py-space-xs rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="browse-store" href="#">Browse Store</a><a class="px-space-md py-space-xs rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="dev-dashboard" href="#">Dev Dashboard</a><a aria-current="page" class="flex items-center gap-space-xs px-space-md py-space-xs transition-colors bg-primary-container text-on-primary-container font-label-md text-label-md rounded-lg" data-path="admin-review-queue" href="#"><span>Admin Review Queue</span><span class="px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">3 Pending</span></a></nav></div><div class="flex items-center gap-space-md"><div class="hidden sm:flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg bg-surface-container"><span class="material-symbols-outlined text-primary text-[16px]">security</span><span class="font-label-sm text-label-sm text-on-surface-variant">System Admin (SecOps)</span></div><div class="relative flex items-center"><button class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors font-label-md text-label-md" type="button"><span>Role: Admin</span><span class="material-symbols-outlined text-[18px] text-on-surface-variant">arrow_drop_down</span></button></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 flex-1 px-gutter bg-background"><div class="flex flex-col w-full pb-space-xl">
+<!-- Dynamic Top Sub-Navigation & Breadcrumbs -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm py-space-md">
+<nav class="flex items-center gap-space-xs text-body-sm font-body-sm text-on-surface-variant flex-wrap">
+<a class="hover:text-primary transition-colors" href="#">Store</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">RPG & Simulation</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface font-label-md">Dungeon Baker: Pastry Quest</span>
+</nav>
+<div class="flex items-center gap-space-md text-label-sm font-label-sm text-on-surface-variant">
+<span class="flex items-center gap-space-xs bg-surface-container-high px-space-sm py-1 rounded-full text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+        Vault Verified Build v1.0.2
+      </span>
+<span class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[16px]">verified</span>
+        Safe Hash: 0x8F92...D3A
+      </span>
+</div>
+</div>
+<!-- Hero Grid Showcase Section -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start mt-space-xs">
+<!-- Media Showcase (Left 7 Cols) -->
+<div class="lg:col-span-7 flex flex-col gap-space-md">
+<!-- Main Featured Viewport Frame -->
+<div class="relative w-full aspect-[16/9] rounded-xl overflow-hidden bg-surface-container-lowest shadow-xl group">
+<img alt="Dungeon Baker: Pastry Quest pixel art tavern view showcasing Lyra casting sourdough enchantment over freshly baked croissants" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.01]" id="mainHeroView" src="https://lh3.googleusercontent.com/aida/AEtjO1Xaa-VY-253lHM9K45jSW0WVj1-cIrV_M5oVBN9hMbc_B4_X_4BxJNx8M3usAZk9-GteMBOX3Hq40-4F1n-L2lD6r3NrLSiobHjVv2T_vqCdmBW5wbXK4qruAEEFaIgO-uXjdJfv8IX0SCavvjoxd43osBgHZO4VO9lXAHXOCiklsku_1sGV9qyQrfyoYRrD8zLYR60I4hhe537XuwKclCx0upF4BtmjU61lbfrBr8_NQsWM471DUrBHnU"/>
+<!-- Visual Atmosphere HUD Overlay -->
+<div class="absolute top- space-sm left-space-md right-space-md flex items-center justify-between pointer-events-none">
+<div class="bg-surface-container-lowest/80 backdrop-blur-md px-space-sm py-1 rounded text-label-sm font-label-sm text-on-surface flex items-center gap-space-xs shadow-md">
+<span class="material-symbols-outlined text-primary text-[14px]">videogame_asset</span>
+<span>Direct In-Engine Gameplay</span>
+</div>
+<div class="bg-surface-container-lowest/80 backdrop-blur-md px-space-sm py-1 rounded text-label-sm font-label-sm text-secondary flex items-center gap-space-xs shadow-md">
+<span class="material-symbols-outlined text-[14px]">auto_awesome</span>
+<span>Day 9: The Flourishing Hearth</span>
+</div>
+</div>
+<div class="absolute bottom-space-sm right-space-sm flex items-center gap-space-xs">
+<button class="bg-surface-container-highest/90 hover:bg-primary hover:text-on-primary text-on-surface p-space-xs rounded transition-colors shadow-md">
+<span class="material-symbols-outlined text-[18px]">fullscreen</span>
+</button>
+</div>
+</div>
+<!-- Thumbnail Selector Strip -->
+<div class="grid grid-cols-4 gap-space-sm">
+<button class="media-thumb relative aspect-[16/9] rounded-lg overflow-hidden bg-surface-container-high transition-transform focus:outline-none shadow-md" onclick="selectMedia('https://lh3.googleusercontent.com/aida/AEtjO1Xaa-VY-253lHM9K45jSW0WVj1-cIrV_M5oVBN9hMbc_B4_X_4BxJNx8M3usAZk9-GteMBOX3Hq40-4F1n-L2lD6r3NrLSiobHjVv2T_vqCdmBW5wbXK4qruAEEFaIgO-uXjdJfv8IX0SCavvjoxd43osBgHZO4VO9lXAHXOCiklsku_1sGV9qyQrfyoYRrD8zLYR60I4hhe537XuwKclCx0upF4BtmjU61lbfrBr8_NQsWM471DUrBHnU', this)">
+<img alt="Bakery Interior with Lyra" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1Xaa-VY-253lHM9K45jSW0WVj1-cIrV_M5oVBN9hMbc_B4_X_4BxJNx8M3usAZk9-GteMBOX3Hq40-4F1n-L2lD6r3NrLSiobHjVv2T_vqCdmBW5wbXK4qruAEEFaIgO-uXjdJfv8IX0SCavvjoxd43osBgHZO4VO9lXAHXOCiklsku_1sGV9qyQrfyoYRrD8zLYR60I4hhe537XuwKclCx0upF4BtmjU61lbfrBr8_NQsWM471DUrBHnU"/>
+<span class="absolute inset-0 bg-primary-container/20"></span>
+</button>
+<button class="media-thumb relative aspect-[16/9] rounded-lg overflow-hidden bg-surface-container-high transition-transform focus:outline-none shadow-sm opacity-70 hover:opacity-100" onclick="selectMedia('placeholder', this)">
+<img class="w-full h-full object-cover" data-alt="Close up pixel art game interface showing an enchanted sourdough cauldron with swirling golden yeast particles and magical spell runes in a cozy medieval kitchen setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClI0ENDrUi4DtgbDKE6571H2-aDgbNNZnpOlyJ_rwVoDSiN2Bi5kji-MYqCRpGIDFDHxequaD9DB7XVf3qTQPsFM449vk_2Q-6TjpwlnUpN4alR5UmpZUh5PmEJVf-cEpGF0_y2D2QekAWGHj20wix4NNLO-QxdMXuOwbrt1w1E5aWXP4PFfD7xpoKKPqSnAuTpo-75dNAny5R2KxrMxGk-0hhVblqBp5exkEHpDweXTndCfK8X42u"/>
+</button>
+<button class="media-thumb relative aspect-[16/9] rounded-lg overflow-hidden bg-surface-container-high transition-transform focus:outline-none shadow-sm opacity-70 hover:opacity-100" onclick="selectMedia('placeholder', this)">
+<img class="w-full h-full object-cover" data-alt="Vibrant 16-bit pixel art scene of busy tavern patrons, heavily armored knights, and elven rangers lining up at a wooden bakery counter with tankards and steaming pies." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWBUKVsFp4ssuPwM93depyb7dNUk1Y-T6vMLonR3dMr_W_qVYcwp-exZNS76KjLqmXiaBRTLcg-uMKAOJrh_cha-6Bi4dGNhoiRMmc1WuFSUmX7qOkE6DO_neecfZoT83OSGDYQXZuunCixpbqun5_pqMiVmid93tMzsSTMFIAIrchpTkEZuVmbAy4g10g464Ewr6UmI8xAJVa86cohcLrU4q6LS4oWTveGoA07_yNXy8kDZ1ANf0r"/>
+</button>
+<button class="media-thumb relative aspect-[16/9] rounded-lg overflow-hidden bg-surface-container-high transition-transform focus:outline-none shadow-sm opacity-70 hover:opacity-100" onclick="selectMedia('placeholder', this)">
+<img class="w-full h-full object-cover" data-alt="Cozy retro pixel UI showing an open ancient leather recipe grimoire detailing ingredients for Celestial Brioche, Star Yeast, and Dungeon Baguettes with stat buff gauges." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8NjYWdaEr1ZkLYb5Vp7CaUiC8iDhEhisNXpLYibM0I9g9ZU7eQ8yRBDYEL-jEucoVfm4lo1QLbyyIN7ulokz2yaPX-bN0E5HtGrz8wjGeKI7rb0Bh8aDcNSCApBqHsgUXMWYNuuKZyhQuxQ7N7zNq2pIC2fAFgzJQFBJFctXjprpkjoNM_RmthN8ww1QwHrzyqi2L3A2_AmTV2Mz8QGEe0-xVKlQ36jSZQX9v2_S_dHSjGozfEI6e"/>
+</button>
+</div>
+<!-- Quick Specifications Strip -->
+<div class="flex items-center justify-between px-space-md py-space-sm rounded-xl bg-surface-container-low text-on-surface-variant font-label-md text-label-md">
+<div class="flex items-center gap-space-md">
+<span class="flex items-center gap-1 text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-primary">gamepad</span> Steam Deck 60 FPS
+          </span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">cloud_done</span> Cloud Saves
+          </span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">trophy</span> 34 Achievements
+          </span>
+</div>
+<div class="flex items-center gap-space-xs text-body-sm">
+<span class="material-symbols-outlined text-[16px] text-secondary">verified_user</span>
+<span>DRM-Free Standalone</span>
+</div>
+</div>
+</div>
+<!-- Product Metadata & Purchase Console (Right 5 Cols) -->
+<div class="lg:col-span-5 flex flex-col gap-space-md bg-surface-container-low p-space-lg rounded-xl shadow-xl">
+<!-- Title & Developer Byline -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="px-space-xs py-0.5 rounded bg-primary-container text-on-primary-container font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">auto_awesome</span> AI-Triage Verified
+          </span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-highest text-secondary font-label-sm text-label-sm">
+            Steam Deck Verified
+          </span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm">
+            v1.0.2 Stable
+          </span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">
+          Dungeon Baker: Pastry Quest
+        </h1>
+<div class="flex items-center gap-space-xs text-body-sm font-body-sm text-on-surface-variant">
+<span>By <a class="text-primary hover:underline font-label-md" href="#">Croissant Coven</a></span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span>Independent</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span>Launched Today</span>
+</div>
+</div>
+<!-- Micro Pitch Synopsis -->
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+        Step into the Flourishing Hearth! Bake enchanted sourdough, cast kinetic fermentation runes, and feed hungry dungeon-crawling adventurers in this high-vibe tavern simulation RPG.
+      </p>
+<!-- Rating & Sentiment Bar -->
+<div class="bg-surface-container p-space-md rounded-lg flex items-center justify-between">
+<div>
+<div class="flex items-center gap-space-xs text-label-sm font-label-sm text-primary">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star_half</span>
+<span class="text-on-surface font-label-md ml-1">4.9 / 5.0</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+<span class="text-primary font-semibold">Overwhelmingly Positive</span> (96% of 28 reviews)
+          </p>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm px-space-xs py-1 rounded bg-surface-container-high text-on-surface">Community Favorite</span>
+</div>
+</div>
+<!-- Pricing Box & Acquisition Action Cluster -->
+<div class="bg-surface-container-high p-space-md rounded-xl flex flex-col gap-space-md shadow-inner">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Standard License</span>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-lg text-headline-lg text-on-surface font-bold">$9.99</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant line-through">$12.99</span>
+<span class="text-label-sm font-label-sm bg-primary-container/40 text-primary px-space-xs py-0.5 rounded font-semibold">-23% Launch Promo</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant text-body-sm">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span>310 MB</span>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs">
+<button class="w-full py-space-sm px-space-md rounded-lg bg-primary-container hover:bg-inverse-primary text-on-primary-container font-label-lg text-label-lg flex items-center justify-center gap-space-xs transition-all shadow-[0_4px_16px_rgba(108,92,231,0.35)] active:scale-[0.99]">
+<span class="material-symbols-outlined text-[20px]">shopping_cart</span>
+<span>Buy Now — $9.99</span>
+</button>
+<div class="grid grid-cols-2 gap-space-xs">
+<button class="py-space-xs px-space-sm rounded-lg bg-surface-container hover:bg-surface-container-highest text-on-surface font-label-md text-label-md flex items-center justify-center gap-space-xs transition-colors" id="wishlistBtn" onclick="toggleWishlist()">
+<span class="material-symbols-outlined text-[18px] text-primary" id="wishlistIcon">favorite_border</span>
+<span id="wishlistText">Add to Wishlist</span>
+</button>
+<button class="py-space-xs px-space-sm rounded-lg bg-surface-container hover:bg-surface-container-highest text-on-surface font-label-md text-label-md flex items-center justify-center gap-space-xs transition-colors">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">card_giftcard</span>
+<span>Gift a Friend</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Compact Metashelf -->
+<div class="flex flex-col gap-space-xs text-body-sm font-body-sm">
+<div class="flex justify-between py-1 border-b border-surface-container">
+<span class="text-on-surface-variant">Genre</span>
+<span class="text-on-surface font-label-md">Cozy / Cooking Sim / RPG</span>
+</div>
+<div class="flex justify-between py-1 border-b border-surface-container">
+<span class="text-on-surface-variant">Platforms</span>
+<span class="text-on-surface font-label-md flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px]">desktop_windows</span> Windows, Linux / Steam Deck
+          </span>
+</div>
+<div class="flex justify-between py-1 border-b border-surface-container">
+<span class="text-on-surface-variant">Release Date</span>
+<span class="text-on-surface font-label-md">Oct 24, 2025</span>
+</div>
+<div class="flex flex-wrap gap-1 pt-space-xs">
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container text-on-surface-variant text-label-sm font-label-sm">Pixel Art</span>
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container text-on-surface-variant text-label-sm font-label-sm">Cozy Management</span>
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container text-on-surface-variant text-label-sm font-label-sm">Crafting</span>
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container text-on-surface-variant text-label-sm font-label-sm">Singleplayer</span>
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container text-on-surface-variant text-label-sm font-label-sm">Fantasy</span>
+</div>
+</div>
+</div>
+</section>
+<!-- CRITICAL REQUIREMENT: AI Review Synthesis Card -->
+<section class="mt-space-lg w-full">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-low p-space-lg shadow-xl" id="aiSynthesisContainer">
+<!-- Decorative Neon Ambient Gradient Scrim -->
+<div class="absolute top-0 right-0 w-96 h-96 bg-primary-container/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+<!-- State A: Active AI Synthesis Presentation -->
+<div class="flex flex-col gap-space-md relative z-10" id="aiActiveBlock">
+<!-- Header Ribbon with AI Provenance & Offline Switch Demo -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-sm">
+<div class="flex items-center gap-space-xs flex-wrap">
+<div class="w-7 h-7 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container shadow-[0_0_12px_rgba(108,92,231,0.5)]">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">
+                  AI-Generated Synthesis
+                </span>
+<span class="text-label-sm font-label-sm text-primary bg-primary-container/20 px-space-xs py-0.5 rounded">
+                  ✨ IndieVault Triage LLM
+                </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Synthesized dynamically from 28 verified human player reviews (Updated 14 mins ago)
+              </p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-space-sm py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface text-label-sm font-label-sm flex items-center gap-1 transition-colors" onclick="toggleAIFallback()" title="Demonstrates graceful UI fallback when AI service is unavailable">
+<span class="material-symbols-outlined text-[14px]">toggle_on</span>
+<span>Simulate AI Triage/Synthesis Offline</span>
+</button>
+</div>
+</div>
+<!-- Sentiment Banner & AI Core Summary -->
+<div class="p-space-md rounded-xl bg-surface-container flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-14 h-14 rounded-xl bg-surface-container-high flex flex-col items-center justify-center shrink-0">
+<span class="font-headline-sm text-headline-sm text-primary font-bold">96%</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant -mt-1">Positivity</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider">Overall Sentiment Metric</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">
+                Very Positive Sentiment
+              </h2>
+</div>
+</div>
+<div class="flex flex-col md:items-end text-body-sm font-body-sm text-on-surface-variant">
+<span class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[18px]">verified</span> 100% Cryptographically Verified Purchases
+            </span>
+<span>Zero sponsored or key-giveaway distortions detected</span>
+</div>
+</div>
+<!-- 2-Sentence Executive Community Verdict -->
+<div class="p-space-md rounded-xl bg-surface-container-highest/40">
+<p class="font-body-lg text-body-lg text-on-surface italic leading-relaxed">
+            “Players universally praise the heartwarming pixel art, deeply addictive pastry crafting loops, and whimsical dungeon-adventurer interactions. Minor critiques note occasional pacing slowdowns during late-game rush hours.”
+          </p>
+</div>
+<!-- Two-Column Pros & Cons Breakdown Matrix -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Pros Column -->
+<div class="p-space-md rounded-xl bg-surface-container flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+                Key Highlights (Pros)
+              </span>
+<span class="text-label-sm font-label-sm text-secondary">4 Critical Consensus Nodes</span>
+</div>
+<ul class="flex flex-col gap-space-xs font-body-md text-body-md text-on-surface-variant">
+<li class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[16px] shrink-0 mt-1">done</span>
+<span>Charming 16-bit aesthetic and cozy tavern ambience with responsive dynamic lighting.</span>
+</li>
+<li class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[16px] shrink-0 mt-1">done</span>
+<span>Innovative magic-flour crafting minigames that reward rhythm and ingredient pairing.</span>
+</li>
+<li class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[16px] shrink-0 mt-1">done</span>
+<span>Flawless Steam Deck 60 FPS performance out of the box with zero stuttering.</span>
+</li>
+<li class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[16px] shrink-0 mt-1">done</span>
+<span>Lovable NPC personalities with branching adventurer quest dialogue.</span>
+</li>
+</ul>
+</div>
+<!-- Cons Column -->
+<div class="p-space-md rounded-xl bg-surface-container flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">warning</span>
+                Notable Caveats (Cons)
+              </span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Constructive Feedback</span>
+</div>
+<ul class="flex flex-col gap-space-xs font-body-md text-body-md text-on-surface-variant">
+<li class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px] shrink-0 mt-1">priority_high</span>
+<span>End-game ingredient supply chain can feel slightly grindy before unlocking automated yeast mills.</span>
+</li>
+<li class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px] shrink-0 mt-1">priority_high</span>
+<span>Tutorial could better explain secondary fermentation timers for legendary party orders.</span>
+</li>
+<li class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px] shrink-0 mt-1">info</span>
+<span>No local co-op currently supported (developer roadmap has multiplayer scheduled for Q1 2026).</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Accuracy Voter Bar & Ethics Transparency Footer -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pt-space-xs">
+<div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant">
+<span>Was this AI summary accurate?</span>
+<button class="flex items-center gap-1 px-space-xs py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors" onclick="voteFeedback(this, 24)">
+<span class="material-symbols-outlined text-[14px] text-primary">thumb_up</span>
+<span class="count">24</span>
+</button>
+<button class="flex items-center gap-1 px-space-xs py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm transition-colors" onclick="voteFeedback(this, 1)">
+<span class="material-symbols-outlined text-[14px]">thumb_down</span>
+<span class="count">1</span>
+</button>
+</div>
+<div class="flex items-center gap-space-xs text-label-sm font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">info</span>
+<span>IndieVault AI Policy: Syntheses are never authored or altered by store curators or game publishers.</span>
+</div>
+</div>
+</div>
+<!-- State B: Offline Graceful Fallback Mode (Hidden by default) -->
+<div class="hidden flex flex-col gap-space-md p-space-md bg-surface-container rounded-xl" id="aiFallbackBlock">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-[24px]">cloud_off</span>
+<div>
+<h3 class="font-label-lg text-label-lg text-on-surface font-semibold">AI Synthesis Offline</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Fallback to standard verified metric tally</p>
+</div>
+</div>
+<button class="px-space-sm py-1 rounded bg-primary-container text-on-primary-container font-label-sm text-label-sm" onclick="toggleAIFallback()">
+            Reconnect Triage Engine
+          </button>
+</div>
+<div class="flex items-center gap-space-lg">
+<div>
+<span class="font-headline-lg text-headline-lg text-primary font-bold">4.9 / 5.0</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Based on 28 customer submissions</p>
+</div>
+<div class="flex-1 max-w-md">
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant mb-1">
+<span>96% Positive</span>
+<span>28 Reviews</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+<div class="bg-primary h-full w-[96%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Detailed Tabbed Content System -->
+<section class="mt-space-xl grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Left Column: Story, Features & System Specs (8 Cols) -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- Section: About The Game -->
+<div class="bg-surface-container-low p-space-lg rounded-xl flex flex-col gap-space-md shadow-md">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[24px]">local_cafe</span>
+            About the Game
+          </h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Published by Independent</span>
+</div>
+<div class="space-y-space-md font-body-md text-body-md text-on-surface-variant leading-relaxed">
+<p>
+            Welcome to <strong class="text-on-surface font-semibold">The Flourishing Hearth</strong>, the deepest and warmest dungeon tavern in the Whispering Depths. As Lyra, an apprentice baker imbued with ancient sourdough enchantment, you’ll transform wild dungeon flora, cave-gathered crystal yeasts, and solar-milled wheat into mouthwatering delicacies for battle-weary adventurers.
+          </p>
+<p>
+            Balance the chaotic rush of paladins demanding brioche shields, rogues ordering stealth cinnamon twists, and wizard guilds bargaining for mana-infused croissants before they delve into the next floor.
+          </p>
+</div>
+<!-- Highlight Feature Grid Bento -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md pt-space-xs">
+<div class="p-space-md rounded-lg bg-surface-container flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs text-primary font-label-lg text-label-lg font-semibold">
+<span class="material-symbols-outlined text-[20px]">bakery_dining</span>
+<span>50+ Magical Recipes</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Experiment with yeast starters that react to real dungeon weather and heat modifiers from the primordial kiln.
+            </p>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs text-secondary font-label-lg text-label-lg font-semibold">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span>Procedural Adventurer Parties</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Every adventuring clan brings distinct culinary cravings and unlocks rare dungeon seeds for your cellar.
+            </p>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs text-tertiary font-label-lg text-label-lg font-semibold">
+<span class="material-symbols-outlined text-[20px]">music_note</span>
+<span>Adaptive Cozy OST</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Over 90 minutes of relaxing acoustic medieval compositions by the Croissant Coven in-house composer.
+            </p>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs text-primary font-label-lg text-label-lg font-semibold">
+<span class="material-symbols-outlined text-[20px]">handyman</span>
+<span>Tavern Expansion & Customization</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Rebuild the hearth, hang tapestry banners, unlock copper ovens, and recruit friendly goblins to buss tables.
+            </p>
+</div>
+</div>
+<!-- In-Depth Secondary Media Artwork -->
+<div class="relative w-full aspect-[21/9] rounded-xl overflow-hidden bg-surface-container-lowest mt-space-xs">
+<img class="w-full h-full object-cover" data-alt="Wide panoramic pixel art showing the bustling tavern basement cellar stacked with glowing enchanted flour barrels, resting dough trays, and bubbling yeast fermentation tanks." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPnm2KXInEKoda4Dw9Ej8mLXdOoG7H8FLqcFmz1EFVEY5Y9GLH-s7dVhM9PTl_BoWwKSbIVnGQxXhx_vtL5D4U5nkcsjOmrR1j2u98UUauVzGi33nfS4f7TLnp_uqfoagAS7LvlU8sIHBfPqy9EZZm5qffMP7lFxcFDb4AsmWhrQRo3krHjVVD6fuu0hvPn_NWhQoqlxrXre8zFO8046FRXnXR2IL8DRjt6UDfNJn4hXhBaD2WaWpF"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-transparent to-transparent"></div>
+<div class="absolute bottom-space-sm left-space-md text-label-sm font-label-sm text-on-surface bg-surface-container-lowest/80 px-space-sm py-0.5 rounded backdrop-blur-sm">
+            The Cellar Fermentation Lab — Unlocked at Hearth Tier II
+          </div>
+</div>
+</div>
+<!-- Section: System Requirements -->
+<div class="bg-surface-container-low p-space-lg rounded-xl flex flex-col gap-space-md shadow-md">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">memory</span>
+          System Requirements
+        </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface font-semibold uppercase tracking-wider text-primary">Windows (DirectX 11)</span>
+<div class="space-y-1">
+<p><strong class="text-on-surface">OS:</strong> Windows 10 64-bit</p>
+<p><strong class="text-on-surface">Processor:</strong> Dual Core 2.0 GHz+</p>
+<p><strong class="text-on-surface">Memory:</strong> 2 GB RAM</p>
+<p><strong class="text-on-surface">Graphics:</strong> OpenGL 3.0 / DirectX 11 support</p>
+<p><strong class="text-on-surface">Storage:</strong> 350 MB available space</p>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface font-semibold uppercase tracking-wider text-secondary">Linux / Steam Deck / Proton</span>
+<div class="space-y-1">
+<p><strong class="text-on-surface">OS:</strong> Ubuntu 22.04 LTS or SteamOS 3.4+</p>
+<p><strong class="text-on-surface">Proton:</strong> Proton 8.0-4 or Native Runtime</p>
+<p><strong class="text-on-surface">Memory:</strong> 2 GB RAM</p>
+<p><strong class="text-on-surface">Deck Compatibility:</strong> Native 1280x800 @ 60 Hz tested</p>
+<p><strong class="text-on-surface">Gamepad:</strong> Full Controller Support</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Community Reviews List -->
+<div class="bg-surface-container-low p-space-lg rounded-xl flex flex-col gap-space-md shadow-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-xs">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">
+              Verified Player Reviews
+            </h3>
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm font-semibold">28 Verified</span>
+</div>
+<button class="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-md text-label-md flex items-center gap-1 transition-colors self-start sm:self-auto">
+<span class="material-symbols-outlined text-[16px] text-primary">rate_review</span>
+<span>Write a Review</span>
+</button>
+</div>
+<!-- Filter Chips -->
+<div class="flex items-center gap-space-xs overflow-x-auto pb-1 text-label-sm font-label-sm">
+<button class="px-space-sm py-1 rounded-full bg-primary-container text-on-primary-container font-semibold">All Reviews (28)</button>
+<button class="px-space-sm py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant">Positive (27)</button>
+<button class="px-space-sm py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant">Critical (1)</button>
+<button class="px-space-sm py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant">Most Helpful</button>
+</div>
+<!-- Reviews Stream -->
+<div class="flex flex-col gap-space-md mt-space-xs">
+<!-- Review 1 -->
+<div class="p-space-md rounded-xl bg-surface-container flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center font-label-md text-primary font-bold">
+                  K
+                </div>
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Kaelen_The_Mage</span>
+<span class="px-space-xs py-0.5 rounded bg-primary-container/20 text-primary text-label-sm font-label-sm">Verified Owner</span>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant">7.8 hrs on record • Posted 4 hours ago</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-primary bg-surface-container-high px-space-xs py-1 rounded">
+<span class="material-symbols-outlined text-[16px]">thumb_up</span>
+<span class="font-label-sm text-label-sm">Recommended</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed mt-space-xs">
+              This game scratches the exact same itch as Dave the Diver and Moonlighter, but swap spearfishing for kneading enchanted dough! The pixel animation when you pull a batch of Star Croissants out of the kiln is pure dopamine. Zero bugs encountered on my Steam Deck OLED.
+            </p>
+<div class="flex items-center gap-space-xs pt-space-xs text-body-sm text-on-surface-variant">
+<span>Was this review helpful?</span>
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[14px]">thumb_up</span> 19
+              </button>
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[14px]">thumb_down</span> 0
+              </button>
+</div>
+</div>
+<!-- Review 2 -->
+<div class="p-space-md rounded-xl bg-surface-container flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center font-label-md text-secondary font-bold">
+                  B
+                </div>
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface font-semibold">BrambleBerry</span>
+<span class="px-space-xs py-0.5 rounded bg-primary-container/20 text-primary text-label-sm font-label-sm">Verified Owner</span>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant">12.1 hrs on record • Posted 6 hours ago</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-primary bg-surface-container-high px-space-xs py-1 rounded">
+<span class="material-symbols-outlined text-[16px]">thumb_up</span>
+<span class="font-label-sm text-label-sm">Recommended</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed mt-space-xs">
+              The soundtrack alone makes this worth $9.99. Lyra is such a well-written protagonist. Only note is that around Day 14 the dungeon adventurer orders pile up rapidly, so remember to upgrade your prep tables first!
+            </p>
+<div class="flex items-center gap-space-xs pt-space-xs text-body-sm text-on-surface-variant">
+<span>Was this review helpful?</span>
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[14px]">thumb_up</span> 14
+              </button>
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[14px]">thumb_down</span> 1
+              </button>
+</div>
+</div>
+<!-- Review 3 -->
+<div class="p-space-md rounded-xl bg-surface-container flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center font-label-md text-on-surface-variant font-bold">
+                  R
+                </div>
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface font-semibold">RogueBaker</span>
+<span class="px-space-xs py-0.5 rounded bg-primary-container/20 text-primary text-label-sm font-label-sm">Verified Owner</span>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant">4.2 hrs on record • Posted 8 hours ago</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant bg-surface-container-high px-space-xs py-1 rounded">
+<span class="material-symbols-outlined text-[16px]">info</span>
+<span class="font-label-sm text-label-sm">Neutral</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed mt-space-xs">
+              Super charming and great art. Giving it neutral for now just because the secondary yeast fermentation mechanic could use clearer indicators in the HUD. The devs already acknowledged this on Discord though so expect a patch soon!
+            </p>
+<div class="flex items-center gap-space-xs pt-space-xs text-body-sm text-on-surface-variant">
+<span>Was this review helpful?</span>
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[14px]">thumb_up</span> 9
+              </button>
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[14px]">thumb_down</span> 2
+              </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Studio Spotlight, Security & Community Activity (4 Cols) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Studio Card -->
+<div class="bg-surface-container-low p-space-lg rounded-xl flex flex-col gap-space-md shadow-md">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center text-primary shadow-inner">
+<span class="material-symbols-outlined text-[26px]">groups</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg text-on-surface font-semibold">Croissant Coven</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Indie Collective • Montpellier & Seattle</p>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          A four-person indie studio crafting micro-RPG simulators with handcrafted pixel art, rich mechanical loops, and cozy tavern vibes.
+        </p>
+<div class="flex items-center gap-space-sm pt-space-xs">
+<a class="px-space-sm py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[14px]">storefront</span>
+<span>Studio Catalog (3)</span>
+</a>
+<a class="px-space-sm py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[14px]">chat</span>
+<span>Discord Community</span>
+</a>
+</div>
+</div>
+<!-- IndieVault Guarantee Block -->
+<div class="bg-surface-container-low p-space-lg rounded-xl flex flex-col gap-space-sm shadow-md">
+<div class="flex items-center gap-space-xs text-primary font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span>The IndieVault Promise</span>
+</div>
+<ul class="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant">
+<li class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>100% DRM-Free standalone executable</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>Playtime under 2 hrs eligible for instant refund</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>No microtransactions or battle passes</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>95% revenue direct to creators</span>
+</li>
+</ul>
+</div>
+<!-- Share & Community Quick Links -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">share</span> Share Game
+        </span>
+<div class="flex items-center gap-space-xs">
+<button class="p-1.5 rounded hover:bg-surface-container text-on-surface transition-colors" title="Copy Link">
+<span class="material-symbols-outlined text-[18px]">link</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-container text-on-surface transition-colors" title="Report Issue">
+<span class="material-symbols-outlined text-[18px]">flag</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+<script>
+  // Media Carousel Thumbnail Switcher
+  function selectMedia(targetSrc, element) {
+    const mainHero = document.getElementById('mainHeroView');
+    if (mainHero && targetSrc) {
+      mainHero.src = targetSrc;
+    }
+    // Update active highlight classes
+    document.querySelectorAll('.media-thumb').forEach(btn => {
+      btn.classList.remove('ring-2', 'ring-primary', 'opacity-100');
+      btn.classList.add('opacity-70');
+    });
+    if (element) {
+      element.classList.add('opacity-100');
+    }
+  }
+
+  // Graceful Fallback Mode Toggle
+  function toggleAIFallback() {
+    const activeBlock = document.getElementById('aiActiveBlock');
+    const fallbackBlock = document.getElementById('aiFallbackBlock');
+    if (activeBlock && fallbackBlock) {
+      activeBlock.classList.toggle('hidden');
+      fallbackBlock.classList.toggle('hidden');
+    }
+  }
+
+  // Wishlist Button Interaction
+  let isWishlisted = false;
+  function toggleWishlist() {
+    isWishlisted = !isWishlisted;
+    const icon = document.getElementById('wishlistIcon');
+    const text = document.getElementById('wishlistText');
+    if (icon && text) {
+      if (isWishlisted) {
+        icon.innerText = 'favorite';
+        icon.style.fontVariationSettings = "'FILL' 1";
+        text.innerText = 'In Wishlist';
+      } else {
+        icon.innerText = 'favorite_border';
+        icon.style.fontVariationSettings = "'FILL' 0";
+        text.innerText = 'Add to Wishlist';
+      }
+    }
+  }
+
+  // Simple feedback counter vote
+  function voteFeedback(button, baseCount) {
+    const countSpan = button.querySelector('.count');
+    if (countSpan && !button.hasAttribute('data-voted')) {
+      button.setAttribute('data-voted', 'true');
+      countSpan.innerText = baseCount + 1;
+      button.classList.add('text-primary');
+    }
+  }
+</script></main><footer class="w-full bg-surface-container-lowest mt-auto py-space-lg"><div class="w-full px-gutter flex flex-col md:flex-row items-center justify-between gap-space-md text-on-surface-variant font-body-sm text-body-sm"><div><span>© 2025 IndieVault. Decentralized & Curated Indie Gaming Marketplace.</span></div><div class="flex items-center gap-space-md"><span>Powered by Plain CSS & Adaptive Dark Tokens</span><span class="w-1 h-1 rounded-full bg-outline-variant"></span><span>Role-Based Workflows</span><span class="w-1 h-1 rounded-full bg-outline-variant"></span><span>AI Triage Protocol</span></div></div></footer></body></html>
